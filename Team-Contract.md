@@ -17,6 +17,6 @@ These can include Patients, Inverntory, and Suppliers. Each tab will allow the u
 There will also be sections to create work tickets for the service crew and order tickets for new inventory. These will likely be housed in the Patients and Inventory tabs respectively.
 
 ## Project Roles
-The development roles for the team will be divided between the front end and back end of the project. Jackson will primarily work on developing and testing the front end of the software
-and Kevin will primarily work on developing and testing the back end of the software and managing the database. There will be flexibility in the roles for both members to 
-work outside of their primary role if the need arises.
+&nbsp;&nbsp;&nbsp;&nbsp;The development roles for the team will be divided between the front end and back end of the project. Jackson will primarily work on developing and testing 
+the front end of the software and Kevin will primarily work on developing and testing the back end of the software and managing the database. There will be flexibility in the roles for 
+both members to work outside of their primary role if the need arises.

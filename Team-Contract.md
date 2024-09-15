@@ -13,7 +13,7 @@ The back end of the software will be split into two parts: the database and the 
 for all of the items that are necessary to track for daily operations. These include patient information, patient history, rental equipment, parts inventory, and supplier information.
 The back end code will perform CRUD operations on the database based on inputs received from the front end of the software.
 The front end of the software will display a few different tabs that users will be able to switch between to manage different areas of operation.
-These can include Patients, Inverntory, and Suppliers. Each tab will allow the user to view and manage the current records in the database as well as create new records.
+These can include Patients, Inventory, and Suppliers. Each tab will allow the user to view and manage the current records in the database as well as create new records.
 There will also be sections to create work tickets for the service crew and order tickets for new inventory. These will likely be housed in the Patients and Inventory tabs respectively.
 
 ## Project Roles

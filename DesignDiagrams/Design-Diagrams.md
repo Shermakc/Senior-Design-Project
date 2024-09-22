@@ -17,6 +17,8 @@
 
 ### Design D2:
 
-
+*This diagram introduces the role of the DBMS on the software.
+  * The DBMS will 
+*
 
 ![AltText](images/DesignD2.png?raw=true "Diagram2")

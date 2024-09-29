@@ -11,7 +11,7 @@
 - Develop the application platform. (Jackson)
 - Develop the user interface. (Jackson)
 - Refine the layout of the user interface after testing. (Jackson)
-- Research (Kevin)
+- Research creation and use of interfaces for the code behind. (Kevin)
 - Develop the code behind the UI for communication with the database. (Kevin)
 - Develop unit tests for each function in the code behind. (Kevin)
 - Test the functionality of user interface objects. (Jackson)

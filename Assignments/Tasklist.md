@@ -18,3 +18,5 @@
 - Design benchmarks for performance testing. (Kevin)
 - Test performance of the entire application. (Jackson)
 - Refine the application. (Jackson)
+
+Reorganize task list into categories (Database, Application, Testing)

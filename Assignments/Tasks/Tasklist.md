@@ -1,5 +1,5 @@
 ## Task List
-## Research Tasks
+### Research Tasks
 - Research how to set up an independent application to run on the local machine. (Jackson)
 - Research creation and use of interfaces for the code behind. (Kevin)
 

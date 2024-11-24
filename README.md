@@ -11,7 +11,7 @@
     * [Effort Matrix](Assignments/Tasks/EffortMatrix.md)
 5. [ABET Concerns Essay](Assignments/Essays/Constraints_Essay.pdf)
 6. [PPT Slideshow](Assignments/Senior-Proejct-Presentation_MediStore-Manager.pdf)
-7. Self-Assessment Essays: [Jackson] and [Kevin]
+7. Self-Assessment Essays: [Jackson](Assignments/Essays/Individual and [Kevin]
 8. Professional Biographies: [Jackson] and [Kevin] 
 9. [Budget]
 10. [Appendix]

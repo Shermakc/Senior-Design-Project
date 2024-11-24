@@ -49,5 +49,6 @@
 ![AltText](Designs/UI-Mockup.png?raw=true "")
 
 ## References
+- [Database Design Reference](ReferenceFiles/TPCH.pdf)
 - https://learn.microsoft.com/en-us/visualstudio/get-started/csharp/?view=vs-2022
 - https://learn.microsoft.com/en-us/visualstudio/get-started/csharp/tutorial-wpf?view=vs-2022

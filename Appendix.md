@@ -43,7 +43,9 @@
   - might be able to combine order tickets and deliveries like in the PDF sent in chat
   
 ## Current Database Design
-![AltText](Database Structure.png?raw=true "")
+![AltText](Database-Structure.png?raw=true "")
 ## Current User Interface Design Mockup
 
 ## References
+- https://learn.microsoft.com/en-us/visualstudio/get-started/csharp/?view=vs-2022
+- https://learn.microsoft.com/en-us/visualstudio/get-started/csharp/tutorial-wpf?view=vs-2022

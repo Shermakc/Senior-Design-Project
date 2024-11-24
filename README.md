@@ -10,7 +10,7 @@
     * [Timeline](Assignments/Tasks/Timeline.md)
     * [Effort Matrix](Assignments/Tasks/EffortMatrix.md)
 5. [ABET Concerns Essay](Assignments/Essays/Constraints_Essay.pdf)
-6. [PPT Slideshow](Assignments/Senior-Proejct-Presentation_MediStore-Manager.pdf)
+6. [PPT Slideshow](Assignments/Senior-Project-Presentation_MediStore-Manager.pdf)
 7. Self-Assessment Essays: [Jackson](Assignments/Essays/Individual_Capstone_Assessment_JacksonRodgers.pdf) and [Kevin](Assignments/Essays/CapstoneAssessment_KevinSherman.pdf)
 8. Professional Biographies: [Jackson](Assignments/Essays/Professional_Biography_JacksonRodgers.md) and [Kevin](Assignments/Essays/Professional_Biography_KevinSherman.md) 
 9. [Budget](Budget.md)

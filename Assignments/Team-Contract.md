@@ -4,8 +4,8 @@ Jackson Rodgers (CS): rodgerjk@mail.uc.edu
 Kevin Sherman (CS): shermakc@mail.uc.edu
 
 ## Meetings
-- Weekly team meetings at 6:00 P.M on Sunday
-- Meetings every two weeks with faculty advisor (time TBD)
+- Weekly team meetings at 4:00 P.M on Sunday
+- Meetings at 5:00 P.M on Monday every two weeks with faculty advisor, Seokki Lee.
 
 ## Project Focus
 &nbsp;&nbsp;&nbsp;&nbsp;The project will consist of creating a front end and back end for a database management softwware design to be used by medical supply stores.

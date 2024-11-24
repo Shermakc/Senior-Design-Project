@@ -1,4 +1,4 @@
-# Project Title: MediStore Manager
+# MediStore Manager
 ## Goal Statement:
 Create a fully functional information management software for a medical supply store that employees can use to find and update information related to patients, suppliers, and inventory.
 Records of previous services rendered will be kept to make future work with returning patients more efficient and effective. Equipment orders will be kept to assist in inventory audits.

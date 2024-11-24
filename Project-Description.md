@@ -1,4 +1,4 @@
-### JRKS
+### MediStore Manager
 Jackson Rodgers (CS): rodgerjk@mail.uc.edu  
 Kevin Sherman (CS): shermakc@mail.uc.edu
 

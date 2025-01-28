@@ -1,0 +1,7 @@
+# Build results
+[Bb]in/
+MediStoreManager/[Bb]in/
+
+# Visual Studio 2022 cache/options directory
+.vs/
+MediStoreManager/.vs/

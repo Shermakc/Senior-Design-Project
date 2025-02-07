@@ -7,6 +7,38 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="AddInventoryWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddPatientWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="AddSupplierWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="CreateSupplyOrder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="CreateWorkOrder.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="AddInventoryWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="AddPatientWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="AddSupplierWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CreateSupplyOrder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="CreateWorkOrder.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

@@ -40,3 +40,14 @@ Clicking on the Suppliers tab will display a list of all the suppliers we order 
 
 ## 3.0 FAQ
 ## 3.0 FAQ <a name="frequently-asked-questions"></a>
+**Q: Where is a patient's emergency contact information?**<br />
+**A:** The emergency contact information for a patient is held within the "Additional" tab for that patient.
+
+**Q: Where can I find the details for a patient's insurance?**<br />
+**A:** This information can be found in the "Additional" tab for that patient.
+
+**Q: How can I track the history of repairs that a piece of equipment has undergone?**<br />
+**A:** In the "History" tab for the equipment, you will see all previous rentals and repairs for that equipment.
+
+**Q: I want to see our previous orders with a specific supplier, where can I find that?** <br />
+**A:** In the Suppliers tab, click on the specific supplier and select the "History" tab. This will display all previous orders with that supplier.

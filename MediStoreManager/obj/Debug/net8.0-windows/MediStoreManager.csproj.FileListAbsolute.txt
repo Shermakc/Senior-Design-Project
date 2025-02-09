@@ -20,3 +20,13 @@ C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net
 C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\MediStoreManager.pdb
 C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\MediStoreManager.genruntimeconfig.cache
 C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\ref\MediStoreManager.dll
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddPatientWindow.g.cs
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddPatientWindow.baml
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddInventoryWindow.g.cs
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddSupplierWindow.g.cs
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddInventoryWindow.baml
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddSupplierWindow.baml
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\CreateSupplyOrder.g.cs
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\CreateWorkOrder.g.cs
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\CreateSupplyOrder.baml
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\CreateWorkOrder.baml

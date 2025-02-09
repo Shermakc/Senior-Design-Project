@@ -16,10 +16,31 @@
                     <Grid Height="600" Width="958" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <StackPanel Margin="0,0,0,0">
-                                    <TextBlock Text="First Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="70"/>
-                                    <TextBlock Text="Last Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10" Width="70"/>
-                                    <TextBlock Text="Date of Birth: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="80"/>
+                                <StackPanel Width="958" Orientation="Horizontal">
+                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                        <TextBlock Text="First Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Last Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Street Address: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                    </WrapPanel>
+                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                        <TextBlock Text="Middle Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Home Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Cell Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="State: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Insurance Provider: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                    </WrapPanel>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="History">
@@ -32,13 +53,13 @@
                     </Grid>
                     <Grid Height="203" Width="938" Margin="620,620,0,0">
                         <Button Content="Edit Patient Information" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
-                        <Button Content="Create Work Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16"/>
+                        <Button Content="Create Work Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_Click_4"/>
                     </Grid>
                     <Grid Height="750" Width="590" Margin="10,10,0,0">
                         <ListBox Name="PatientListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,0,0,0"/>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
-                        <Button Content="Add New Patient" Margin="0,0,0,0" Height="53" Width="550" FontSize="16"/>
+                        <Button Content="Add New Patient" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_1"/>
                     </Grid>
                 </Canvas>
             </TabItem>
@@ -50,8 +71,27 @@
                     <Grid Height="600" Width="958" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <StackPanel Margin="0,0,0,0">
-
+                                <StackPanel Width="958" Orientation="Horizontal">
+                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                        <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Size: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Quantity in Stock: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Retail Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                    </WrapPanel>
+                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                        <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Brand: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Rental Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                    </WrapPanel>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="History">
@@ -64,13 +104,13 @@
                     </Grid>
                     <Grid Height="203" Width="938" Margin="620,620,0,0">
                         <Button Content="Edit Part/Equipment Information" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
-                        <Button Content="Create Work Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16"/>
+                        <Button Content="Create Work Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_Click_4"/>
                     </Grid>
                     <Grid Height="750" Width="590" Margin="10,10,0,0">
                         <ListBox Name="InventoryListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,0,0,0"/>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
-                        <Button Content="Add New Inventory" Margin="0,0,0,0" Height="53" Width="550" FontSize="16"/>
+                        <Button Content="Add New Inventory" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_2"/>
                     </Grid>
                 </Canvas>
             </TabItem>
@@ -82,8 +122,23 @@
                     <Grid Height="600" Width="958" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <StackPanel Margin="0,0,0,0">
-
+                                <StackPanel Width="958" Orientation="Horizontal">
+                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                        <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Street Address: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="State: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                    </WrapPanel>
+                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                        <TextBlock Text="Business Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                        <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                        <TextBlock Width="280" Margin="10,20"/>
+                                    </WrapPanel>
                                 </StackPanel>
                             </TabItem>
                             <TabItem Header="History">
@@ -96,13 +151,13 @@
                     </Grid>
                     <Grid Height="203" Width="938" Margin="620,620,0,0">
                         <Button Content="Edit Supplier Information" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
-                        <Button Content="Create Supply Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16"/>
+                        <Button Content="Create Supply Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_Click_5"/>
                     </Grid>
                     <Grid Height="750" Width="590" Margin="10,10,0,0">
                         <ListBox Name="SupplierListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,0,0,0"/>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
-                        <Button Content="Add New Supplier" Margin="0,0,0,0" Height="53" Width="550" FontSize="16"/>
+                        <Button Content="Add New Supplier" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_3"/>
                     </Grid>
                 </Canvas>
             </TabItem>

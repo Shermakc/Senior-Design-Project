@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MediStoreManager")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+8dde205e2712b6f8da533c94a23c6cb26c384a5f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07dbc47baafceb9cb1f2e8680fdc7654b1983f2c")]
 [assembly: System.Reflection.AssemblyProductAttribute("MediStoreManager")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MediStoreManager")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

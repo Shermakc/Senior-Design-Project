@@ -7,55 +7,57 @@ using System.Xml.Linq;
 
 namespace MediStoreManager
 {
+    // might want to change these to classes matching how it is displayed in the app
+    // Ex: PatientInfo would display all person info including their address
     public class Address
     {
-        int ID;
-        string StreetName;
-        int AddressNumber;
-        string City;
-        string State;
-        int ZipCode;
+        public uint ID;
+        public string StreetName;
+        public int AddressNumber;
+        public string City;
+        public string State;
+        public uint ZipCode;
     }
 
     public class CustomerOrder
     {
-        int ID;
-        int InventoryID;
-        string Type;
-        int PersonID;
-        int Quantity;
-        DateTime Date;
-        bool HaveReceivedPayment;
-        DateOnly PaymentDate;
-        int RelatedInventoryItemID;
-        string Notes;
+        public uint ID;
+        public uint InventoryID;
+        public string Type;
+        public uint PersonID;
+        public int Quantity;
+        public DateTime Date;
+        public bool HaveReceivedPayment;
+        public DateTime PaymentDate;
+        public uint RelatedInventoryItemID;
+        public string Notes;
     }
 
-    public class Inventory
+    public class InventoryItem
     {
-        int ID;
-        string Type;
-        string Name;
-        string Size;
-        string Brand;
-        int NumInStock;
-        decimal Cost;
-        decimal RetailPrice;
-        bool IsRental;
-        decimal RentalPrice;
-        int PersonID;
+        public uint ID;
+        public string Type;
+        public string Name;
+        public string Size;
+        public string Brand;
+        public int NumInStock;
+        public decimal Cost;
+        public decimal RetailPrice;
+        public bool IsRental;
+        public decimal RentalPrice;
+        public uint PersonID;
     }
 
     public class Order
     {
-        int ID;
-        int InventoryID;
-        int Quantity;
-        string SupplierName;
-        string ShippingMethod;
-        DateTime OrderDateTime;
-        bool HasBeenReceived;
-        DateOnly ReceivedDate;
+        public uint ID;
+        public uint InventoryID;
+        public int Quantity;
+        public string SupplierName;
+        public string ShippingMethod;
+        public DateTime OrderDateTime;
+        public bool HasBeenReceived;
+        public DateTime ReceivedDate;
     }
 
     public class Person
@@ -75,19 +77,19 @@ namespace MediStoreManager
 
     public class Supplier
     {
-        string Name;
-        decimal PhoneNumber;
-        int PartnerID;
-        int AddressID;
+        public string Name;
+        public decimal PhoneNumber;
+        public int PartnerID;
+        public uint AddressID;
     }
 
     public class User
     {
-        int ID;
-        string FirstName;
-        string LastName;
-        string Username;
-        string Password;
-        string Position;
+        public uint ID;
+        public string FirstName;
+        public string LastName;
+        public string Username;
+        public string Password;
+        public string Position;
     }
 }

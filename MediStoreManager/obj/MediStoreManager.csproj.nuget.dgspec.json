@@ -53,6 +53,14 @@
             "MySql.Data": {
               "target": "Package",
               "version": "[9.2.0, )"
+            },
+            "NUnit": {
+              "target": "Package",
+              "version": "[4.3.2, )"
+            },
+            "NUnit3TestAdapter": {
+              "target": "Package",
+              "version": "[5.0.0, )"
             }
           },
           "imports": [

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.ComponentModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -14,11 +15,28 @@ namespace MediStoreManager
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public WorkOrders WorkOrdersList { get; set; }
+        public SupplyOrders SupplyOrdersList { get; set; }
+
+        private object _selectedOrder;
+        public object SelectedOrder
+        {
+            get => _selectedOrder;
+            set
+            {
+                _selectedOrder = value;
+                OnPropertyChanged(nameof(SelectedOrder));
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
+            WorkOrdersList = new WorkOrders();
+            SupplyOrdersList = new SupplyOrders();
+            DataContext = this;
         }
 
         private void DataGrid_SelectionChanged()
@@ -69,6 +87,22 @@ namespace MediStoreManager
             CreateSupplyOrder createSupplyOrder = new CreateSupplyOrder();
             createSupplyOrder.Owner = this;
             createSupplyOrder.ShowDialog();
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void WorkListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedOrder = ((ListBox)sender).SelectedItem;
+        }
+
+        private void SupplyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            SelectedOrder = ((ListBox)sender).SelectedItem;
         }
     }
 }

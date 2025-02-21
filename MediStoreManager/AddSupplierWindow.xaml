@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="Add Supplier" Height="280" Width="400"
+        Title="Add Supplier" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel>
+    <StackPanel Height="240" Width="380">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Enter Supplier Information
         </Label>

@@ -396,7 +396,7 @@ namespace MediStoreManager
         {
             string sql = "insert into address " +
                 "(`ID`, `StreetName`, `AddressNumber`, `City`, `State`, `ZipCode`) " +
-                "VALUES ('" + newAddress.ID + "', '" + newAddress.StreetName + "', '" + newAddress.City + "', '"
+                "VALUES ('" + newAddress.ID + "', '" + newAddress.StreetName + "', '" + newAddress.AddressNumber + "', '"
                 + newAddress.City + "', '" + newAddress.State + "', '" + newAddress.ZipCode + "');";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
@@ -404,8 +404,8 @@ namespace MediStoreManager
 
         public static void UpdateAdressEntry(MySqlConnection con, Address address)
         {
-            string sql = "update address set StreetName = " + address.StreetName + ", AddressNumber = " + address.AddressNumber +
-                ", City = " + address.City + ", State = " + address.State + ", ZipCode = " + address.ZipCode +
+            string sql = "update address set StreetName = '" + address.StreetName + "', AddressNumber = " + address.AddressNumber +
+                ", City = '" + address.City + "', State = '" + address.State + "', ZipCode = " + address.ZipCode +
                 " where ID = " + address.ID +";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();

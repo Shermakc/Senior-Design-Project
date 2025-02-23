@@ -5,17 +5,20 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="Add Inventory" Height="340" Width="400"
+        Title="Add Inventory" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel>
+    <StackPanel Height="300" Width="380">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Enter Inventory Information
         </Label>
         <WrapPanel Height="240" Width="400">
+            <WrapPanel.Resources>
+                <local:InventoryTypes x:Key="InventoryTypes"/>
+            </WrapPanel.Resources>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Name: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Type: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <ComboBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" ItemsSource="{StaticResource InventoryTypes}" IsEditable="True" IsReadOnly="True"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Size: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Brand: " Margin="0,5,0,0"/>

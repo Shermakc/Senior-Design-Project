@@ -5,15 +5,18 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="Work Order" Height="340" Width="400"
-        WindowStartupLocation="CenterOwner">
-    <StackPanel>
+        Title="Work Order" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner" >
+    <StackPanel Height="300" Width="380">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Create Work Order
         </Label>
         <WrapPanel Height="240" Width="400">
+            <WrapPanel.Resources>
+                <local:WorkOrderTypes x:Key="WorkOrderTypes"/>
+            </WrapPanel.Resources>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Order Type: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <ComboBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" ItemsSource="{StaticResource WorkOrderTypes}" IsEditable="True" IsReadOnly="True"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Patient: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Inventory: " Margin="0,5,0,0"/>

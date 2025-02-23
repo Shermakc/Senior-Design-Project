@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="Supply Order" Height="280" Width="400"
+        Title="Supply Order" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel>
+    <StackPanel Height="240" Width="380">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Create Supply Order
         </Label>

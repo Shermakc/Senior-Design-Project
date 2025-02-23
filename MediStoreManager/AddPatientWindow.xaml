@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="Add Patient" Height="400" Width="400"
+        Title="Add Patient" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel>
+    <StackPanel Height="360" Width="380">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Enter Patient Information
         </Label>

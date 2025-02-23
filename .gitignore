@@ -5,3 +5,4 @@ MediStoreManager/[Bb]in/
 # Visual Studio 2022 cache/options directory
 .vs/
 MediStoreManager/.vs/
+/MediStoreManager/obj/Release/net8.0-windows

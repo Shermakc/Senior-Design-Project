@@ -1,0 +1,112 @@
+﻿<Window x:Class="MediStoreManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MediStoreManager"
+        mc:Ignorable="d"
+        Title="MediStore Manager" Height="900" Width="1600">
+    <Grid>
+        <TabControl FontSize="12">
+            <TabItem Header="Patients">
+                <Canvas Background="LightGray">
+                    <Canvas.Resources>
+                        <local:PatientInfo x:Key="data"/>
+                    </Canvas.Resources>
+                    <Grid Height="600" Width="958" Margin="610,10,0,0">
+                        <TabControl Margin="0,0,0,0">
+                            <TabItem Header="Info">
+                                <StackPanel Margin="0,0,0,0">
+                                    <TextBlock Text="First Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="70"/>
+                                    <TextBlock Text="Last Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,10" Width="70"/>
+                                    <TextBlock Text="Date of Birth: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="80"/>
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="History">
+
+                            </TabItem>
+                            <TabItem Header="Additional">
+
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                    <Grid Height="203" Width="938" Margin="620,620,0,0">
+                        <Button Content="Edit Patient Information" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
+                        <Button Content="Create Work Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16"/>
+                    </Grid>
+                    <Grid Height="750" Width="590" Margin="10,10,0,0">
+                        <ListBox Name="PatientListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,0,0,0"/>
+                    </Grid>
+                    <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
+                        <Button Content="Add New Patient" Margin="0,0,0,0" Height="53" Width="550" FontSize="16"/>
+                    </Grid>
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Inventory">
+                <Canvas Background="LightGray">
+                    <Canvas.Resources>
+                        <local:InventoryInfo x:Key="data"/>
+                    </Canvas.Resources>
+                    <Grid Height="600" Width="958" Margin="610,10,0,0">
+                        <TabControl Margin="0,0,0,0">
+                            <TabItem Header="Info">
+                                <StackPanel Margin="0,0,0,0">
+
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="History">
+
+                            </TabItem>
+                            <TabItem Header="Additional">
+
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                    <Grid Height="203" Width="938" Margin="620,620,0,0">
+                        <Button Content="Edit Part/Equipment Information" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
+                        <Button Content="Create Work Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16"/>
+                    </Grid>
+                    <Grid Height="750" Width="590" Margin="10,10,0,0">
+                        <ListBox Name="InventoryListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,0,0,0"/>
+                    </Grid>
+                    <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
+                        <Button Content="Add New Inventory" Margin="0,0,0,0" Height="53" Width="550" FontSize="16"/>
+                    </Grid>
+                </Canvas>
+            </TabItem>
+            <TabItem Header="Suppliers">
+                <Canvas Background="LightGray">
+                    <Canvas.Resources>
+                        <local:SupplierInfo x:Key="data"/>
+                    </Canvas.Resources>
+                    <Grid Height="600" Width="958" Margin="610,10,0,0">
+                        <TabControl Margin="0,0,0,0">
+                            <TabItem Header="Info">
+                                <StackPanel Margin="0,0,0,0">
+
+                                </StackPanel>
+                            </TabItem>
+                            <TabItem Header="History">
+
+                            </TabItem>
+                            <TabItem Header="Additional">
+
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                    <Grid Height="203" Width="938" Margin="620,620,0,0">
+                        <Button Content="Edit Supplier Information" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
+                        <Button Content="Create Supply Order" Height="203" Width="464" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16"/>
+                    </Grid>
+                    <Grid Height="750" Width="590" Margin="10,10,0,0">
+                        <ListBox Name="SupplierListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,0,0,0"/>
+                    </Grid>
+                    <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
+                        <Button Content="Add New Supplier" Margin="0,0,0,0" Height="53" Width="550" FontSize="16"/>
+                    </Grid>
+                </Canvas>
+            </TabItem>
+        </TabControl>
+
+    </Grid>
+</Window>

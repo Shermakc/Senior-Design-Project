@@ -9,6 +9,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Shell;
+using MySql.Data.MySqlClient;
+using MediStoreManager;
 
 namespace MediStoreManager
 {
@@ -37,11 +40,26 @@ namespace MediStoreManager
             WorkOrdersList = new WorkOrders();
             SupplyOrdersList = new SupplyOrders();
             DataContext = this;
+
+            try
+            {
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.GetPersonList(con);                
+                con.Close();
+
+                con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.GetAddressList(con);
+                con.Close();
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
         }
 
         private void DataGrid_SelectionChanged()
         {
-
+            
         }
 
         private void PatientListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -104,5 +122,7 @@ namespace MediStoreManager
         {
             SelectedOrder = ((ListBox)sender).SelectedItem;
         }
+
+        
     }
 }

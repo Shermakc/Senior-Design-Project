@@ -66,7 +66,7 @@ CREATE TABLE `medistore manager`.`order` (
     `HasBeenReceived` BOOL NOT NULL DEFAULT 0,
     `ReceivedDate` DATETIME,
     PRIMARY KEY (`ID`, `InventoryID`),
-    FOREIGN KEY (`InventoryID`) REFERENCES `inventory`(`ID`),
+    FOREIGN KEY (`InventoryID`) REFERENCES `inventory_item`(`ID`),
     FOREIGN KEY (`SupplierName`) REFERENCES `supplier`(`Name`));
 
 CREATE TABLE `medistore manager`.`customer_order` (	
@@ -81,6 +81,6 @@ CREATE TABLE `medistore manager`.`customer_order` (
     `RelatedInventoryItemID` INT UNSIGNED,
     `Notes` VARCHAR(100),
     PRIMARY KEY (`ID`, `InventoryID`),
-    FOREIGN KEY (`InventoryID`) REFERENCES `inventory`(`ID`),
+    FOREIGN KEY (`InventoryID`) REFERENCES `inventory_item`(`ID`),
     FOREIGN KEY (`PersonID`) REFERENCES `person`(`ID`),
-    FOREIGN KEY (`RelatedInventoryItemID`) REFERENCES `inventory`(`ID`));
+    FOREIGN KEY (`RelatedInventoryItemID`) REFERENCES `inventory_item`(`ID`));

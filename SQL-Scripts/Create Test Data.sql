@@ -1,5 +1,5 @@
 # Generate Addresses
-INSERT INTO `medistor manager`.`address` (`ID`, `StreetName`, `AddressNumber`, `City`, `State`, `ZipCode`) VALUES ('0', 'Tharp Street', '114', 'Arlignton', 'TX', '76010');
+INSERT INTO `medistore manager`.`address` (`ID`, `StreetName`, `AddressNumber`, `City`, `State`, `ZipCode`) VALUES (0, 'Tharp Street', '114', 'Arlignton', 'TX', '76010');
 INSERT INTO `medistore manager`.`address` (`ID`, `StreetName`, `AddressNumber`, `City`, `State`, `ZipCode`)
 VALUES
 (1, 'Main St', 123, 'New York', 'NY', '10001'),

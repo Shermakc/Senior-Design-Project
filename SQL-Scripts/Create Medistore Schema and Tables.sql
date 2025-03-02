@@ -10,7 +10,7 @@ CREATE TABLE `medistore manager`.`user` (
     PRIMARY KEY (`ID`));
     
 CREATE TABLE `medistore manager`.`address` (
-	`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `ID` INT UNSIGNED NOT NULL,
     `StreetName` VARCHAR(100) NOT NULL,
     `AddressNumber` INT NOT NULL,
     `City` VARCHAR(100) NOT NULL,

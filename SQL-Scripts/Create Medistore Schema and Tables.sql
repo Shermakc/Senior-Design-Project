@@ -62,7 +62,7 @@ CREATE TABLE `medistore manager`.`order` (
     `Quantity` INT NOT NULL,
     `SupplierName` VARCHAR(100) NOT NULL,
     `ShippingMethod` VARCHAR(100),
-    `OrderDateTime` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `OrderDateTime` DATETIME NOT NULL,
     `HasBeenReceived` BOOL NOT NULL DEFAULT 0,
     `ReceivedDate` DATETIME,
     PRIMARY KEY (`ID`, `InventoryID`),

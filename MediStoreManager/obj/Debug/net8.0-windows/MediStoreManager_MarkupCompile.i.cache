@@ -4,7 +4,7 @@
 winexe
 C#
 .cs
-C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreManager\obj\Debug\net8.0-windows\
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\
 MediStoreManager
 none
 false
@@ -12,8 +12,8 @@ TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\App.xaml
 6-1172153603
 
-20-127616925
-198-1431420039
+32-1618547349
+206489491751
 AddInventoryWindow.xaml;AddPatientWindow.xaml;AddSupplierWindow.xaml;CreateSupplyOrder.xaml;CreateWorkOrder.xaml;MainWindow.xaml;
 
 False

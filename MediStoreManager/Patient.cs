@@ -19,6 +19,7 @@ namespace MediStoreManager
         private string _city;
         private string _zipcode;
         private string _state;
+        private string _displayname;
 
         public string ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string FirstName { get => _firstname; set { _firstname = value; OnPropertyChanged(nameof(FirstName)); } }
@@ -30,6 +31,7 @@ namespace MediStoreManager
         public string City { get => _city; set { _city = value; OnPropertyChanged(nameof(City)); } }
         public string ZipCode { get => _zipcode; set { _zipcode = value; OnPropertyChanged(nameof(ZipCode)); } }
         public string State { get => _state; set { _state = value; OnPropertyChanged(nameof(State)); } }
+        public string DisplayName { get => _displayname; set { _displayname = value; OnPropertyChanged(nameof(DisplayName)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

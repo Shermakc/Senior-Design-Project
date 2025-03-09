@@ -24,5 +24,18 @@ namespace MediStoreManager
                 });
             }
         }
+
+        public void AddSupplyOrder(Order order)
+        {
+            Add(new SupplyOrder
+            {
+                ID = order.ID.ToString(),
+                Supplier = order.SupplierName,
+                InventoryID = order.InventoryID.ToString(),
+                Quantity = order.Quantity.ToString(),
+                ShippingMethod = order.ShippingMethod,
+                OrderDate = order.OrderDateTime.ToString()
+            });
+        }
     }
 }

@@ -4,15 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
+using Org.BouncyCastle.Security;
 
 namespace MediStoreManager
 {
     public class DatabaseFunctions
     {
-        private static List<Person> personList;
-        private static List<InventoryItem> inventoryList;
-        private static List<Supplier> supplierList;
-        private static List<Address> addressList;
+        //private static List<Address> addressList;
+        //private static List<Person> personList;
+        //private static List<InventoryItem> inventoryList;
+        //private static List<Supplier> supplierList;
+        //private static List<User> userList;
+        //private static List<Order> orderList;
+        //private static List<CustomerOrder> customerOrderList;
+
 
         public static string connString = "server=localhost;uid=root;pwd=Enough@99;database=medistore manager"; // Don't leave this as plain text
 
@@ -171,15 +176,18 @@ namespace MediStoreManager
 
 
 
-        public static void GetPersonList(MySqlConnection con)
+        public static List<Person> GetPersonList(MySqlConnection con)
         {
+            List<Person> persons = new List<Person>();
             string sql = "select * from person;";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                personList.Add(GetPerson(reader));
+                persons.Add(GetPerson(reader));
             }
+
+            return persons;
         }
 
         public static Person GetPersonByID(MySqlConnection con, uint id)
@@ -238,15 +246,18 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
-        public static void GetInventoryList(MySqlConnection con)
+        public static List<InventoryItem> GetInventoryList(MySqlConnection con)
         {
-            string sql = "select * from inventory;";
+            List<InventoryItem> inventoryItems = new List<InventoryItem>();
+            string sql = "select * from inventory_item;";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                personList.Add(GetPerson(reader));
+                inventoryItems.Add(GetInventoryItem(reader));
             }
+
+            return inventoryItems;
         }
 
         public static InventoryItem GetInventoryItemByID(MySqlConnection con, uint id)
@@ -305,15 +316,18 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
-        public static void GetSupplierList(MySqlConnection con)
+        public static List<Supplier> GetSupplierList(MySqlConnection con)
         {
+            List<Supplier> suppliers = new List<Supplier>();
             string sql = "select * from supplier;";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                personList.Add(GetPerson(reader));
+                suppliers.Add(GetSupplier(reader));
             }
+
+            return suppliers;
         }
 
         public static Supplier GetSupplierByName(MySqlConnection con, string name)
@@ -379,15 +393,18 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
-        public static void GetAddressList(MySqlConnection con)
+        public static List<Address> GetAddressList(MySqlConnection con)
         {
+            List<Address> addresses = new List<Address>();
             string sql = "select * from address;";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                addressList.Add(GetAddress(reader));
+                addresses.Add(GetAddress(reader));
             }
+
+            return addresses;
         }
 
         public static Address GetAddressByID(MySqlConnection con, uint id)
@@ -436,15 +453,18 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
-        public static void GetOrderList(MySqlConnection con)
+        public static List<Order> GetOrderList(MySqlConnection con)
         {
-            string sql = "select * from order;";
+            List<Order> orders = new List<Order>();
+            string sql = "select * from `medistore manager`.order;";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                personList.Add(GetPerson(reader));
+                orders.Add(GetOrder(reader));
             }
+
+            return orders;
         }
 
         public static Order GetOrderByID(MySqlConnection con, uint id, uint inventoryID)
@@ -498,15 +518,18 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
-        public static void GetCustomerOrderList(MySqlConnection con)
+        public static List<CustomerOrder> GetCustomerOrderList(MySqlConnection con)
         {
+            List<CustomerOrder> customerOrders = new List<CustomerOrder>();
             string sql = "select * from customer_order;";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                personList.Add(GetPerson(reader));
+                customerOrders.Add(GetCustomerOrder(reader));
             }
+
+            return customerOrders;
         }
 
         public static CustomerOrder GetCustomerOrderByID(MySqlConnection con, uint id, uint inventoryID)
@@ -564,15 +587,18 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
-        public static void GetUserList(MySqlConnection con)
+        public static List<User> GetUserList(MySqlConnection con)
         {
+            List<User> users = new List<User>();
             string sql = "select * from user;";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             MySqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                personList.Add(GetPerson(reader));
+                users.Add(GetUser(reader));
             }
+
+            return users;
         }
 
         public static User GetUserByID(MySqlConnection con, uint id)

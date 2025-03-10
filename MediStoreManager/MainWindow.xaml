@@ -67,7 +67,7 @@
                             Search...
                         </TextBox>
                         <ListBox Name="PatientListBox" ItemsSource="{Binding PatientList}" 
-                                 DisplayMemberPath="ID" 
+                                 DisplayMemberPath="DisplayName" 
                                  SelectionChanged="PatientListBox_SelectionChanged" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" 
                                  IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                     </Grid>

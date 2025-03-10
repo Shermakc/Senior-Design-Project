@@ -11,22 +11,25 @@ namespace MediStoreManager
     {
         public Patients()
         {
-            for (int i = 0; i < 10; ++i)
+            
+        }
+
+        public void AddPatient(Person person, Address address)
+        {
+            Add(new Patient
             {
-                Add(new Patient
-                {
-                    ID = "Patient " + i,
-                    FirstName = "John",
-                    LastName = "Smith",
-                    MiddleName = "R",
-                    HomePhone = "1-888-888-8888",
-                    CellPhone = "1-234-567-8910",
-                    StreetAddress = "1100 E 9th St",
-                    City = "Cleveland",
-                    ZipCode = "44114",
-                    State = "Ohio"
-                });
-            }
+                ID = person.ID.ToString(),
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                MiddleName = person.MiddleName,
+                HomePhone = person.HomePhone.ToString(),
+                CellPhone = person.CellPhone.ToString(),
+                StreetAddress = address.AddressNumber + address.StreetName,
+                City = address.City,
+                ZipCode = address.ZipCode.ToString(),
+                State = address.State,
+                DisplayName = person.LastName + ", " + person.FirstName
+            });
         }
     }
 }

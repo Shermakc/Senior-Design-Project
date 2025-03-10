@@ -73,6 +73,14 @@ namespace MediStoreManager
             }
         }
 
+        private List<Person> persons = new List<Person>();
+        private List<Address> addresses = new List<Address>();
+        private List<InventoryItem> inventoryItems = new List<InventoryItem>();
+        private List<Supplier> suppliers = new List<Supplier>();
+        private List<User> users = new List<User>();
+        private List<Order> orders = new List<Order>();
+        private List<CustomerOrder> customerOrders = new List<CustomerOrder>();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -85,20 +93,28 @@ namespace MediStoreManager
             SupplierList = new Suppliers();
             DataContext = this;
 
-            /*try
+            try
             {
-                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                DatabaseFunctions.GetPersonList(con);                
-                con.Close();
+                RetrievePersons();
+                RetrieveAddresses();
+                RetrieveSuppliers();
+                RetrieveInventoryItems();
+                RetrieveOrders();
+                RetrieveCustomerOrders();
+                RetrieveUsers();
 
-                con = DatabaseFunctions.OpenMySQLConnection();
-                DatabaseFunctions.GetAddressList(con);
-                con.Close();
+                PopulatePatientList();
+                PopulateSupplierList();
+                PopulateEquipmentList();
+                PopulateSupplyList();
+                PopulatePartList();
+                PopulateWorkOrderList();
+                PopulateSupplyOrderList();
             }
             catch (MySqlException ex)
             {
                 MessageBox.Show(ex.ToString());
-            }*/
+            }
         }
 
         private void DataGrid_SelectionChanged()
@@ -185,6 +201,168 @@ namespace MediStoreManager
         private void SupplierListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedSupplier = ((ListBox)sender).SelectedItem;
+        }
+
+        #region Data Functions
+        private void RetrieveAddresses()
+        {
+            addresses.Clear();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            addresses = DatabaseFunctions.GetAddressList(con);
+            con.Close();
+        }
+
+        private void RetrievePersons()
+        {
+            persons.Clear();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            persons = DatabaseFunctions.GetPersonList(con);
+            con.Close();
+        }
+
+        private void RetrieveUsers()
+        {
+            users.Clear();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            users = DatabaseFunctions.GetUserList(con);
+            con.Close();
+        }
+
+        private void RetrieveSuppliers()
+        {
+            suppliers.Clear();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            suppliers = DatabaseFunctions.GetSupplierList(con);
+            con.Close();
+        }
+
+        private void RetrieveInventoryItems()
+        {
+            inventoryItems.Clear();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            inventoryItems = DatabaseFunctions.GetInventoryList(con);
+            con.Close();
+        }
+
+        private void RetrieveOrders()
+        {
+            orders.Clear();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            orders = DatabaseFunctions.GetOrderList(con);
+            con.Close();
+        }
+
+        private void RetrieveCustomerOrders()
+        {
+            customerOrders.Clear();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            customerOrders = DatabaseFunctions.GetCustomerOrderList(con);
+            con.Close();
+        }
+
+        private void PopulatePatientList()
+        {
+            foreach (Person person in persons)
+            {
+                PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+            }
+        }
+
+        private void PopulateSupplierList()
+        {
+            foreach (Supplier supplier in suppliers)
+            {
+                SupplierList.AddSupplier(supplier, addresses.Where(a => a.ID == supplier.AddressID).FirstOrDefault());
+            }
+        }
+
+        private void PopulateEquipmentList()
+        {
+            List<InventoryItem> equipmentItems = inventoryItems.Where(i => i.Type == "equipment").ToList();
+            foreach (InventoryItem item in equipmentItems)
+            {
+                EquipmentList.AddEquipment(item);
+            }
+        }
+
+        private void PopulateSupplyList()
+        {
+            List<InventoryItem> supplyItems = inventoryItems.Where(i => i.Type == "supply").ToList();
+            foreach (InventoryItem item in supplyItems)
+            {
+                SupplyList.AddSupply(item);
+            }
+        }
+
+        private void PopulatePartList()
+        {
+            List<InventoryItem> partItems = inventoryItems.Where(i => i.Type == "part").ToList();
+            foreach (InventoryItem item in partItems)
+            {
+                PartList.AddPart(item);
+            }
+        }
+
+        private void PopulateSupplyOrderList()
+        {
+            foreach (Order order in orders)
+            {
+                SupplyOrdersList.AddSupplyOrder(order);
+            }
+        }
+
+        private void PopulateWorkOrderList()
+        {
+            foreach (CustomerOrder order in customerOrders)
+            {
+                WorkOrdersList.AddWorkOrder(order);
+            }
+        }
+
+        //private void ConvertPatientToAddressAndPerson(Patient patient)
+        //{
+        //    (string, string) patientAddress = SplitAddress(patient.StreetAddress);
+        //    Address newAddress = new Address()
+        //    {
+        //        ID = addresses.Max(a => a.ID) + 1,
+        //        StreetName = patientAddress.Item2,
+        //        AddressNumber = Convert.ToInt16(patientAddress.Item1),
+        //        City = patient.City,
+        //        State = patient.State,
+        //        ZipCode = Convert.ToUInt16(patient.ZipCode)
+        //    };
+
+        //    Person newPerson = new Person()
+        //    {
+        //        ID = persons.Max(p => p.ID) + 1,
+        //        FirstName = patient.FirstName,
+        //        LastName = patient.LastName,
+        //        MiddleName = patient.MiddleName,
+        //        HomePhone = Convert.ToInt16(patient.HomePhone),
+        //        CellPhone = Convert.ToInt16(patient.CellPhone),
+        //        AddressID = newAddress.ID,
+        //        InsuranceProvider = ,
+        //        IsPatientContact = ,
+        //        ContactID = ,
+        //        ContactRelationship =
+
+        //    };
+        //}
+        #endregion
+
+        public (string, string) SplitAddress(string input)
+        {
+            if (string.IsNullOrWhiteSpace(input))
+                return (string.Empty, string.Empty);
+
+            int spaceIndex = input.IndexOf(' ');
+            if (spaceIndex == -1)
+                return (input, string.Empty); // No space found, return full string as first part.
+
+            string addressNum = input.Substring(0, spaceIndex);
+            string streetName = input.Substring(spaceIndex + 1);
+
+            return (addressNum, streetName);
         }
     }
 }

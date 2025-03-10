@@ -17,7 +17,7 @@ namespace MediStoreManager
                 {
                     ID = "Work Order " + i,
                     Type = "Repair",
-                    PatientID = "Patient" + i.ToString(),
+                    PatientID = "Patient " + i.ToString(),
                     Quantity = "10",
                     InventoryID = "ABC",
                     Date = "2/15/2025",

@@ -11,37 +11,44 @@
             <TabItem Header="Patients">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
-                        <local:PatientInfo x:Key="data"/>
+                        <local:Patients x:Key="patient"/>
                     </Canvas.Resources>
                     <Grid Height="600" Width="958" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <StackPanel Width="958" Orientation="Horizontal">
-                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
-                                        <TextBlock Text="First Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Last Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Street Address: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                    </WrapPanel>
-                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
-                                        <TextBlock Text="Middle Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Home Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Cell Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="State: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Insurance Provider: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                    </WrapPanel>
-                                </StackPanel>
+                                <ContentControl Content="{Binding SelectedPatient}">
+                                    <ContentControl.Resources>
+
+                                        <DataTemplate DataType="{x:Type local:Patient}">
+                                            <StackPanel Width="958" Orientation="Horizontal">
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                                    <TextBlock Text="First Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding FirstName}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Last Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding LastName}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Street Address: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding StreetAddress}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding City}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="State: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding State}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                                    <TextBlock Text="Middle Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding MiddleName}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding ID}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Home Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding HomePhone}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Cell Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding CellPhone}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding ZipCode}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
                             </TabItem>
                             <TabItem Header="History">
 
@@ -59,7 +66,10 @@
                         <TextBox>
                             Search...
                         </TextBox>
-                        <ListBox Name="PatientListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
+                        <ListBox Name="PatientListBox" ItemsSource="{Binding PatientList}" 
+                                 DisplayMemberPath="ID" 
+                                 SelectionChanged="PatientListBox_SelectionChanged" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" 
+                                 IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
                         <Button Content="Add New Patient" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_1"/>
@@ -69,33 +79,95 @@
             <TabItem Header="Inventory">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
-                        <local:InventoryInfo x:Key="data"/>
+                        <local:Supplies x:Key="supply"/>
+                        <local:Equipments x:Key="equipment"/>
+                        <local:Parts x:Key="part"/>
                     </Canvas.Resources>
                     <Grid Height="600" Width="958" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <StackPanel Width="958" Orientation="Horizontal">
-                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
-                                        <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Size: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Quantity in Stock: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Retail Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                    </WrapPanel>
-                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
-                                        <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Brand: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Rental Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                    </WrapPanel>
-                                </StackPanel>
+                                <ContentControl Content="{Binding SelectedInventory}">
+                                    <ContentControl.Resources>
+
+                                        <DataTemplate DataType="{x:Type local:Equipment}">
+                                            <StackPanel Width="958" Orientation="Horizontal">
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                                    <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Name}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Type}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Quantity in Stock: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Quantity}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Retail Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding RetailPrice}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Rental Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding RentalPrice}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                                    <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding ID}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Size: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Size}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Brand: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Brand}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Price}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+
+                                        <DataTemplate DataType="{x:Type local:Supply}">
+                                            <StackPanel Width="958" Orientation="Horizontal">
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                                    <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Name}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Type}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Quantity in Stock: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Quantity}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Retail Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding RetailPrice}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                                    <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding ID}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Size: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Size}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Brand: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Brand}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Price}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+
+                                        <DataTemplate DataType="{x:Type local:Part}">
+                                            <StackPanel Width="958" Orientation="Horizontal">
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                                    <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Name}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Type}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Quantity in Stock: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Quantity}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Retail Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding RetailPrice}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                                    <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding ID}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Size: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Size}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Brand: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Brand}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Price}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+
+                                    </ContentControl.Resources>
+                                </ContentControl>
                             </TabItem>
                             <TabItem Header="History">
 
@@ -116,7 +188,10 @@
                                     <TextBox>
                                         Search...
                                     </TextBox>
-                                    <ListBox Name="EquipmentListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
+                                    <ListBox Name="EquipmentListBox" ItemsSource="{Binding EquipmentList}" 
+                                             DisplayMemberPath="ID" 
+                                             SelectionChanged="EquipmentListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Supplies">
@@ -124,7 +199,10 @@
                                     <TextBox>
                                         Search...
                                     </TextBox>
-                                    <ListBox Name="SuppliesListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
+                                    <ListBox Name="SuppliesListBox" ItemsSource="{Binding SupplyList}" 
+                                             DisplayMemberPath="ID" 
+                                             SelectionChanged="SuppliesListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Parts">
@@ -132,7 +210,10 @@
                                     <TextBox>
                                         Search...
                                     </TextBox>
-                                    <ListBox Name="PartsListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
+                                    <ListBox Name="PartsListBox" ItemsSource="{Binding PartList}" 
+                                             DisplayMemberPath="ID" 
+                                             SelectionChanged="PartsListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                         </TabControl>
@@ -145,29 +226,38 @@
             <TabItem Header="Suppliers">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
-                        <local:SupplierInfo x:Key="data"/>
+                        <local:Suppliers x:Key="supplierL"/>
                     </Canvas.Resources>
                     <Grid Height="600" Width="958" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <StackPanel Width="958" Orientation="Horizontal">
-                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
-                                        <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Street Address: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="State: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                    </WrapPanel>
-                                    <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
-                                        <TextBlock Text="Business Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                        <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
-                                        <TextBlock Width="280" Margin="10,20"/>
-                                    </WrapPanel>
-                                </StackPanel>
+                                <ContentControl Content="{Binding SelectedSupplier}">
+                                    <ContentControl.Resources>
+
+                                        <DataTemplate DataType="{x:Type local:SupplierL}">
+                                            <StackPanel Width="958" Orientation="Horizontal">
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Left">
+                                                    <TextBlock Text="Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding Name}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Street Address: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding StreetAddress}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="State: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding State}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Business Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding PhoneNumber}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                                <WrapPanel Margin="0,0,0,0" Width="479" HorizontalAlignment="Right">
+                                                    <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding ID}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding City}" Width="280" Margin="10,20"/>
+                                                    <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="150"/>
+                                                    <TextBlock Text="{Binding ZipCode}" Width="280" Margin="10,20"/>
+                                                </WrapPanel>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
                             </TabItem>
                             <TabItem Header="History">
 
@@ -185,7 +275,10 @@
                         <TextBox>
                             Search...
                         </TextBox>
-                        <ListBox Name="SupplierListBox" ItemsSource="{Binding Source={StaticResource data}}" SelectionChanged="PatientListBox_SelectionChanged" IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
+                        <ListBox Name="SupplierListBox" ItemsSource="{Binding SupplierList}" 
+                                 DisplayMemberPath="ID" 
+                                 SelectionChanged="SupplierListBox_SelectionChanged" SelectedItem="{Binding SelectedSupplier, Mode=TwoWay}" 
+                                 IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 770, 0, 0">
                         <Button Content="Add New Supplier" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_3"/>

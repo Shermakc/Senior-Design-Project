@@ -25,5 +25,19 @@ namespace MediStoreManager
                 });
             }
         }
+
+        public void AddSupplier(Supplier supplier, Address address)
+        {
+            Add(new SupplierL
+            {
+                ID = 99.ToString(),
+                Name = supplier.Name,
+                PhoneNumber = supplier.PhoneNumber.ToString(),
+                StreetAddress = address.AddressNumber + address.StreetName,
+                City = address.City,
+                ZipCode = address.ZipCode.ToString(),
+                State = address.State
+            });
+        }
     }
 }

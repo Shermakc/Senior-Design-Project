@@ -25,5 +25,19 @@ namespace MediStoreManager
                 });
             }
         }
+
+        public void AddWorkOrder(CustomerOrder order)
+        {
+            Add(new WorkOrder
+            {
+                ID = order.ID.ToString(),
+                Type = order.Type,
+                PatientID = order.PersonID.ToString(),
+                Quantity = order.Quantity.ToString(),
+                InventoryID = order.InventoryID.ToString(),
+                Date = order.Date.ToString(),
+                Notes = order.Notes
+            });
+        }
     }
 }

@@ -26,5 +26,20 @@ namespace MediStoreManager
                 });
             }
         }
+
+        public void AddSupply(InventoryItem item)
+        {
+            Add(new Supply
+            {
+                ID = item.ID.ToString(),
+                Type = item.Type,
+                Name = item.Name,
+                Quantity = item.NumInStock.ToString(),
+                Size = item.Size,
+                Brand = item.Brand,
+                Price = item.Cost.ToString(),
+                RetailPrice = item.RetailPrice.ToString(),
+            });
+        }
     }
 }

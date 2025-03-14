@@ -11,20 +11,7 @@ namespace MediStoreManager
     {
         public Supplies()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new Supply
-                {
-                    ID = "Supply " + i,
-                    Type = "Supplies",
-                    Name = "Supply " + i.ToString(),
-                    Quantity = (1000 + i).ToString(),
-                    Size = "L",
-                    Brand = "Random",
-                    Price = "$3.45",
-                    RetailPrice = "$15.50",
-                });
-            }
+
         }
 
         public void AddSupply(InventoryItem item)

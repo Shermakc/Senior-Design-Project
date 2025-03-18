@@ -77,7 +77,7 @@ BEGIN
 
         -- Set PersonID based on NumInStock
         IF num_in_stock = 0 THEN
-            SET person_id = FLOOR(1 + RAND() * 1000);
+            SET person_id = FLOOR(RAND() * 1000);
         ELSE
             SET person_id = NULL;
         END IF;

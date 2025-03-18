@@ -10,7 +10,7 @@ CREATE TABLE `medistore manager`.`user` (
     PRIMARY KEY (`ID`));
     
 CREATE TABLE `medistore manager`.`address` (
-    `ID` INT UNSIGNED NOT NULL,
+	`ID` INT UNSIGNED NOT NULL AUTO_INCREMENT,
     `StreetName` VARCHAR(100) NOT NULL,
     `AddressNumber` INT NOT NULL,
     `City` VARCHAR(100) NOT NULL,
@@ -48,10 +48,10 @@ CREATE TABLE `medistore manager`.`inventory_item` (
     `Size` VARCHAR(100),
     `Brand` VARCHAR(100),
     `NumInStock` INT NOT NULL DEFAULT 0,
-    `Cost` DECIMAL(10) NOT NULL DEFAULT 0,
-    `RetailPrice` DECIMAL(10),
+    `Cost` DECIMAL(10, 2) NOT NULL DEFAULT 0,
+    `RetailPrice` DECIMAL(10, 2),
     `IsRental` BOOL NOT NULL DEFAULT 0,
-    `RentalPrice` DECIMAL(10),
+    `RentalPrice` DECIMAL(10, 2),
     `PersonID` INT UNSIGNED,
     PRIMARY KEY (`ID`),
     FOREIGN KEY (`PersonID`) REFERENCES `person`(`ID`));

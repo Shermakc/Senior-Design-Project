@@ -60,7 +60,7 @@
                     </Grid>
                     <Grid Height="140" Width="906" Margin="620,620,0,0">
                         <Button Content="Edit Patient Information" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
-                        <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_Click_4"/>
+                        <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="686" Width="590" Margin="10,10,0,0">
                         <TextBox>
@@ -72,7 +72,7 @@
                                  IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 707, 0, 0">
-                        <Button Content="Add New Patient" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_1"/>
+                        <Button Content="Add New Patient" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_AddPatient"/>
                     </Grid>
                 </Canvas>
             </TabItem>
@@ -179,7 +179,7 @@
                     </Grid>
                     <Grid Height="140" Width="906" Margin="620,620,0,0">
                         <Button Content="Edit Part/Equipment Information" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
-                        <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_Click_4"/>
+                        <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="686" Width="590" Margin="10,10,0,0">
                         <TabControl>
@@ -219,7 +219,7 @@
                         </TabControl>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 707, 0, 0">
-                        <Button Content="Add New Inventory" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_2"/>
+                        <Button Content="Add New Inventory" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_AddInventory"/>
                     </Grid>
                 </Canvas>
             </TabItem>
@@ -268,7 +268,7 @@
                     </Grid>
                     <Grid Height="140" Width="906" Margin="620,620,0,0">
                         <Button Content="Edit Supplier Information" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
-                        <Button Content="Create Supply Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_Click_5"/>
+                        <Button Content="Create Supply Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_CreateSupplyOrder"/>
                     </Grid>
                     <Grid Height="686" Width="590" Margin="10,10,0,0">
                         <TextBox>
@@ -280,7 +280,7 @@
                                  IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 707, 0, 0">
-                        <Button Content="Add New Supplier" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_3"/>
+                        <Button Content="Add New Supplier" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_AddSupplier"/>
                     </Grid>
                 </Canvas>
             </TabItem>
@@ -352,8 +352,8 @@
                         </TabControl>
                     </Grid>
                     <Grid Height="140" Width="906" Margin="620,620,0,0">
-                        <Button Content="Create Supply Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16"/>
-                        <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_Click_4"/>
+                        <Button Content="Create Supply Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="16" Click="Button_CreateSupplyOrder"/>
+                        <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="16" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="686" Width="590" Margin="10,10,0,0">
                         <TabControl>
@@ -382,7 +382,7 @@
                         </TabControl>
                     </Grid>
                     <Grid Height="53" Width="550" Margin="30, 707, 0, 0">
-                        <Button Content="Update Selected Order" Margin="0,0,0,0" Height="53" Width="550" FontSize="16" Click="Button_Click_3"/>
+                        <Button Content="Update Selected Order" Margin="0,0,0,0" Height="53" Width="550" FontSize="16"/>
                     </Grid>
                 </Canvas>
             </TabItem>

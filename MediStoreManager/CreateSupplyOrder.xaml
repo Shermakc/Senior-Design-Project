@@ -13,24 +13,24 @@
         </Label>
         <WrapPanel Height="180" Width="400">
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Inventory: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="InventoryTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Quantity: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="QuantityTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Supplier Name: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="SupplierTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Shipping Method: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ShippingMethodTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Order Date: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <DatePicker Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="OrderDateDatePicker"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Received Date: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <DatePicker Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ReceivedDateDatePicker"/>
         </WrapPanel>
         <StackPanel Width="400" Height="20" Orientation="Horizontal" HorizontalAlignment="Center">
             <Grid Width="194">
-                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Button_OK"/>
             </Grid>
             <Grid Width="194">
-                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Click"/>
+                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Cancel"/>
             </Grid>
         </StackPanel>
     </StackPanel>

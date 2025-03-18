@@ -16,28 +16,28 @@
                 <local:InventoryTypes x:Key="InventoryTypes"/>
             </WrapPanel.Resources>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Name: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="InventoryNameTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Type: " Margin="0,5,0,0"/>
-            <ComboBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" ItemsSource="{StaticResource InventoryTypes}" IsEditable="True" IsReadOnly="True"/>
+            <ComboBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" ItemsSource="{StaticResource InventoryTypes}" IsEditable="True" IsReadOnly="True" Name="TypeComboBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Size: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="SizeTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Brand: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="BrandTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Quantity: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="QuantityTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Price: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="PriceTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Retail Price: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="RetailPriceTextBox"/>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Rental Price: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="RentalPriceTextBox"/>
         </WrapPanel>
         <StackPanel Width="400" Height="20" Orientation="Horizontal" HorizontalAlignment="Center">
             <Grid Width="194">
-                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Button_OK"/>
             </Grid>
             <Grid Width="194">
-                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Click"/>
+                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Cancel"/>
             </Grid>
         </StackPanel>
     </StackPanel>

@@ -12,20 +12,7 @@ namespace MediStoreManager
     {
         public Parts()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new Part
-                {
-                    ID = "Part " + i,
-                    Type = "Part",
-                    Name = "Part " + i.ToString(),
-                    Quantity = (100 + i).ToString(),
-                    Size = "L",
-                    Brand = "Random",
-                    Price = "$13.45",
-                    RetailPrice = "$25.50",
-                });
-            }
+           
         }
 
         public void AddPart(InventoryItem item)

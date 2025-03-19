@@ -16,6 +16,7 @@ namespace MediStoreManager
         private string _quantity;
         private string _date;
         private string _notes;
+        private string _displayName;
 
         public string ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string Type { get => _type; set { _type = value; OnPropertyChanged(nameof(Type)); } }
@@ -24,6 +25,7 @@ namespace MediStoreManager
         public string InventoryID { get => _inventoryID; set { _inventoryID = value; OnPropertyChanged(nameof(InventoryID)); } }
         public string Date { get => _date; set { _date = value; OnPropertyChanged(nameof(Date)); } }
         public string Notes { get => _notes; set { _notes = value; OnPropertyChanged(nameof(Notes)); } }
+        public string DisplayName { get => _displayName; set { _displayName = value; OnPropertyChanged(nameof(DisplayName)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

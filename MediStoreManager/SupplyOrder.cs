@@ -15,6 +15,7 @@ namespace MediStoreManager
         private string _quantity;
         private string _shippingMethod;
         private string _orderDate;
+        private string _displayName;
 
         public string ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string Supplier { get => _supplier; set { _supplier = value; OnPropertyChanged(nameof(Supplier)); } }
@@ -22,6 +23,7 @@ namespace MediStoreManager
         public string Quantity { get => _quantity; set { _quantity = value; OnPropertyChanged(nameof(Quantity)); } }
         public string ShippingMethod { get => _shippingMethod; set { _shippingMethod = value; OnPropertyChanged(nameof(ShippingMethod)); } }
         public string OrderDate { get => _orderDate; set { _orderDate = value; OnPropertyChanged(nameof(OrderDate)); } }
+        public string DisplayName { get => _displayName; set { _displayName = value; OnPropertyChanged(nameof(DisplayName)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

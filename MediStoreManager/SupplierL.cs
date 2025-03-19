@@ -9,7 +9,6 @@ namespace MediStoreManager
 {
     public class SupplierL : INotifyPropertyChanged
     {
-        private string _ID;
         private string _name;
         private string _phonenumber;
         private string _streetaddress;
@@ -17,7 +16,6 @@ namespace MediStoreManager
         private string _zipcode;
         private string _state;
 
-        public string ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string Name { get => _name; set { _name = value; OnPropertyChanged(nameof(Name)); } }
         public string PhoneNumber { get => _phonenumber; set { _phonenumber = value; OnPropertyChanged(nameof(PhoneNumber)); } }
         public string StreetAddress { get => _streetaddress; set { _streetaddress = value; OnPropertyChanged(nameof(StreetAddress)); } }

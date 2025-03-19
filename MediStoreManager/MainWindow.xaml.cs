@@ -315,7 +315,8 @@ namespace MediStoreManager
         {
             foreach (CustomerOrder order in customerOrders)
             {
-                WorkOrdersList.AddWorkOrder(order);
+                Person customer = persons.Where(p => p.ID == order.PersonID).FirstOrDefault();
+                WorkOrdersList.AddWorkOrder(order, customer);
             }
         }
 

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
         Title="MediStore Manager" SizeToContent="WidthAndHeight">
-    <Grid Height="860" Width="1580">
+    <Grid Height="800" Width="1550">
         <TabControl FontSize="12">
             <TabItem Header="Patients">
                 <Canvas Background="LightGray">
@@ -189,7 +189,7 @@
                                         Search...
                                     </TextBox>
                                     <ListBox Name="EquipmentListBox" ItemsSource="{Binding EquipmentList}" 
-                                             DisplayMemberPath="ID" 
+                                             DisplayMemberPath="Name" 
                                              SelectionChanged="EquipmentListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
@@ -200,7 +200,7 @@
                                         Search...
                                     </TextBox>
                                     <ListBox Name="SuppliesListBox" ItemsSource="{Binding SupplyList}" 
-                                             DisplayMemberPath="ID" 
+                                             DisplayMemberPath="Name" 
                                              SelectionChanged="SuppliesListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
@@ -211,7 +211,7 @@
                                         Search...
                                     </TextBox>
                                     <ListBox Name="PartsListBox" ItemsSource="{Binding PartList}" 
-                                             DisplayMemberPath="ID" 
+                                             DisplayMemberPath="Name" 
                                              SelectionChanged="PartsListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
@@ -276,7 +276,7 @@
                             Search...
                         </TextBox>
                         <ListBox Name="SupplierListBox" ItemsSource="{Binding SupplierList}" 
-                                 DisplayMemberPath="ID" 
+                                 DisplayMemberPath="Name" 
                                  SelectionChanged="SupplierListBox_SelectionChanged" SelectedItem="{Binding SelectedSupplier, Mode=TwoWay}" 
                                  IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                     </Grid>
@@ -364,7 +364,7 @@
                                         Search...
                                     </TextBox>
                                     <ListBox Name="WorkListBox" ItemsSource="{Binding WorkOrdersList}" 
-                                             DisplayMemberPath="ID" 
+                                             DisplayMemberPath="DisplayName" 
                                              SelectionChanged="WorkListBox_SelectionChanged" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
@@ -375,7 +375,7 @@
                                         Search...
                                     </TextBox>
                                     <ListBox Name="SupplyListBox" ItemsSource="{Binding SupplyOrdersList}" 
-                                             DisplayMemberPath="ID" 
+                                             DisplayMemberPath="DisplayName" 
                                              SelectionChanged="SupplyListBox_SelectionChanged" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>

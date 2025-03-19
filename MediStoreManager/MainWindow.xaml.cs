@@ -117,54 +117,118 @@ namespace MediStoreManager
             }
         }
 
-        private void DataGrid_SelectionChanged()
-        {
-            
-        }
-
         private void PatientListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedPatient = ((ListBox)sender).SelectedItem;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
+        private void Button_AddPatient(object sender, RoutedEventArgs e)
         {
             AddPatientWindow addPatientWindow = new AddPatientWindow();
             addPatientWindow.Owner = this;
-            addPatientWindow.ShowDialog();
+            bool? result = addPatientWindow.ShowDialog();
+
+            if (result == true)
+            {
+                string firstName = addPatientWindow.FirstName;
+                string middleName = addPatientWindow.MiddleName;
+                string lastName = addPatientWindow.LastName;
+                string homePhone = addPatientWindow.HomePhone;
+                string cellPhone = addPatientWindow.CellPhone;
+                string streetAddress = addPatientWindow.StreetAddress;
+                string city = addPatientWindow.City;
+                string state = addPatientWindow.State;
+                string zipCode = addPatientWindow.ZipCode;
+                string insurance = addPatientWindow.InsuranceProvider;
+
+                // Simply for debugging purposes. Not intended to remain after everything is fully setup
+                MessageBox.Show($"User Entered:\nFirst Name = {firstName}\nMiddle Name = {middleName}\nLast Name = {lastName}\nHome Phone # = {homePhone}\nCell Phone # = {cellPhone}\n" +
+                    $"Street Address = {streetAddress}\nCity = {city}\nState = {state}\nZip Code = {zipCode}\nInsurance = {insurance}");
+            }
         }
 
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void Button_AddInventory(object sender, RoutedEventArgs e)
         {
             AddInventoryWindow addInventoryWindow = new AddInventoryWindow();
             addInventoryWindow.Owner = this;
-            addInventoryWindow.ShowDialog();
+            bool? result = addInventoryWindow.ShowDialog();
+            if (result == true)
+            {
+                string inventoryName = addInventoryWindow.InventoryName;
+                string type = addInventoryWindow.Type;
+                string size = addInventoryWindow.Size;
+                string brand = addInventoryWindow.Brand;
+                string quantity = addInventoryWindow.Quantity;
+                string price = addInventoryWindow.Price;
+                string retailPrice = addInventoryWindow.RetailPrice;
+                string rentalPrice = addInventoryWindow.RentalPrice;
+
+                // Simply for debugging purposes. Not intended to remain after everything is fully setup
+                MessageBox.Show($"User Entered:\nInventory Name = {inventoryName}\nInventory Type = {type}\nSize = {size}\nBrand = {brand}\n" +
+                    $"Quantity = {quantity}\nPrice = {price}\nRetail Price = {retailPrice}\nRental Price = {rentalPrice}");
+            }
         }
 
-        private void Button_Click_3(object sender, RoutedEventArgs e)
+        private void Button_AddSupplier(object sender, RoutedEventArgs e)
         {
             AddSupplierWindow addSupplierWindow = new AddSupplierWindow();
             addSupplierWindow.Owner = this;
-            addSupplierWindow.ShowDialog();
+            bool? result = addSupplierWindow.ShowDialog();
+            if (result == true)
+            {
+                string businessName = addSupplierWindow.BusinessName;
+                string businessPhone = addSupplierWindow.PhoneNumber;
+                string streetAddress = addSupplierWindow.StreetAddress;
+                string city = addSupplierWindow.City;
+                string state = addSupplierWindow.State;
+                string zipCode = addSupplierWindow.ZipCode;
+
+                // Simply for debugging purposes. Not intended to remain after everything is fully setup
+                MessageBox.Show($"User Entered:\nName = {businessName}\nBusiness Phone # = {businessPhone}\n" +
+                    $"Street Address = {streetAddress}\nCity = {city}\nState = {state}\nZip Code = {zipCode}");
+            }
         }
 
-        private void Button_Click_4(object sender, RoutedEventArgs e)
+        private void Button_CreateWorkOrder(object sender, RoutedEventArgs e)
         {
             CreateWorkOrder createWorkOrder = new CreateWorkOrder();
             createWorkOrder.Owner = this;
-            createWorkOrder.ShowDialog();
+            bool? result = createWorkOrder.ShowDialog();
+            if (result == true)
+            {
+                string type = createWorkOrder.Type;
+                string patientID = createWorkOrder.PatientID;
+                string quantity = createWorkOrder.Quantity;
+                string inventoryID = createWorkOrder.InventoryID;
+                DateTime orderDate = createWorkOrder.OrderDate;
+                DateTime dateOfPayment = createWorkOrder.DateOfPayment;
+                string relatedInventoryID = createWorkOrder.RelatedInventoryID;
+                string notes = createWorkOrder.Notes;
+
+                // Simply for debugging purposes. Not intended to remain after everything is fully setup
+                MessageBox.Show($"User Entered:\nType = {type}\nPatient ID = {patientID}\nQuantity = {quantity}\nInventory ID = {inventoryID}\n" +
+                    $"Date = {orderDate.Date.ToShortDateString()}\nDate of Payment = {dateOfPayment.Date.ToShortDateString()}\nRelated Inventory ID = {relatedInventoryID}\nNotes = {notes}");
+            }
         }
 
-        private void Button_Click_5(object sender, RoutedEventArgs e)
+        private void Button_CreateSupplyOrder(object sender, RoutedEventArgs e)
         {
             CreateSupplyOrder createSupplyOrder = new CreateSupplyOrder();
             createSupplyOrder.Owner = this;
-            createSupplyOrder.ShowDialog();
+            bool? result = createSupplyOrder.ShowDialog();
+            if (result == true)
+            {
+                string inventoryID = createSupplyOrder.InventoryID;
+                string quantity = createSupplyOrder.Quantity;
+                string suppplier = createSupplyOrder.Supplier;
+                string shippingMethod = createSupplyOrder.ShippingMethod;
+                DateTime orderDate = createSupplyOrder.OrderDate;
+                DateTime receivedDate = createSupplyOrder.ReceivedDate;
+
+                // Simply for debugging purposes. Not intended to remain after everything is fully setup
+                MessageBox.Show($"User Entered:\nInventory ID = {inventoryID}\nQuantity = {quantity}\nSupplier = {suppplier}\nShipping Method = {shippingMethod}\n" +
+                    $"Order Date = {orderDate.Date.ToShortDateString()}\nReceived Date = {receivedDate.Date.ToShortDateString()}");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

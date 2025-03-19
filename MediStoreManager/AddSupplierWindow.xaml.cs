@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -19,14 +20,38 @@ namespace MediStoreManager
     /// </summary>
     public partial class AddSupplierWindow : Window
     {
+        public string BusinessName { get; private set; }
+        public string PhoneNumber { get; private set; }
+        public string StreetAddress { get; private set; }
+        public string City { get; private set; }
+        public string ZipCode { get; private set; }
+        public string State { get; private set; }
+
         public AddSupplierWindow()
         {
+            BusinessName = "";
+            PhoneNumber = "";
+            StreetAddress = "";
+            City = "";
+            ZipCode = "";
+            State = "";
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Cancel(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
+        }
+
+        private void Button_OK(object sender, RoutedEventArgs e)
+        {
+            BusinessName = NameTextBox.Text;
+            PhoneNumber = BusinessPhoneTextBox.Text;
+            StreetAddress = StreetAddressTextBox.Text;
+            City = CityTextBox.Text;
+            ZipCode = ZipTextBox.Text;
+            State = StateTextBox.Text;
+            this.DialogResult = true;
         }
     }
 }

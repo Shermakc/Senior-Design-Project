@@ -19,14 +19,50 @@ namespace MediStoreManager
     /// </summary>
     public partial class AddPatientWindow : Window
     {
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string MiddleName { get; private set; }
+        public string HomePhone { get; private set; }
+        public string CellPhone { get; private set; }
+        public string StreetAddress { get; private set; }
+        public string City { get; private set; }
+        public string ZipCode { get; private set; }
+        public string State { get; private set; }
+        public string InsuranceProvider { get; private set; }
+
         public AddPatientWindow()
         {
+            FirstName = "";
+            MiddleName = "";
+            LastName = "";
+            HomePhone = "";
+            CellPhone = "";
+            StreetAddress = "";
+            City = "";
+            ZipCode = "";
+            State = "";
+            InsuranceProvider = "";
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Button_Cancel(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            this.DialogResult = false;
+        }
+
+        private void Button_OK(object sender, RoutedEventArgs e)
+        {
+            FirstName = FirstNameTextBox.Text;
+            MiddleName = MiddleNameTextBox.Text;
+            LastName = LastNameTextBox.Text;
+            HomePhone = HomePhoneTextBox.Text;
+            CellPhone = CellPhoneTextBox.Text;
+            StreetAddress = StreetAddressTextBox.Text;
+            City = CityTextBox.Text;
+            ZipCode = ZipTextBox.Text;
+            State = StateTextBox.Text;
+            InsuranceProvider = InsuranceTextBox.Text;
+            this.DialogResult = true;
         }
     }
 }

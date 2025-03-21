@@ -37,6 +37,10 @@ namespace MediStoreManager
         public DateTime ReceivedDate { get; private set; }
         public SupplierL SelectedSupplier { get; private set; }
         public ObservableCollection<InventoryEntry> FinalInventoryEntries { get; private set; }
+        public SupplyOrder SupplyOrder { get; private set; }
+        public bool IsEditMode { get; private set; }
+        public bool DeleteOrder { get; private set; }
+        public string ID { get; private set; }
 
         public CreateSupplyOrder(ObservableCollection<SupplierL> suppliers, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
@@ -63,6 +67,52 @@ namespace MediStoreManager
 
             // Bind the ItemsControl to the InventoryEntries collection
             InventoryItemsControl.ItemsSource = InventoryEntries;
+            IsEditMode = false;
+            DataContext = this;
+        }
+
+        public CreateSupplyOrder(ObservableCollection<SupplierL> suppliers, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts, SupplyOrder supplyOrder)
+        {
+            InitializeComponent();
+            _suppliers = suppliers;
+            _filteredSuppliers = new ObservableCollection<SupplierL>(suppliers);
+            SupplierResultsListBox.ItemsSource = _filteredSuppliers;
+            FinalInventoryEntries = new ObservableCollection<InventoryEntry>();
+
+            // Debounce timer setup
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+            _timer.Tick += FilterTimer_Tick;
+
+            // Convert Equipment and Supplies into InventoryListItems
+            AllInventoryItems = new ObservableCollection<InventoryListItem>(
+                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", QuantitySelected = 0 })
+                .Concat(
+                supplies.Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "Supply", QuantitySelected = 0 }))
+                .Concat(
+                parts.Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "Part", QuantitySelected = 0 }))
+            );
+
+            // Bind the ItemsControl to the InventoryEntries collection
+            InventoryItemsControl.ItemsSource = InventoryEntries;
+            IsEditMode = true;
+            ID = supplyOrder.ID;
+            SelectedSupplier = suppliers.FirstOrDefault(s => s.Name == supplyOrder.Supplier);
+            _suppressTextChanged = true;
+
+            // Update the textbox explicitly
+            SupplierSearchBox.Text = $"{SelectedSupplier.Name}";
+
+            // Clear filter (show full list again)
+            _filteredSuppliers.Clear();
+            foreach (var supplier in _suppliers/*.Take(100)*/) // Optionally limit again to avoid performance issues
+                _filteredSuppliers.Add(supplier);
+
+            _suppressTextChanged = false;
+            InventoryEntries = supplyOrder.Entries;
+            ShippingMethodTextBox.Text = supplyOrder.ShippingMethod;
+            OrderDateDatePicker.SelectedDate = supplyOrder.OrderDate;
+            ReceivedDateDatePicker.SelectedDate = supplyOrder.ReceivedDate;
+            DataContext = this;
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -77,6 +127,19 @@ namespace MediStoreManager
             ShippingMethod = ShippingMethodTextBox.Text;
             if (OrderDateDatePicker.SelectedDate.HasValue) { OrderDate = OrderDateDatePicker.SelectedDate.Value; }
             if (ReceivedDateDatePicker.SelectedDate.HasValue) { ReceivedDate = ReceivedDateDatePicker.SelectedDate.Value; }
+            if (IsEditMode)
+            {
+                SupplyOrder = new SupplyOrder
+                {
+                    ID = ID,
+                    Supplier = Supplier,
+                    ShippingMethod = ShippingMethod,
+                    OrderDate = OrderDate,
+                    ReceivedDate = ReceivedDate,
+                    Entries = FinalInventoryEntries
+                };
+            }
+            DeleteOrder = false;
             this.DialogResult = true;
         }
 
@@ -162,6 +225,12 @@ namespace MediStoreManager
             {
                 InventoryEntries.Remove(entry);
             }
+        }
+
+        private void DeleteSupplyOrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteOrder = true;
+            this.DialogResult = true;
         }
     }
 }

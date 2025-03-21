@@ -11,9 +11,9 @@ namespace MediStoreManager
     {
         public InventoryTypes()
         {
-            Add("Equipment");
-            Add("Supplies");
-            Add("Part");
+            Add("equipment");
+            Add("supply");
+            Add("part");
         }
     }
 }

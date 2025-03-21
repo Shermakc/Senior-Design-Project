@@ -11,19 +11,7 @@ namespace MediStoreManager
     {
         public WorkOrders()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new WorkOrder
-                {
-                    ID = "Work Order " + i,
-                    Type = "Repair",
-                    PatientID = "Patient " + i.ToString(),
-                    Quantity = "10",
-                    InventoryID = "ABC",
-                    Date = "2/15/2025",
-                    Notes = "..."
-                });
-            }
+
         }
 
         public void AddWorkOrder(CustomerOrder order)
@@ -35,7 +23,7 @@ namespace MediStoreManager
                 PatientID = order.PersonID.ToString(),
                 Quantity = order.Quantity.ToString(),
                 InventoryID = order.InventoryID.ToString(),
-                Date = order.Date.ToString(),
+                Date = order.Date,
                 Notes = order.Notes
             });
         }

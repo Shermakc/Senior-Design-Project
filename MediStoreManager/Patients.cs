@@ -28,7 +28,8 @@ namespace MediStoreManager
                 City = address.City,
                 ZipCode = address.ZipCode.ToString(),
                 State = address.State,
-                DisplayName = person.LastName + ", " + person.FirstName
+                DisplayName = person.LastName + ", " + person.FirstName,
+                Insurance = person.InsuranceProvider
             });
         }
     }

@@ -11,18 +11,7 @@ namespace MediStoreManager
     {
         public SupplyOrders()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new SupplyOrder
-                {
-                    ID = "Supply Order " + (i + 10).ToString(),
-                    Supplier = "Supplier " + i,
-                    InventoryID = "abc",
-                    Quantity = "25",
-                    ShippingMethod = "Ground",
-                    OrderDate = "1/03/2025"
-                });
-            }
+
         }
 
         public void AddSupplyOrder(Order order)
@@ -34,7 +23,8 @@ namespace MediStoreManager
                 InventoryID = order.InventoryID.ToString(),
                 Quantity = order.Quantity.ToString(),
                 ShippingMethod = order.ShippingMethod,
-                OrderDate = order.OrderDateTime.ToString()
+                OrderDate = order.OrderDateTime,
+                ReceivedDate = order.ReceivedDate
             });
         }
     }

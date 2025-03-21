@@ -26,6 +26,10 @@ namespace MediStoreManager
         public string City { get; private set; }
         public string ZipCode { get; private set; }
         public string State { get; private set; }
+        public int PartnerID { get; private set; }
+        public SupplierL Supplier { get; private set; }
+        public bool IsEditMode { get; private set; }
+        public bool DeleteSupplier { get; private set; }
 
         public AddSupplierWindow()
         {
@@ -35,7 +39,23 @@ namespace MediStoreManager
             City = "";
             ZipCode = "";
             State = "";
+            IsEditMode = false;
             InitializeComponent();
+            DataContext = this;
+        }
+
+        public AddSupplierWindow(SupplierL supplier)
+        {
+            IsEditMode = true;
+            InitializeComponent();
+            NameTextBox.Text = supplier.Name;
+            BusinessPhoneTextBox.Text = supplier.PhoneNumber;
+            StreetAddressTextBox.Text = supplier.StreetAddress;
+            CityTextBox.Text = supplier.City;
+            ZipTextBox.Text = supplier.ZipCode;
+            StateTextBox.Text = supplier.State;
+            PartnerIDTextBox.Text = supplier.PartnerID.ToString();
+            DataContext = this;
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -51,6 +71,32 @@ namespace MediStoreManager
             City = CityTextBox.Text;
             ZipCode = ZipTextBox.Text;
             State = StateTextBox.Text;
+            if ((!int.TryParse(PartnerIDTextBox.Text, out int partnerID) || partnerID < 0) && !string.IsNullOrWhiteSpace(PartnerIDTextBox.Text))
+            {
+                MessageBox.Show($"Please enter a valid Partner ID", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+            PartnerID = int.TryParse(PartnerIDTextBox.Text, out int pID) ? pID : -1;
+            if (IsEditMode == true)
+            {
+                Supplier = new SupplierL
+                {
+                    Name = BusinessName,
+                    PhoneNumber = PhoneNumber,
+                    StreetAddress = StreetAddress,
+                    City = City,
+                    ZipCode = ZipCode,
+                    State = State,
+                    PartnerID = PartnerID
+                };
+            }
+            DeleteSupplier = false;
+            this.DialogResult = true;
+        }
+
+        private void DeleteSupplierButton_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteSupplier = true;
             this.DialogResult = true;
         }
     }

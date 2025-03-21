@@ -32,6 +32,11 @@ namespace MediStoreManager
         public string State { get; private set; }
         public string InsuranceProvider { get; private set; }
         public ObservableCollection<Patient> FinalContacts { get; private set; }
+        public Patient Patient { get; private set; }
+        public bool IsEditMode { get; private set; }
+        public bool DeletePatient { get; private set; }
+        public string ID { get; private set; }
+        public string DisplayName { get; private set; }
 
         public AddPatientWindow()
         {
@@ -46,8 +51,30 @@ namespace MediStoreManager
             State = "";
             InsuranceProvider = "";
             FinalContacts = new ObservableCollection<Patient>();
+            IsEditMode = false;
             InitializeComponent();
             ContactItemsControl.ItemsSource = _contacts;
+            DataContext = this;
+        }
+
+        public AddPatientWindow(Patient patient, bool isEditMode = true)
+        {
+            IsEditMode = isEditMode;
+            InitializeComponent();
+            FirstNameTextBox.Text = patient.FirstName;
+            MiddleNameTextBox.Text = patient.MiddleName;
+            LastNameTextBox.Text = patient.LastName;
+            HomePhoneTextBox.Text = patient.HomePhone;
+            CellPhoneTextBox.Text = patient.CellPhone;
+            StreetAddressTextBox.Text = patient.StreetAddress;
+            CityTextBox.Text = patient.City;
+            ZipTextBox.Text = patient.ZipCode;
+            StateTextBox.Text = patient.State;
+            InsuranceTextBox.Text = patient.Insurance;
+            _contacts = patient.Contacts;
+            ID = patient.ID;
+            DisplayName = patient.DisplayName;
+            DataContext = this;
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -67,7 +94,27 @@ namespace MediStoreManager
             ZipCode = ZipTextBox.Text;
             State = StateTextBox.Text;
             InsuranceProvider = InsuranceTextBox.Text;
-            if (_contacts != null) { FinalContacts =  _contacts; }
+            if (_contacts != null) { FinalContacts = _contacts; }
+            if (IsEditMode == true)
+            {
+                Patient = new Patient
+                {
+                    ID = ID,
+                    FirstName = FirstName,
+                    MiddleName = MiddleName,
+                    LastName = LastName,
+                    HomePhone = HomePhone,
+                    CellPhone = CellPhone,
+                    StreetAddress = StreetAddress,
+                    City = City,
+                    ZipCode = ZipCode,
+                    State = State,
+                    Insurance = InsuranceProvider,
+                    Contacts = FinalContacts,
+                    DisplayName = DisplayName
+                };
+            }
+            DeletePatient = false;
             this.DialogResult = true;
         }
 
@@ -102,6 +149,12 @@ namespace MediStoreManager
             {
                 _contacts.Remove(contact);
             }
+        }
+
+        private void DeletePatientButton_Click(object sender, RoutedEventArgs e)
+        {
+            DeletePatient = true;
+            this.DialogResult = true;
         }
     }
 }

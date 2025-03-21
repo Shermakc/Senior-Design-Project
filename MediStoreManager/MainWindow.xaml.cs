@@ -149,6 +149,39 @@ namespace MediStoreManager
             }
         }
 
+        private void Button_EditPatient(object sender, RoutedEventArgs e)
+        {
+            var selectedEntry = PatientListBox.SelectedItem as Patient;
+            if (selectedEntry == null)
+            {
+                MessageBox.Show("Please select a patient to edit.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            AddPatientWindow editPatientWindow = new AddPatientWindow(selectedEntry, true);
+            editPatientWindow.Owner = this;
+            bool? result = editPatientWindow.ShowDialog();
+            if (result == true)
+            {
+                if (editPatientWindow.DeletePatient == true)
+                {
+                    int index = PatientListBox.SelectedIndex;
+                    if (index >= 0)
+                    {
+                        PatientList.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    int index = PatientListBox.SelectedIndex;
+                    if (index >= 0 && editPatientWindow.Patient != null)
+                    {
+                        PatientList[index] = editPatientWindow.Patient;
+                    }
+                }
+            }
+        }
+
         private void Button_AddInventory(object sender, RoutedEventArgs e)
         {
             AddInventoryWindow addInventoryWindow = new AddInventoryWindow();
@@ -160,7 +193,7 @@ namespace MediStoreManager
                 string type = addInventoryWindow.Type;
                 string size = addInventoryWindow.Size;
                 string brand = addInventoryWindow.Brand;
-                string quantity = addInventoryWindow.Quantity;
+                int quantity = addInventoryWindow.Quantity;
                 string price = addInventoryWindow.Price;
                 string retailPrice = addInventoryWindow.RetailPrice;
                 string rentalPrice = addInventoryWindow.RentalPrice;
@@ -169,6 +202,135 @@ namespace MediStoreManager
                 // Simply for debugging purposes. Not intended to remain after everything is fully setup
                 MessageBox.Show($"User Entered:\nInventory Name = {inventoryName}\nInventory Type = {type}\nSize = {size}\nBrand = {brand}\n" +
                     $"Quantity = {quantity}\nPrice = {price}\nRetail Price = {retailPrice}\nRental Price = {rentalPrice}");
+            }
+        }
+
+        private void Button_EditEquipment(object sender, RoutedEventArgs e)
+        {
+            var selectedEntry = EquipmentListBox.SelectedItem as Equipment;
+            if (selectedEntry == null)
+            {
+                MessageBox.Show("Please select an equipment to edit.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            AddInventoryWindow editInventoryWindow = new AddInventoryWindow(selectedEntry, null, null, true);
+            editInventoryWindow.Owner = this;
+            bool? result = editInventoryWindow.ShowDialog();
+            if (result == true)
+            {
+                if (editInventoryWindow.DeleteItem == true)
+                {
+                    int index = EquipmentListBox.SelectedIndex;
+                    if (index >= 0)
+                    {
+                        EquipmentList.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    int index = EquipmentListBox.SelectedIndex;
+                    if (index >= 0 && editInventoryWindow.Equipment != null)
+                    {
+                        EquipmentList[index] = editInventoryWindow.Equipment;
+                    }
+                    else if (editInventoryWindow.Supply != null)
+                    {
+                        EquipmentList.RemoveAt(index);
+                        SupplyList.Add(editInventoryWindow.Supply);
+                    }
+                    else if (editInventoryWindow.Part != null)
+                    {
+                        EquipmentList.RemoveAt(index);
+                        PartList.Add(editInventoryWindow.Part);
+                    }
+                }
+            }
+        }
+
+        private void Button_EditSupply(object sender, RoutedEventArgs e)
+        {
+            var selectedEntry = SuppliesListBox.SelectedItem as Supply;
+            if (selectedEntry == null)
+            {
+                MessageBox.Show("Please select a supply item to edit.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            AddInventoryWindow editInventoryWindow = new AddInventoryWindow(null, null, selectedEntry, true);
+            editInventoryWindow.Owner = this;
+            bool? result = editInventoryWindow.ShowDialog();
+            if (result == true)
+            {
+                if (editInventoryWindow.DeleteItem == true)
+                {
+                    int index = SuppliesListBox.SelectedIndex;
+                    if (index >= 0)
+                    {
+                        SupplyList.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    int index = SuppliesListBox.SelectedIndex;
+                    if (index >= 0 && editInventoryWindow.Supply != null)
+                    {
+                        SupplyList[index] = editInventoryWindow.Supply;
+                    }
+                    else if (editInventoryWindow.Equipment != null)
+                    {
+                        SupplyList.RemoveAt(index);
+                        EquipmentList.Add(editInventoryWindow.Equipment);
+                    }
+                    else if (editInventoryWindow.Part != null)
+                    {
+                        SupplyList.RemoveAt(index);
+                        PartList.Add(editInventoryWindow.Part);
+                    }
+                }
+            }
+        }
+
+        private void Button_EditPart(object sender, RoutedEventArgs e)
+        {
+            var selectedEntry = PartsListBox.SelectedItem as Part;
+            if (selectedEntry == null)
+            {
+                MessageBox.Show("Please select a part to edit.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            AddInventoryWindow editInventoryWindow = new AddInventoryWindow(null, selectedEntry, null, true);
+            editInventoryWindow.Owner = this;
+            bool? result = editInventoryWindow.ShowDialog();
+            if (result == true)
+            {
+                if (editInventoryWindow.DeleteItem == true)
+                {
+                    int index = PartsListBox.SelectedIndex;
+                    if (index >= 0)
+                    {
+                        PartList.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    int index = PartsListBox.SelectedIndex;
+                    if (index >= 0 && editInventoryWindow.Part != null)
+                    {
+                        PartList[index] = editInventoryWindow.Part;
+                    }
+                    else if (editInventoryWindow.Equipment != null)
+                    {
+                        PartList.RemoveAt(index);
+                        EquipmentList.Add(editInventoryWindow.Equipment);
+                    }
+                    else if (editInventoryWindow.Supply != null)
+                    {
+                        PartList.RemoveAt(index);
+                        SupplyList.Add(editInventoryWindow.Supply);
+                    }
+                }
             }
         }
 
@@ -192,6 +354,39 @@ namespace MediStoreManager
             }
         }
 
+        private void Button_EditSupplier(object sender, RoutedEventArgs e)
+        {
+            var selectedEntry = SupplierListBox.SelectedItem as SupplierL;
+            if (selectedEntry == null)
+            {
+                MessageBox.Show("Please select a supplier to edit.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            AddSupplierWindow editSupplierWindow = new AddSupplierWindow(selectedEntry);
+            editSupplierWindow.Owner = this;
+            bool? result = editSupplierWindow.ShowDialog();
+            if (result == true)
+            {
+                if (editSupplierWindow.DeleteSupplier == true)
+                {
+                    int index = SupplierListBox.SelectedIndex;
+                    if (index >= 0)
+                    {
+                        SupplierList.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    int index = SupplierListBox.SelectedIndex;
+                    if (index >= 0 && editSupplierWindow.Supplier != null)
+                    {
+                        SupplierList[index] = editSupplierWindow.Supplier;
+                    }
+                }
+            }
+        }
+
         private void Button_CreateWorkOrder(object sender, RoutedEventArgs e)
         {
             CreateWorkOrder createWorkOrder = new CreateWorkOrder(PatientList, EquipmentList, SupplyList, PartList);
@@ -212,6 +407,38 @@ namespace MediStoreManager
             }
         }
 
+        private void Button_EditWorkOrder(object sender, RoutedEventArgs e)
+        {
+            var selectedEntry = WorkListBox.SelectedItem as WorkOrder;
+            if (selectedEntry == null)
+            {
+                MessageBox.Show("Please select a work order to edit.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            CreateWorkOrder editWorkOrderWindow = new CreateWorkOrder(PatientList, EquipmentList, SupplyList, PartList, selectedEntry);
+            editWorkOrderWindow.Owner = this;
+            bool? result = editWorkOrderWindow.ShowDialog();
+            if (result == true)
+            {
+                if (editWorkOrderWindow.DeleteOrder == true)
+                {
+                    int index = WorkListBox.SelectedIndex;
+                    if (index >= 0)
+                    {
+                        WorkOrdersList.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    int index = WorkListBox.SelectedIndex;
+                    if (index >= 0 && editWorkOrderWindow.WorkOrder != null)
+                    {
+                        WorkOrdersList[index] = editWorkOrderWindow.WorkOrder;
+                    }
+                }
+            }
+        }
         private void Button_CreateSupplyOrder(object sender, RoutedEventArgs e)
         {
             CreateSupplyOrder createSupplyOrder = new CreateSupplyOrder(SupplierList, EquipmentList, SupplyList, PartList);
@@ -228,6 +455,39 @@ namespace MediStoreManager
                 // Simply for debugging purposes. Not intended to remain after everything is fully setup
                 MessageBox.Show($"User Entered:\nInventory = {inventoryEntries}\nSupplier = {suppplier}\nShipping Method = {shippingMethod}\n" +
                     $"Order Date = {orderDate.Date.ToShortDateString()}\nReceived Date = {receivedDate.Date.ToShortDateString()}");
+            }
+        }
+
+        private void Button_EditSupplyOrder(object sender, RoutedEventArgs e)
+        {
+            var selectedEntry = SupplyListBox.SelectedItem as SupplyOrder;
+            if (selectedEntry == null)
+            {
+                MessageBox.Show("Please select a supply order to edit.", "No Selection", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            CreateSupplyOrder editSupplyOrderWindow = new CreateSupplyOrder(SupplierList, EquipmentList, SupplyList, PartList, selectedEntry);
+            editSupplyOrderWindow.Owner = this;
+            bool? result = editSupplyOrderWindow.ShowDialog();
+            if (result == true)
+            {
+                if (editSupplyOrderWindow.DeleteOrder == true)
+                {
+                    int index = SupplyListBox.SelectedIndex;
+                    if (index >= 0)
+                    {
+                        SupplyOrdersList.RemoveAt(index);
+                    }
+                }
+                else
+                {
+                    int index = SupplyListBox.SelectedIndex;
+                    if (index >= 0 && editSupplyOrderWindow.SupplyOrder != null)
+                    {
+                        SupplyOrdersList[index] = editSupplyOrderWindow.SupplyOrder;
+                    }
+                }
             }
         }
 

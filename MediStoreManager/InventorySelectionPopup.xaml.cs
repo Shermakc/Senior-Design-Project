@@ -38,9 +38,9 @@ namespace MediStoreManager
             _filteredItems = new ObservableCollection<InventoryListItem>(inventoryItems);
             InventoryListBox.ItemsSource = _filteredItems;
 
-            // ✅ Hide quantity box if selection is disabled
             QuantityTextBox.Visibility = _allowQuantitySelection ? Visibility.Visible : Visibility.Collapsed;
             QuantityTextBlock.Visibility = _allowQuantitySelection ? Visibility.Visible : Visibility.Collapsed;
+            QuantityAvailableTextBlock.Visibility = (_allowQuantitySelection && _enforceMaxQuantity) ? Visibility.Visible : Visibility.Collapsed;
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -63,10 +63,13 @@ namespace MediStoreManager
                 _suppressFiltering = true;
                 SearchBox.Text = selected.Name;
 
-                // ✅ Automatically set quantity to max available if selection is enabled
                 if (_allowQuantitySelection)
                 {
                     QuantityTextBox.Text = "1";
+                    if (_enforceMaxQuantity)
+                    {
+                        QuantityAvailableTextBlock.Text = "/" + selected.AllowedQuantity.ToString();
+                    }
                 }
 
                 _suppressFiltering = false;
@@ -83,7 +86,6 @@ namespace MediStoreManager
 
             if (_allowQuantitySelection && _enforceMaxQuantity)
             {
-                // ✅ Validate quantity input
                 if (!int.TryParse(QuantityTextBox.Text, out int quantity) || quantity <= 0 || quantity > SelectedInventory.AllowedQuantity)
                 {
                     MessageBox.Show($"Please enter a valid quantity (1-{SelectedInventory.AllowedQuantity}).", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);

@@ -27,14 +27,16 @@
         </ListBox>
         <Grid Width="260" Margin="0,10,0,0" Visibility="{Binding AllowQuantitySelection, Converter={StaticResource BooleanToVisibilityConverter}}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="70"/>
                 <!-- "Quantity:" Label -->
                 <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="*"/>
                 <!-- Quantity Entry Box -->
             </Grid.ColumnDefinitions>
 
             <TextBlock Name="QuantityTextBlock" Text="Quantity: " Grid.Column="0" VerticalAlignment="Center" TextAlignment="Right"/>
             <TextBox Name="QuantityTextBox" Width="150" TextAlignment="Center" Grid.Column="1"/>
+            <TextBlock Name="QuantityAvailableTextBlock" Width="40" Grid.Column="2" TextAlignment="Center"/>
         </Grid>
         <Button Content="OK" Click="OkButton_Click" Margin="0,10,0,0"/>
     </StackPanel>

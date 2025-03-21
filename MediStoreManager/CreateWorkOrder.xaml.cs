@@ -42,6 +42,10 @@ namespace MediStoreManager
         public string Notes { get; private set; }
         public Patient SelectedPatient { get; private set; }
         public ObservableCollection<InventoryEntry> FinalInventoryEntries = new ObservableCollection<InventoryEntry>();
+        public WorkOrder WorkOrder { get; private set; }
+        public bool IsEditMode { get; private set; }
+        public bool DeleteOrder { get; private set; }
+        public string ID { get; private set; }
 
         public CreateWorkOrder(ObservableCollection<Patient> patients, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
@@ -72,7 +76,57 @@ namespace MediStoreManager
 
             // Bind the ItemsControl to the InventoryEntries collection
             InventoryItemsControl.ItemsSource = InventoryEntries;
+            IsEditMode = false;
+            DataContext = this;
 
+        }
+
+        public CreateWorkOrder(ObservableCollection<Patient> patients, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts, WorkOrder workOrder)
+        {
+            IsEditMode = true;
+            InitializeComponent();
+            _patients = patients;
+            _filteredPatients = new ObservableCollection<Patient>(patients);
+            PatientResultsListBox.ItemsSource = _filteredPatients;
+
+            // Debounce timer setup
+            _timer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(250) };
+            _timer.Tick += FilterTimer_Tick;
+
+            // Convert Equipment and Supplies into InventoryListItems
+            AllInventoryItems = new ObservableCollection<InventoryListItem>(
+                equipment.Where(e => e.Quantity > 0).Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", AllowedQuantity = e.Quantity, QuantitySelected = 0 })
+                .Concat(
+                supplies.Where(s => s.Quantity > 0).Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "Supply", AllowedQuantity = s.Quantity, QuantitySelected = 0 }))
+                .Concat(
+                parts.Where(p => p.Quantity > 0).Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "Part", AllowedQuantity = p.Quantity, QuantitySelected = 0 }))
+            );
+
+            AllRelatedInventory = new ObservableCollection<InventoryListItem>(
+                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", AllowedQuantity = 100, QuantitySelected = 0 })
+            );
+
+            // Bind the ItemsControl to the InventoryEntries collection
+            InventoryItemsControl.ItemsSource = InventoryEntries;
+            ID = workOrder.ID;
+            TypeComboBox.SelectedItem = workOrder.Type;
+            SelectedPatient = patients.FirstOrDefault(p => p.ID == workOrder.PatientID);
+            _suppressTextChanged = true;
+
+            // Update the textbox explicitly
+            PatientSearchBox.Text = $"{SelectedPatient.DisplayName} [{SelectedPatient.ID}]";
+
+            // Clear filter (show full list again)
+            _filteredPatients.Clear();
+            foreach (var patient in _patients/*.Take(100)*/) // Optionally limit again to avoid performance issues
+                _filteredPatients.Add(patient);
+
+            _suppressTextChanged = false;
+            OrderDateDatePicker.SelectedDate = workOrder.Date;
+            DateOfPaymentDatePicker.SelectedDate = workOrder.PaymentDate;
+            InventoryEntries = workOrder.Entries;
+            NotesTextBox.Text = workOrder.Notes;
+            DataContext = this;
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -88,6 +142,20 @@ namespace MediStoreManager
             if (DateOfPaymentDatePicker.SelectedDate.HasValue) { DateOfPayment = DateOfPaymentDatePicker.SelectedDate.Value; }
             if (InventoryEntries != null) { FinalInventoryEntries = InventoryEntries; }
             Notes = NotesTextBox.Text;
+            if (IsEditMode == true)
+            {
+                WorkOrder = new WorkOrder
+                {
+                    ID = ID,
+                    Type = Type,
+                    PatientID = PatientID,
+                    Date = OrderDate,
+                    PaymentDate = DateOfPayment,
+                    Notes = Notes,
+                    Entries = FinalInventoryEntries
+                };
+            }
+            DeleteOrder = false;
             this.DialogResult = true;
         }
 
@@ -200,6 +268,21 @@ namespace MediStoreManager
         {
             if (sender is Button button && button.DataContext is InventoryEntry entry)
             {
+                var existingItem = AllInventoryItems.FirstOrDefault(i => i.ID == entry.MainItem.ID);
+                if (existingItem != null)
+                {
+                    existingItem.AllowedQuantity += entry.MainItem.QuantitySelected;
+                } else
+                {
+                    AllInventoryItems.Add(new InventoryListItem
+                    {
+                        ID = entry.MainItem.ID,
+                        Name = entry.MainItem.Name,
+                        Type = entry.MainItem.Type,
+                        QuantitySelected = 0,
+                        AllowedQuantity = entry.MainItem.QuantitySelected
+                    });
+                }
                 InventoryEntries.Remove(entry);
             }
         }
@@ -213,24 +296,12 @@ namespace MediStoreManager
                 InventoryItemsControl.Items.Refresh();
             }
         }
-    }
 
-    public class InventoryListItem
-    {
-        public uint ID { get; set; }
-        public string Name { get; set; }
-        public string Type { get; set; }
-        public int QuantitySelected { get; set; }
-        public int AllowedQuantity { get; set; }
-        
-
-        public override string ToString() => $"{Name} [{ID}] - {Type}]";
-    }
-
-    public class InventoryEntry
-    {
-        public InventoryListItem MainItem { get; set; }
-        public InventoryListItem RelatedItem { get; set; } = new InventoryListItem();
+        private void DeleteWorkOrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteOrder = true;
+            this.DialogResult = true;
+        }
     }
 
     public class NullToVisibilityConverter : IValueConverter

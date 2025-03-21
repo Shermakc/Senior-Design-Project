@@ -7,13 +7,17 @@
         mc:Ignorable="d"
         Title="Supply Order" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel Height="400" Width="400">
+    <Window.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <StackPanel Height="420" Width="400">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
-            Create Supply Order
+            Supply Order
         </Label>
+        <Button Content="Delete Supply Order" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" Click="DeleteSupplyOrderButton_Click"/>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Height="340">
             <WrapPanel Width="380">
-                <StackPanel Width="380" Margin="0,5,0,5">
+                <StackPanel Width="380" Margin="0,10,0,5">
 
                     <Grid Width="380">
                         <Grid.ColumnDefinitions>

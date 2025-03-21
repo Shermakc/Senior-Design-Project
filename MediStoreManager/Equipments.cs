@@ -18,10 +18,10 @@ namespace MediStoreManager
         {
             Add(new Equipment
             {
-                ID = item.ID.ToString(),
+                ID = item.ID,
                 Type = item.Type,
                 Name = item.Name,
-                Quantity = item.NumInStock.ToString(),
+                Quantity = item.NumInStock,
                 Size = item.Size,
                 Brand = item.Brand,
                 Price = item.Cost.ToString(),

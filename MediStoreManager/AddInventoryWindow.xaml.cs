@@ -30,6 +30,7 @@ namespace MediStoreManager
         public string Price { get; private set; }
         public string RetailPrice { get; private set; }
         public string RentalPrice { get; private set; }
+        public string SerialNumber { get; private set; }
 
         public AddInventoryWindow()
         {
@@ -41,6 +42,7 @@ namespace MediStoreManager
             Price = "";
             RetailPrice = "";
             RentalPrice = "";
+            SerialNumber = "";
             InitializeComponent();
         }
 
@@ -59,6 +61,7 @@ namespace MediStoreManager
             Price = PriceTextBox.Text;
             RetailPrice = RetailPriceTextBox.Text;
             RentalPrice = RentalPriceTextBox.Text;
+            SerialNumber = SerialNumberTextBox.Text;
             this.DialogResult = true;
         }
     }

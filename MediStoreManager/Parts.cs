@@ -16,10 +16,10 @@ namespace MediStoreManager
             {
                 Add(new Part
                 {
-                    ID = "Part " + i,
+                    ID = (uint) i,
                     Type = "Part",
                     Name = "Part " + i.ToString(),
-                    Quantity = (100 + i).ToString(),
+                    Quantity = (100 + i),
                     Size = "L",
                     Brand = "Random",
                     Price = "$13.45",
@@ -32,10 +32,10 @@ namespace MediStoreManager
         {
             Add(new Part
             {
-                ID = item.ID.ToString(),
+                ID = item.ID,
                 Type = item.Type,
                 Name = item.Name,
-                Quantity = item.NumInStock.ToString(),
+                Quantity = item.NumInStock,
                 Size = item.Size,
                 Brand = item.Brand,
                 Price = item.Cost.ToString(),

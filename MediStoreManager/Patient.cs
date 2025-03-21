@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,7 @@ namespace MediStoreManager
         private string _zipcode;
         private string _state;
         private string _displayname;
+        private string _insurance;
 
         public string ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string FirstName { get => _firstname; set { _firstname = value; OnPropertyChanged(nameof(FirstName)); } }
@@ -32,11 +34,16 @@ namespace MediStoreManager
         public string ZipCode { get => _zipcode; set { _zipcode = value; OnPropertyChanged(nameof(ZipCode)); } }
         public string State { get => _state; set { _state = value; OnPropertyChanged(nameof(State)); } }
         public string DisplayName { get => _displayname; set { _displayname = value; OnPropertyChanged(nameof(DisplayName)); } }
+        public string Insurance { get => _insurance; set { _insurance = value; OnPropertyChanged(nameof(Insurance)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public override string ToString()
+        {
+            return $"{DisplayName} [{ID}]";
         }
     }
 }

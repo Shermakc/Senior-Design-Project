@@ -24,7 +24,7 @@ namespace MediStoreManager
                 MiddleName = person.MiddleName,
                 HomePhone = person.HomePhone.ToString(),
                 CellPhone = person.CellPhone.ToString(),
-                StreetAddress = address.AddressNumber + address.StreetName,
+                StreetAddress = address.AddressNumber + " " + address.StreetName,
                 City = address.City,
                 ZipCode = address.ZipCode.ToString(),
                 State = address.State,

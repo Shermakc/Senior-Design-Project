@@ -12,6 +12,7 @@ using System.Windows.Shapes;
 using System.Windows.Shell;
 using MySql.Data.MySqlClient;
 using MediStoreManager;
+using System.Collections.ObjectModel;
 
 namespace MediStoreManager
 {
@@ -140,6 +141,7 @@ namespace MediStoreManager
                 string state = addPatientWindow.State;
                 string zipCode = addPatientWindow.ZipCode;
                 string insurance = addPatientWindow.InsuranceProvider;
+                ObservableCollection<Patient> contacts = addPatientWindow.FinalContacts;
 
                 // Simply for debugging purposes. Not intended to remain after everything is fully setup
                 MessageBox.Show($"User Entered:\nFirst Name = {firstName}\nMiddle Name = {middleName}\nLast Name = {lastName}\nHome Phone # = {homePhone}\nCell Phone # = {cellPhone}\n" +
@@ -162,6 +164,7 @@ namespace MediStoreManager
                 string price = addInventoryWindow.Price;
                 string retailPrice = addInventoryWindow.RetailPrice;
                 string rentalPrice = addInventoryWindow.RentalPrice;
+                string serialNumber = addInventoryWindow.SerialNumber;
 
                 // Simply for debugging purposes. Not intended to remain after everything is fully setup
                 MessageBox.Show($"User Entered:\nInventory Name = {inventoryName}\nInventory Type = {type}\nSize = {size}\nBrand = {brand}\n" +
@@ -191,42 +194,39 @@ namespace MediStoreManager
 
         private void Button_CreateWorkOrder(object sender, RoutedEventArgs e)
         {
-            CreateWorkOrder createWorkOrder = new CreateWorkOrder();
+            CreateWorkOrder createWorkOrder = new CreateWorkOrder(PatientList, EquipmentList, SupplyList, PartList);
             createWorkOrder.Owner = this;
             bool? result = createWorkOrder.ShowDialog();
             if (result == true)
             {
                 string type = createWorkOrder.Type;
                 string patientID = createWorkOrder.PatientID;
-                string quantity = createWorkOrder.Quantity;
-                string inventoryID = createWorkOrder.InventoryID;
+                ObservableCollection<InventoryEntry> inventoryEntries = createWorkOrder.FinalInventoryEntries;
                 DateTime orderDate = createWorkOrder.OrderDate;
                 DateTime dateOfPayment = createWorkOrder.DateOfPayment;
-                string relatedInventoryID = createWorkOrder.RelatedInventoryID;
                 string notes = createWorkOrder.Notes;
 
                 // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nType = {type}\nPatient ID = {patientID}\nQuantity = {quantity}\nInventory ID = {inventoryID}\n" +
-                    $"Date = {orderDate.Date.ToShortDateString()}\nDate of Payment = {dateOfPayment.Date.ToShortDateString()}\nRelated Inventory ID = {relatedInventoryID}\nNotes = {notes}");
+                MessageBox.Show($"User Entered:\nType = {type}\nPatient ID = {patientID}\nInventory = {inventoryEntries}\n" +
+                    $"Date = {orderDate.Date.ToShortDateString()}\nDate of Payment = {dateOfPayment.Date.ToShortDateString()}\nNotes = {notes}");
             }
         }
 
         private void Button_CreateSupplyOrder(object sender, RoutedEventArgs e)
         {
-            CreateSupplyOrder createSupplyOrder = new CreateSupplyOrder();
+            CreateSupplyOrder createSupplyOrder = new CreateSupplyOrder(SupplierList, EquipmentList, SupplyList, PartList);
             createSupplyOrder.Owner = this;
             bool? result = createSupplyOrder.ShowDialog();
             if (result == true)
             {
-                string inventoryID = createSupplyOrder.InventoryID;
-                string quantity = createSupplyOrder.Quantity;
+                ObservableCollection<InventoryEntry> inventoryEntries = createSupplyOrder.FinalInventoryEntries;
                 string suppplier = createSupplyOrder.Supplier;
                 string shippingMethod = createSupplyOrder.ShippingMethod;
                 DateTime orderDate = createSupplyOrder.OrderDate;
                 DateTime receivedDate = createSupplyOrder.ReceivedDate;
 
                 // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nInventory ID = {inventoryID}\nQuantity = {quantity}\nSupplier = {suppplier}\nShipping Method = {shippingMethod}\n" +
+                MessageBox.Show($"User Entered:\nInventory = {inventoryEntries}\nSupplier = {suppplier}\nShipping Method = {shippingMethod}\n" +
                     $"Order Date = {orderDate.Date.ToShortDateString()}\nReceived Date = {receivedDate.Date.ToShortDateString()}");
             }
         }

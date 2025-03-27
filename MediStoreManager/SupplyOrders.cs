@@ -14,17 +14,18 @@ namespace MediStoreManager
 
         }
 
-        public void AddSupplyOrder(Order order)
+        public void AddSupplyOrder(Order order, ObservableCollection<InventoryEntry> invEntries)
         {
             Add(new SupplyOrder
             {
-                ID = order.ID.ToString(),
+                ID = order.ID,
                 Supplier = order.SupplierName,
                 InventoryID = order.InventoryID.ToString(),
                 Quantity = order.Quantity.ToString(),
                 ShippingMethod = order.ShippingMethod,
                 OrderDate = order.OrderDateTime,
-                ReceivedDate = order.ReceivedDate
+                ReceivedDate = order.ReceivedDate,
+                InventoryEntries = invEntries,
                 DisplayName = order.SupplierName + " - " + order.OrderDateTime.Month.ToString() + "/" + order.OrderDateTime.Day.ToString() + "/" + order.OrderDateTime.Year.ToString()
             });
         }

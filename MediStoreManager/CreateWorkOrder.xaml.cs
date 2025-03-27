@@ -35,7 +35,7 @@ namespace MediStoreManager
         private ObservableCollection<InventoryListItem> AllRelatedInventory;
 
         public string Type { get; private set; }
-        public string PatientID { get; private set; }
+        public uint PatientID { get; private set; }
         // MAYBE HAVE THIS VALUE BE PRE-SELECTED TO TODAY'S CURRENT DATE
         public DateTime OrderDate { get; private set; }
         public DateTime DateOfPayment { get; private set; }
@@ -45,12 +45,11 @@ namespace MediStoreManager
         public WorkOrder WorkOrder { get; private set; }
         public bool IsEditMode { get; private set; }
         public bool DeleteOrder { get; private set; }
-        public string ID { get; private set; }
+        public uint ID { get; private set; }
 
         public CreateWorkOrder(ObservableCollection<Patient> patients, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
             Type = "";
-            PatientID = "";
             Notes = "";
             InitializeComponent();
             _patients = patients;
@@ -124,7 +123,7 @@ namespace MediStoreManager
             _suppressTextChanged = false;
             OrderDateDatePicker.SelectedDate = workOrder.Date;
             DateOfPaymentDatePicker.SelectedDate = workOrder.PaymentDate;
-            InventoryEntries = workOrder.Entries;
+            InventoryEntries = workOrder.InventoryEntries;
             NotesTextBox.Text = workOrder.Notes;
             DataContext = this;
         }
@@ -152,7 +151,7 @@ namespace MediStoreManager
                     Date = OrderDate,
                     PaymentDate = DateOfPayment,
                     Notes = Notes,
-                    Entries = FinalInventoryEntries
+                    InventoryEntries = FinalInventoryEntries
                 };
             }
             DeleteOrder = false;

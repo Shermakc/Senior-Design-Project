@@ -35,7 +35,7 @@ namespace MediStoreManager
         public Patient Patient { get; private set; }
         public bool IsEditMode { get; private set; }
         public bool DeletePatient { get; private set; }
-        public string ID { get; private set; }
+        public uint ID { get; private set; }
         public string DisplayName { get; private set; }
 
         public AddPatientWindow()

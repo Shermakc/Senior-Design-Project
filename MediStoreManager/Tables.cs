@@ -38,18 +38,18 @@ namespace MediStoreManager
     {
         public CustomerOrder() { }
 
-        public CustomerOrder(uint id, string inventoryID, string type, string personID, string quantity, DateTime date,
-            bool haveReceivedPayment, DateTime paymentDate, string relatedItemID, string notes)
+        public CustomerOrder(uint id, uint inventoryID, string type, uint personID, int quantity, DateTime date,
+            bool haveReceivedPayment, DateTime paymentDate, uint relatedItemID, string notes)
         {
             ID = id;
             InventoryID = Convert.ToUInt16(inventoryID);
             Type = type;
             PersonID = Convert.ToUInt16(personID);
-            if (quantity != string.Empty) { Quantity = Convert.ToInt16(quantity); }
+            Quantity = quantity;
             Date = date;
             HaveReceivedPayment = haveReceivedPayment;
             PaymentDate = paymentDate;
-            if (relatedItemID != string.Empty) { RelatedInventoryItemID = Convert.ToUInt16(relatedItemID); }
+            RelatedInventoryItemID = relatedItemID;
             Notes = notes;
         }
 
@@ -69,35 +69,37 @@ namespace MediStoreManager
     {
         public InventoryItem() { }
 
-        public InventoryItem(uint id, string type, string name, string size, string brand, string numInStock, string cost,
-            string retailPrice, bool isRental, string rentalPrice, string personID)
+        public InventoryItem(uint id, string type, string name, string size, string brand, int numInStock, string cost,
+            string retailPrice, bool isRental, string rentalPrice, string personID, string serialNumber)
         {
             ID = id;
             Type = type;
             Name = name;
             Size = size;
             Brand = brand;
-            if (numInStock != string.Empty) { NumInStock = Convert.ToInt16(numInStock); }
+            NumInStock = numInStock;
             if (cost != string.Empty) { Cost = Convert.ToDecimal(cost); }
             if (retailPrice != string.Empty) { RetailPrice = Convert.ToDecimal(retailPrice); }
             IsRental = isRental;
             if (rentalPrice != string.Empty) { RentalPrice = Convert.ToDecimal(rentalPrice); }
             if (personID != string.Empty) { PersonID = Convert.ToUInt16(personID); }
+            SerialNumber = serialNumber;
         }
 
-        public InventoryItem(uint id, string type, string name, string size, string brand, string numInStock, string cost,
-            string retailPrice, bool isRental, string rentalPrice)
+        public InventoryItem(uint id, string type, string name, string size, string brand, int numInStock, string cost,
+            string retailPrice, bool isRental, string rentalPrice, string serialNumber)
         {
             ID = id;
             Type = type;
             Name = name;
             Size = size;
             Brand = brand;
-            if (numInStock != string.Empty) { NumInStock = Convert.ToInt16(numInStock); }
+            NumInStock = numInStock;
             if (cost != string.Empty) { Cost = Convert.ToDecimal(cost); }
             if (retailPrice != string.Empty) { RetailPrice = Convert.ToDecimal(retailPrice); }
             IsRental = isRental;
             if (rentalPrice != string.Empty) { RentalPrice = Convert.ToDecimal(rentalPrice); }
+            SerialNumber = serialNumber;
         }
 
         public uint ID;
@@ -111,13 +113,14 @@ namespace MediStoreManager
         public bool IsRental;
         public decimal RentalPrice;
         public uint PersonID;
+        public string SerialNumber;
     }
 
     public class Order
     {
         public Order() { }
 
-        public Order(uint id, string inventoryID, string quantity, string supplierName, string shippingMethod,
+        public Order(uint id, uint inventoryID, int quantity, string supplierName, string shippingMethod,
             DateTime orderDateTime, bool hasBeenReceived, DateTime receivedDate)
         {
             ID = id;
@@ -145,17 +148,31 @@ namespace MediStoreManager
         public Person() { }
 
         public Person(uint id, string firstName, string lastName, string middleName, string homePhone, string cellPhone,
-            uint addressID, string insurance, bool isPatientContact, string contactID, string contactRelation)
+            uint addressID, string insurance, bool isPatient)
         {
             ID = id;
             FirstName = firstName;
             LastName = lastName;
             MiddleName = middleName;
             if (homePhone != string.Empty) { HomePhone = Convert.ToInt64(homePhone); }
-            if (homePhone != string.Empty) { HomePhone = Convert.ToInt64(homePhone); }
+            if (cellPhone != string.Empty) { CellPhone = Convert.ToInt64(cellPhone); }
             AddressID = addressID;
             InsuranceProvider = insurance;
-            IsPatientContact = isPatientContact;
+            IsPatient = isPatient;
+        }
+
+        public Person(uint id, string firstName, string lastName, string middleName, string homePhone, string cellPhone,
+            uint addressID, string insurance, bool isPatient, string contactID, string contactRelation)
+        {
+            ID = id;
+            FirstName = firstName;
+            LastName = lastName;
+            MiddleName = middleName;
+            if (homePhone != string.Empty) { HomePhone = Convert.ToInt64(homePhone); }
+            if (cellPhone != string.Empty) { CellPhone = Convert.ToInt64(cellPhone); }
+            AddressID = addressID;
+            InsuranceProvider = insurance;
+            IsPatient = isPatient;
             if (contactID != string.Empty) { ContactID = Convert.ToUInt16(contactID); }
             ContactRelationship = contactRelation;
         }
@@ -168,7 +185,7 @@ namespace MediStoreManager
         public decimal CellPhone;
         public uint AddressID;
         public string? InsuranceProvider;
-        public bool IsPatientContact;
+        public bool IsPatient;
         public uint ContactID;
         public string? ContactRelationship;
     }

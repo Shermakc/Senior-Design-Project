@@ -10,7 +10,7 @@ namespace MediStoreManager
 {
     public class Patient : INotifyPropertyChanged
     {
-        private string _ID;
+        private uint _ID;
         private string _firstname;
         private string _lastname;
         private string _middlename;
@@ -22,9 +22,10 @@ namespace MediStoreManager
         private string _state;
         private string _displayname;
         private string _insurance;
+        private uint _contactID;
         private ObservableCollection<Patient> _contacts;
 
-        public string ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
+        public uint ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string FirstName { get => _firstname; set { _firstname = value; OnPropertyChanged(nameof(FirstName)); } }
         public string LastName { get => _lastname; set { _lastname = value; OnPropertyChanged(nameof(LastName)); } }
         public string MiddleName { get => _middlename; set { _middlename = value; OnPropertyChanged(nameof(MiddleName)); } }
@@ -36,6 +37,7 @@ namespace MediStoreManager
         public string State { get => _state; set { _state = value; OnPropertyChanged(nameof(State)); } }
         public string DisplayName { get => _displayname; set { _displayname = value; OnPropertyChanged(nameof(DisplayName)); } }
         public string Insurance { get => _insurance; set { _insurance = value; OnPropertyChanged(nameof(Insurance)); } }
+        public uint ContactID { get => _contactID; set { _contactID = value; OnPropertyChanged(nameof(ContactID)); } }
         public ObservableCollection<Patient> Contacts { get => _contacts; set { _contacts = value; OnPropertyChanged(nameof(Contacts)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;

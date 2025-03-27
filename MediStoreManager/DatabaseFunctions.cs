@@ -31,7 +31,7 @@ namespace MediStoreManager
             tempPerson.CellPhone = GetColValAsDecimal(reader, nameof(tempPerson.CellPhone));
             tempPerson.AddressID = GetColValAsUInt(reader, nameof(tempPerson.AddressID));
             tempPerson.InsuranceProvider = GetColValAsString(reader, nameof(tempPerson.InsuranceProvider));
-            tempPerson.IsPatientContact = reader.GetBoolean(8);
+            tempPerson.IsPatient = reader.GetBoolean(8);
             tempPerson.ContactID = GetColValAsUInt(reader, nameof(tempPerson.ContactID));
             tempPerson.ContactRelationship = GetColValAsString(reader, nameof(tempPerson.ContactRelationship));
 
@@ -52,6 +52,7 @@ namespace MediStoreManager
             tempItem.IsRental = reader.GetBoolean(8);
             tempItem.RentalPrice = GetColValAsDecimal(reader, nameof(tempItem.RentalPrice));
             tempItem.PersonID = GetColValAsUInt(reader, nameof(tempItem.PersonID));
+            tempItem.SerialNumber = GetColValAsString(reader, nameof(tempItem.SerialNumber));
 
             return tempItem;
         }
@@ -198,7 +199,7 @@ namespace MediStoreManager
                 tempPerson.CellPhone = GetColValAsDecimal(reader, nameof(tempPerson.CellPhone));
                 tempPerson.AddressID = GetColValAsUInt(reader, nameof(tempPerson.AddressID));
                 tempPerson.InsuranceProvider = GetColValAsString(reader, nameof(tempPerson.InsuranceProvider));
-                tempPerson.IsPatientContact = reader.GetBoolean(8);
+                tempPerson.IsPatient = reader.GetBoolean(8);
                 tempPerson.ContactID = GetColValAsUInt(reader, nameof(tempPerson.ContactID));
                 tempPerson.ContactRelationship = GetColValAsString(reader, nameof(tempPerson.ContactRelationship));
             }
@@ -213,7 +214,7 @@ namespace MediStoreManager
                 "`IsPatientContact`, `ContactID`, `ContactRelationship`) " +
                 "VALUES ('" + newPerson.ID + "', '" + newPerson.FirstName + "', '" + newPerson.LastName + "', '"
                 + newPerson.MiddleName + "', '" + newPerson.HomePhone + "', '" + newPerson.CellPhone + "', '"
-                + newPerson.AddressID + "', '" + newPerson.InsuranceProvider + "', '" + Convert.ToByte(newPerson.IsPatientContact) + "', '"
+                + newPerson.AddressID + "', '" + newPerson.InsuranceProvider + "', '" + Convert.ToByte(newPerson.IsPatient) + "', '"
                 + newPerson.ContactID + "', '" + newPerson.ContactRelationship + "');";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
@@ -223,7 +224,7 @@ namespace MediStoreManager
         {
             string sql = "update person set FirstName = '" + person.FirstName + "', LastName = '" + person.LastName +
                 "', MiddleName = '" + person.MiddleName + "', HomePhone = " + person.HomePhone + ", CellPhone = " + person.CellPhone +
-                ", AddressID = " + person.AddressID + ", InsuranceProvider = '" + person.InsuranceProvider + "', IsPatientContact = " + Convert.ToByte(person.IsPatientContact) +
+                ", AddressID = " + person.AddressID + ", InsuranceProvider = '" + person.InsuranceProvider + "', IsPatientContact = " + Convert.ToByte(person.IsPatient) +
                 ", ContactID = " + person.ContactID + ", ContactRelationship = '" + person.ContactRelationship +
                 "' where ID = " + person.ID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
@@ -271,6 +272,7 @@ namespace MediStoreManager
                 tempItem.IsRental = reader.GetBoolean(8);
                 tempItem.RentalPrice = GetColValAsDecimal(reader, nameof(tempItem.RentalPrice));
                 tempItem.PersonID = GetColValAsUInt(reader, nameof(tempItem.PersonID));
+                tempItem.SerialNumber = GetColValAsString(reader, nameof(tempItem.SerialNumber));
             }
 
             return tempItem;
@@ -280,11 +282,11 @@ namespace MediStoreManager
         {
             string sql = "insert into inventory_item " +
                 "(`ID`, `Type`, `Name`, `Size`, `Brand`, `NumInStock`, `Cost`, `RetailPrice`, " +
-                "`IsRental`, `RentalPrice`, `PersonID`) " +
+                "`IsRental`, `RentalPrice`, `PersonID`, `SerialNumber`) " +
                 "VALUES ('" + newItem.ID + "', '" + newItem.Type + "', '" + newItem.Name + "', '"
                 + newItem.Size + "', '" + newItem.Brand + "', '" + newItem.NumInStock + "', '"
                 + newItem.Cost + "', '" + newItem.RetailPrice + "', '" + Convert.ToByte(newItem.IsRental) + "', '"
-                + newItem.RentalPrice + "', '" + newItem.PersonID + "');";
+                + newItem.RentalPrice + "', '" + newItem.PersonID + "', '" + newItem.SerialNumber + "');";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -294,8 +296,8 @@ namespace MediStoreManager
             string sql = "update inventory_item set Name = '" + item.Name + "', Size = '" + item.Size +
                 "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
                 ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
-                ", RentalPrice = " + item.RentalPrice + ", PersonID = " + item.PersonID +
-                " where ID = " + item.ID + " and Type = '" + item.Type + "';";
+                ", RentalPrice = " + item.RentalPrice + ", PersonID = " + item.PersonID + ", SerialNumber = '" + item.SerialNumber +
+                "' where ID = " + item.ID + " and Type = '" + item.Type + "';";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }

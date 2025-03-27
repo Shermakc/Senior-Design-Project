@@ -18,7 +18,7 @@ namespace MediStoreManager
         {
             Add(new Patient
             {
-                ID = person.ID.ToString(),
+                ID = person.ID,
                 FirstName = person.FirstName,
                 LastName = person.LastName,
                 MiddleName = person.MiddleName,
@@ -28,8 +28,9 @@ namespace MediStoreManager
                 City = address.City,
                 ZipCode = address.ZipCode.ToString(),
                 State = address.State,
-                DisplayName = person.LastName + ", " + person.FirstName,
-                Insurance = person.InsuranceProvider
+                Insurance = person.InsuranceProvider,
+                ContactID = person.ContactID,
+                DisplayName = person.LastName + ", " + person.FirstName,              
             });
         }
     }

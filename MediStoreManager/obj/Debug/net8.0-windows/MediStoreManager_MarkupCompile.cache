@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreManager\App.xaml
-6-1172153603
+8901647524
 
-30-1846472949
+36768095770
 20673559738
-AddInventoryWindow.xaml;AddPatientWindow.xaml;AddSupplierWindow.xaml;CreateSupplyOrder.xaml;CreateWorkOrder.xaml;MainWindow.xaml;
+AddContact.xaml;AddInventoryWindow.xaml;AddPatientWindow.xaml;AddSupplierWindow.xaml;CreateSupplyOrder.xaml;CreateWorkOrder.xaml;InventorySelectionPopup.xaml;MainWindow.xaml;
 
 False
 

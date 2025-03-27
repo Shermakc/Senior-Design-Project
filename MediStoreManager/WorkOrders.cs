@@ -23,10 +23,11 @@ namespace MediStoreManager
                 PatientID = order.PersonID.ToString(),
                 Quantity = order.Quantity.ToString(),
                 InventoryID = order.InventoryID.ToString(),
-                Date = order.Date.ToString(),
-                Notes = order.Notes,
+                Date = order.Date,
+                Notes = order.Notes
                 DisplayName = person.FirstName + " " + person.LastName + " - " + order.Date.Month.ToString() + "/" + order.Date.Day.ToString() + "/" + order.Date.Year.ToString()
             });
+        });
         }
     }
 }

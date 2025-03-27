@@ -20,7 +20,8 @@ namespace MediStoreManager
             {
                 Name = supplier.Name,
                 PhoneNumber = supplier.PhoneNumber.ToString(),
-                StreetAddress = address.AddressNumber + address.StreetName,
+                PartnerID = supplier.PartnerID,
+                StreetAddress = address.AddressNumber + " " + address.StreetName,
                 City = address.City,
                 ZipCode = address.ZipCode.ToString(),
                 State = address.State

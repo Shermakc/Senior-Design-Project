@@ -23,7 +23,8 @@ namespace MediStoreManager
                 InventoryID = order.InventoryID.ToString(),
                 Quantity = order.Quantity.ToString(),
                 ShippingMethod = order.ShippingMethod,
-                OrderDate = order.OrderDateTime.ToString(),
+                OrderDate = order.OrderDateTime,
+                ReceivedDate = order.ReceivedDate
                 DisplayName = order.SupplierName + " - " + order.OrderDateTime.Month.ToString() + "/" + order.OrderDateTime.Day.ToString() + "/" + order.OrderDateTime.Year.ToString()
             });
         }

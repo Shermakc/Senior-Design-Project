@@ -98,3 +98,7 @@ C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreMana
 C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreManager\obj\Debug\net8.0-windows\MediStoreManager.pdb
 C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreManager\obj\Debug\net8.0-windows\MediStoreManager.genruntimeconfig.cache
 C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreManager\obj\Debug\net8.0-windows\ref\MediStoreManager.dll
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\InventorySelectionPopup.g.cs
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\InventorySelectionPopup.baml
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddContact.g.cs
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\AddContact.baml

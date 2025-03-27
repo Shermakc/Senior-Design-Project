@@ -140,10 +140,30 @@ namespace MediStoreManager
                 string state = addPatientWindow.State;
                 string zipCode = addPatientWindow.ZipCode;
                 string insurance = addPatientWindow.InsuranceProvider;
+                bool isPatientContact = false;
+                string contactID = string.Empty;
+                string relationToContact = string.Empty;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nFirst Name = {firstName}\nMiddle Name = {middleName}\nLast Name = {lastName}\nHome Phone # = {homePhone}\nCell Phone # = {cellPhone}\n" +
-                    $"Street Address = {streetAddress}\nCity = {city}\nState = {state}\nZip Code = {zipCode}\nInsurance = {insurance}");
+                // Create new database class items with info from popup
+                (string, string) patientAddress = SplitAddress(streetAddress);
+
+                Address newAddress = new Address(addresses.Max(a => a.ID) + 1, patientAddress.Item2, patientAddress.Item1,
+                    city, state, zipCode);
+
+                Person newPerson = new Person(persons.Max(p => p.ID) + 1, firstName, lastName, middleName, homePhone, cellPhone,
+                    newAddress.ID, insurance, isPatientContact, contactID, relationToContact);
+
+                // Insert new items into the database
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateAddressEntry(con, newAddress);
+                con.Close();
+
+                con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreatePersonEntry(con, newPerson);
+                con.Close();
+
+                // Add patient to user interface
+                PatientList.AddPatient(newPerson, newAddress);
             }
         }
 
@@ -162,10 +182,28 @@ namespace MediStoreManager
                 string price = addInventoryWindow.Price;
                 string retailPrice = addInventoryWindow.RetailPrice;
                 string rentalPrice = addInventoryWindow.RentalPrice;
+                bool isRental = rentalPrice != string.Empty;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nInventory Name = {inventoryName}\nInventory Type = {type}\nSize = {size}\nBrand = {brand}\n" +
-                    $"Quantity = {quantity}\nPrice = {price}\nRetail Price = {retailPrice}\nRental Price = {rentalPrice}");
+                InventoryItem newItem = new InventoryItem(inventoryItems.Max(i => i.ID) + 1, inventoryName, type, size, brand,
+                    quantity, price, retailPrice, isRental, rentalPrice);
+
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateInventoryItemEntry(con, newItem);
+                con.Close();
+
+                // Add to interface based on type
+                switch (newItem.Type)
+                {
+                    case "equipment":
+                        EquipmentList.AddEquipment(newItem);
+                        break;
+                    case "supply":
+                        SupplyList.AddSupply(newItem);
+                        break;
+                    case "part":
+                        PartList.AddPart(newItem);
+                        break;
+                }
             }
         }
 
@@ -182,10 +220,24 @@ namespace MediStoreManager
                 string city = addSupplierWindow.City;
                 string state = addSupplierWindow.State;
                 string zipCode = addSupplierWindow.ZipCode;
+                string partnerID = string.Empty;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nName = {businessName}\nBusiness Phone # = {businessPhone}\n" +
-                    $"Street Address = {streetAddress}\nCity = {city}\nState = {state}\nZip Code = {zipCode}");
+                (string, string) supplierAddress = SplitAddress(streetAddress);
+
+                Address newAddress = new Address(addresses.Max(a => a.ID) + 1, supplierAddress.Item2, supplierAddress.Item1,
+                    city, state, zipCode);
+
+                Supplier newSupplier = new Supplier(businessName, businessPhone, partnerID, newAddress.ID);
+
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateAddressEntry(con, newAddress);
+                con.Close();
+
+                con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateSupplierEntry(con, newSupplier);
+                con.Close();
+
+                SupplierList.AddSupplier(newSupplier, newAddress);
             }
         }
 
@@ -202,12 +254,18 @@ namespace MediStoreManager
                 string inventoryID = createWorkOrder.InventoryID;
                 DateTime orderDate = createWorkOrder.OrderDate;
                 DateTime dateOfPayment = createWorkOrder.DateOfPayment;
+                bool haveReceivedPayment = dateOfPayment != DateTime.MinValue;
                 string relatedInventoryID = createWorkOrder.RelatedInventoryID;
                 string notes = createWorkOrder.Notes;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nType = {type}\nPatient ID = {patientID}\nQuantity = {quantity}\nInventory ID = {inventoryID}\n" +
-                    $"Date = {orderDate.Date.ToShortDateString()}\nDate of Payment = {dateOfPayment.Date.ToShortDateString()}\nRelated Inventory ID = {relatedInventoryID}\nNotes = {notes}");
+                CustomerOrder newCustOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1, inventoryID, type, patientID,
+                    quantity, orderDate, haveReceivedPayment, dateOfPayment, relatedInventoryID, notes);
+
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateCustomerOrderEntry(con, newCustOrder);
+                con.Close();
+
+                WorkOrdersList.AddWorkOrder(newCustOrder, persons.FirstOrDefault(p => p.ID == newCustOrder.PersonID));
             }
         }
 
@@ -220,14 +278,20 @@ namespace MediStoreManager
             {
                 string inventoryID = createSupplyOrder.InventoryID;
                 string quantity = createSupplyOrder.Quantity;
-                string suppplier = createSupplyOrder.Supplier;
+                string supplier = createSupplyOrder.Supplier;
                 string shippingMethod = createSupplyOrder.ShippingMethod;
                 DateTime orderDate = createSupplyOrder.OrderDate;
                 DateTime receivedDate = createSupplyOrder.ReceivedDate;
+                bool hasBeenReceived = receivedDate != DateTime.MinValue;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nInventory ID = {inventoryID}\nQuantity = {quantity}\nSupplier = {suppplier}\nShipping Method = {shippingMethod}\n" +
-                    $"Order Date = {orderDate.Date.ToShortDateString()}\nReceived Date = {receivedDate.Date.ToShortDateString()}");
+                Order newOrder = new Order(orders.Max(o => o.ID)+ 1, inventoryID, quantity, supplier, shippingMethod,
+                    orderDate, hasBeenReceived, receivedDate);
+
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateOrderEntry(con, newOrder);
+                con.Close();
+
+                SupplyOrdersList.AddSupplyOrder(newOrder);
             }
         }
 
@@ -383,36 +447,6 @@ namespace MediStoreManager
                 WorkOrdersList.AddWorkOrder(order, customer);
             }
         }
-
-        //private void ConvertPatientToAddressAndPerson(Patient patient)
-        //{
-        //    (string, string) patientAddress = SplitAddress(patient.StreetAddress);
-        //    Address newAddress = new Address()
-        //    {
-        //        ID = addresses.Max(a => a.ID) + 1,
-        //        StreetName = patientAddress.Item2,
-        //        AddressNumber = Convert.ToInt16(patientAddress.Item1),
-        //        City = patient.City,
-        //        State = patient.State,
-        //        ZipCode = Convert.ToUInt16(patient.ZipCode)
-        //    };
-
-        //    Person newPerson = new Person()
-        //    {
-        //        ID = persons.Max(p => p.ID) + 1,
-        //        FirstName = patient.FirstName,
-        //        LastName = patient.LastName,
-        //        MiddleName = patient.MiddleName,
-        //        HomePhone = Convert.ToInt16(patient.HomePhone),
-        //        CellPhone = Convert.ToInt16(patient.CellPhone),
-        //        AddressID = newAddress.ID,
-        //        InsuranceProvider = ,
-        //        IsPatientContact = ,
-        //        ContactID = ,
-        //        ContactRelationship =
-
-        //    };
-        //}
         #endregion
 
         public (string, string) SplitAddress(string input)

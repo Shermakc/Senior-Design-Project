@@ -10,15 +10,6 @@ namespace MediStoreManager
 {
     public class DatabaseFunctions
     {
-        //private static List<Address> addressList;
-        //private static List<Person> personList;
-        //private static List<InventoryItem> inventoryList;
-        //private static List<Supplier> supplierList;
-        //private static List<User> userList;
-        //private static List<Order> orderList;
-        //private static List<CustomerOrder> customerOrderList;
-
-
         public static string connString = "server=localhost;uid=root;pwd=Enough@99;database=medistore manager"; // Don't leave this as plain text
 
         public static MySqlConnection OpenMySQLConnection()

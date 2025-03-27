@@ -7,6 +7,10 @@
       "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\tables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:tables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -25,10 +29,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\createworkorder.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:createworkorder.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\tables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:tables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\patients.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -54,7 +54,7 @@
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "MainWindow.xaml",
               "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\MainWindow.xaml",
               "RelativeDocumentMoniker": "MainWindow.xaml",
@@ -67,7 +67,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "CreateWorkOrder.xaml.cs",
               "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\CreateWorkOrder.xaml.cs",
               "RelativeDocumentMoniker": "CreateWorkOrder.xaml.cs",
@@ -86,14 +86,14 @@
               "RelativeDocumentMoniker": "MainWindow.xaml.cs",
               "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\MainWindow.xaml.cs",
               "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAH4AAAAAAKGZmZnlv40AAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAI0AAAAAEM3MzMwuwJgAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-06T21:02:24.357Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "WorkOrder.cs",
               "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\WorkOrder.cs",
               "RelativeDocumentMoniker": "WorkOrder.cs",
@@ -119,7 +119,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "Patient.cs",
               "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Patient.cs",
               "RelativeDocumentMoniker": "Patient.cs",
@@ -132,20 +132,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 1,
               "Title": "Tables.cs",
               "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Tables.cs",
               "RelativeDocumentMoniker": "Tables.cs",
               "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Tables.cs",
               "RelativeToolTip": "Tables.cs",
-              "ViewState": "AgIAABsAAAAAAAAAAAAkwCcAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAJIAAACwzczMzMwkwKAAAAAhAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-03-27T01:12:00.744Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "WorkOrders.cs",
               "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\WorkOrders.cs",
               "RelativeDocumentMoniker": "WorkOrders.cs",

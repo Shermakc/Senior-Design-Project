@@ -853,5 +853,16 @@ namespace MediStoreManager
 
             return (addressNum, streetName);
         }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PatientTab.IsSelected)
+            {
+                string test = "test";
+            }
+
+        }
+
+        // maybe add event for OrdersTabControl
     }
 }

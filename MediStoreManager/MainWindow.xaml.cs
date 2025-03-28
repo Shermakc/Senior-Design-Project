@@ -63,14 +63,48 @@ namespace MediStoreManager
         public WorkOrders WorkOrdersList { get; set; }
         public SupplyOrders SupplyOrdersList { get; set; }
 
-        private object _selectedOrder;
-        public object SelectedOrder
+        public object CurrentOrder
         {
-            get => _selectedOrder;
+            get
+            {
+                return SelectedTabIndex == 0 ? SelectedWorkOrder :
+                       SelectedTabIndex == 1 ? SelectedSupplyOrder : null;
+            }
+        }
+
+        private int _selectedTabIndex;
+        public int SelectedTabIndex
+        {
+            get => _selectedTabIndex;
             set
             {
-                _selectedOrder = value;
-                OnPropertyChanged(nameof(SelectedOrder));
+                _selectedTabIndex = value;
+                OnPropertyChanged(nameof(SelectedTabIndex));
+                OnPropertyChanged(nameof(CurrentOrder)); // Update the display when the tab changes
+            }
+        }
+
+        private object _selectedWorkOrder;
+        public object SelectedWorkOrder
+        {
+            get => _selectedWorkOrder;
+            set
+            {
+                _selectedWorkOrder = value;
+                OnPropertyChanged(nameof(SelectedWorkOrder));
+                OnPropertyChanged(nameof(CurrentOrder));
+            }
+        }
+
+        private object _selectedSupplyOrder;
+        public object SelectedSupplyOrder
+        {
+            get => _selectedSupplyOrder;
+            set
+            {
+                _selectedSupplyOrder = value;
+                OnPropertyChanged(nameof(SelectedSupplyOrder));
+                OnPropertyChanged(nameof(CurrentOrder));
             }
         }
 
@@ -631,12 +665,12 @@ namespace MediStoreManager
 
         private void WorkListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedOrder = ((ListBox)sender).SelectedItem;
+            SelectedWorkOrder = ((ListBox)sender).SelectedItem;
         }
 
         private void SupplyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedOrder = ((ListBox)sender).SelectedItem;
+            SelectedSupplyOrder = ((ListBox)sender).SelectedItem;
         }
 
         private void EquipmentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -777,51 +811,55 @@ namespace MediStoreManager
 
         private void PopulateSupplyOrderList()
         {
-            ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
             foreach (Order order in orders)
             {
+                ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
                 // Only create 1 SupplyOrder for each ID in the orders
                 if (!SupplyOrdersList.Any(o => o.ID == order.ID))
                 {
                     // Create collection of inventoryItem for the supply order
-                    foreach (InventoryItem item in inventoryItems.Where(i => i.ID == order.InventoryID))
+                    List<Order> orders2 = new List<Order>(orders.Where(i => i.ID == order.ID));
+                    foreach (Order continuedOrder in orders.Where(i => i.ID == order.ID))
                     {
+                        InventoryItem item = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
                         InventoryEntry entry = new InventoryEntry();
                         entry.MainItem = new InventoryListItem()
                         {
                             ID = item.ID,
                             Name = item.Name,
                             Type = item.Type,
+                            QuantitySelected = continuedOrder.Quantity
                         };
                         invEntries.Add(entry);
                     }
 
                     // Add the new supply order
                     SupplyOrdersList.AddSupplyOrder(order, invEntries);
-                    invEntries.Clear();
                 }           
             }
         }
 
         private void PopulateWorkOrderList()
         {
-            ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
             foreach (CustomerOrder order in customerOrders)
             {
+                ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
                 if (!WorkOrdersList.Any(wo => wo.ID == order.ID))
                 {
-                    foreach (InventoryItem item in inventoryItems.Where(i => i.ID == order.InventoryID))
+                    foreach (CustomerOrder continuedOrder in customerOrders.Where(i => i.ID == order.ID))
                     {
+                        InventoryItem mainItem = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
                         InventoryEntry entry = new InventoryEntry();
                         entry.MainItem = new InventoryListItem()
                         {
-                            ID = item.ID,
-                            Name = item.Name,
-                            Type = item.Type,
+                            ID = mainItem.ID,
+                            Name = mainItem.Name,
+                            Type = mainItem.Type,
+                            QuantitySelected = continuedOrder.Quantity
                         };
-                        if (order.RelatedInventoryItemID != 0)
+                        if (continuedOrder.RelatedInventoryItemID != 0)
                         {
-                            InventoryItem relatedItem = inventoryItems.Where(i => i.ID == order.RelatedInventoryItemID).FirstOrDefault();
+                            InventoryItem relatedItem = inventoryItems.Where(i => i.ID == continuedOrder.RelatedInventoryItemID).FirstOrDefault();
                             entry.RelatedItem = new InventoryListItem()
                             {
                                 ID = relatedItem.ID,

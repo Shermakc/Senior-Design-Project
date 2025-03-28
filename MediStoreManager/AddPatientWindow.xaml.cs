@@ -138,7 +138,8 @@ namespace MediStoreManager
                     ZipCode = popup.ZipCode,
                     State = popup.State,
                     Insurance = popup.InsuranceProvider,
-                    DisplayName = popup.LastName + ", " + popup.FirstName
+                    DisplayName = popup.LastName + ", " + popup.FirstName,
+                    RelationshipToPatient = popup.RelationshipToPatient
                 });
             }
         }

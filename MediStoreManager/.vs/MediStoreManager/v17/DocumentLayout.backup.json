@@ -1,46 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\",
+  "WorkspaceRootPath": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\tables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:tables.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:mainwindow.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\workorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:mainwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\addpatientwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:addpatientwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\addcontact.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:addcontact.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:patient.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\addcontact.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:addcontact.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\workorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:workorder.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\workorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:workorders.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\createworkorder.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:createworkorder.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\patients.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:patients.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\createsupplyorder.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:createsupplyorder.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\kevin\\source\\repos\\senior-design-project\\medistoremanager\\medistoremanager\\addpatientwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:addpatientwindow.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|c:\\users\\jnrod\\source\\repos\\senior-design-project\\medistoremanager\\inventoryentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{C2468F75-19A9-48E8-A817-65EE3F8F0076}|MediStoreManager.csproj|solutionrelative:inventoryentry.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,136 +42,108 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MainWindow.xaml",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\MainWindow.xaml",
-              "RelativeDocumentMoniker": "MainWindow.xaml",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\MainWindow.xaml",
-              "RelativeToolTip": "MainWindow.xaml",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2025-03-09T23:19:08.47Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "CreateWorkOrder.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\CreateWorkOrder.xaml.cs",
-              "RelativeDocumentMoniker": "CreateWorkOrder.xaml.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\CreateWorkOrder.xaml.cs",
-              "RelativeToolTip": "CreateWorkOrder.xaml.cs",
-              "ViewState": "AgIAAC4AAABo/v///38wwDIAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T21:01:19.995Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "MainWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\MainWindow.xaml.cs",
-              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\MainWindow.xaml.cs",
-              "RelativeToolTip": "MainWindow.xaml.cs",
-              "ViewState": "AgIAAI0AAAAAEM3MzMwuwJgAAAAtAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-06T21:02:24.357Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "WorkOrder.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\WorkOrder.cs",
-              "RelativeDocumentMoniker": "WorkOrder.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\WorkOrder.cs",
-              "RelativeToolTip": "WorkOrder.cs",
-              "ViewState": "AgIAABIAAAAAfJmZmZnZvxYAAAAdAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T21:04:35.35Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "CreateSupplyOrder.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\CreateSupplyOrder.xaml.cs",
-              "RelativeDocumentMoniker": "CreateSupplyOrder.xaml.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\CreateSupplyOrder.xaml.cs",
-              "RelativeToolTip": "CreateSupplyOrder.xaml.cs",
-              "ViewState": "AgIAAB8AAADAy8zMzMwQwCgAAAAyAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T21:01:00.62Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
               "Title": "Patient.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Patient.cs",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\Patient.cs",
               "RelativeDocumentMoniker": "Patient.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Patient.cs",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\Patient.cs",
               "RelativeToolTip": "Patient.cs",
-              "ViewState": "AgIAAAUAAABA//////8twBUAAAAeAAAAAAAAAA==",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAQwCkAAAChAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T03:09:53.408Z",
+              "WhenOpened": "2025-03-28T03:53:10.352Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "Tables.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Tables.cs",
-              "RelativeDocumentMoniker": "Tables.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Tables.cs",
-              "RelativeToolTip": "Tables.cs",
-              "ViewState": "AgIAAJIAAACwzczMzMwkwKAAAAAhAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "AddContact.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\AddContact.xaml.cs",
+              "RelativeDocumentMoniker": "AddContact.xaml.cs",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\AddContact.xaml.cs",
+              "RelativeToolTip": "AddContact.xaml.cs",
+              "ViewState": "AgIAAB8AAAAAAAAAAAAzwEQAAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T01:12:00.744Z",
+              "WhenOpened": "2025-03-28T03:50:12.494Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 5,
-              "Title": "WorkOrders.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\WorkOrders.cs",
-              "RelativeDocumentMoniker": "WorkOrders.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\WorkOrders.cs",
-              "RelativeToolTip": "WorkOrders.cs",
-              "ViewState": "AgIAAAkAAAAAAAAAAIA0wBIAAAAdAAAAAAAAAA==",
+              "Title": "AddContact.xaml",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\AddContact.xaml",
+              "RelativeDocumentMoniker": "AddContact.xaml",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\AddContact.xaml",
+              "RelativeToolTip": "AddContact.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-03-27T21:27:04.847Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "AddPatientWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\AddPatientWindow.xaml.cs",
+              "RelativeDocumentMoniker": "AddPatientWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\AddPatientWindow.xaml.cs",
+              "RelativeToolTip": "AddPatientWindow.xaml.cs",
+              "ViewState": "AgIAAG8AAAAAAAAAAAAQwI0AAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T21:08:23.205Z",
+              "WhenOpened": "2025-03-27T21:26:53.301Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 7,
-              "Title": "Patients.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Patients.cs",
-              "RelativeDocumentMoniker": "Patients.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\Patients.cs",
-              "RelativeToolTip": "Patients.cs",
-              "ViewState": "AgIAABIAAAAAAAAAAAAWwB4AAAA1AAAAAAAAAA==",
+              "Title": "InventoryEntry.cs",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\InventoryEntry.cs",
+              "RelativeDocumentMoniker": "InventoryEntry.cs",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\InventoryEntry.cs",
+              "RelativeToolTip": "InventoryEntry.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAiAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T21:05:40.056Z",
+              "WhenOpened": "2025-03-24T23:44:56.547Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "AddPatientWindow.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\AddPatientWindow.xaml.cs",
-              "RelativeDocumentMoniker": "AddPatientWindow.xaml.cs",
-              "ToolTip": "C:\\Users\\Kevin\\source\\repos\\Senior-Design-Project\\MedistoreManager\\MediStoreManager\\AddPatientWindow.xaml.cs",
-              "RelativeToolTip": "AddPatientWindow.xaml.cs",
-              "ViewState": "AgIAACYAAACAzMzMzMwgwDAAAAAWAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "MainWindow.xaml",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\MainWindow.xaml",
+              "RelativeDocumentMoniker": "MainWindow.xaml",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\MainWindow.xaml",
+              "RelativeToolTip": "MainWindow.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2025-03-24T21:10:18.984Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "MainWindow.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\MainWindow.xaml.cs",
+              "RelativeDocumentMoniker": "MainWindow.xaml.cs",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\MainWindow.xaml.cs",
+              "RelativeToolTip": "MainWindow.xaml.cs",
+              "ViewState": "AgIAAIgBAAAAAAAAAIAwwMYCAAAJAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-03-27T03:10:55.256Z",
+              "WhenOpened": "2025-01-28T00:42:56.307Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "WorkOrder.cs",
+              "DocumentMoniker": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\WorkOrder.cs",
+              "RelativeDocumentMoniker": "WorkOrder.cs",
+              "ToolTip": "C:\\Users\\jnrod\\source\\repos\\Senior-Design-Project\\MediStoreManager\\WorkOrder.cs",
+              "RelativeToolTip": "WorkOrder.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-21T23:30:22.872Z",
               "EditorCaption": ""
             }
           ]

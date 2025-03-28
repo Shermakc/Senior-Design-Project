@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreManager\obj\Debug\net8.0-windows\
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\obj\Debug\net8.0-windows\
 MediStoreManager
 none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
-C:\Users\Kevin\source\repos\Senior-Design-Project\MedistoreManager\MediStoreManager\App.xaml
-6-1172153603
+C:\Users\jnrod\source\repos\Senior-Design-Project\MediStoreManager\App.xaml
+8901647524
 
-32-1618547349
-20673559738
-AddInventoryWindow.xaml;AddPatientWindow.xaml;AddSupplierWindow.xaml;CreateSupplyOrder.xaml;CreateWorkOrder.xaml;MainWindow.xaml;
+40-1113142264
+206489491751
+AddContact.xaml;AddInventoryWindow.xaml;AddPatientWindow.xaml;AddSupplierWindow.xaml;CreateSupplyOrder.xaml;CreateWorkOrder.xaml;InventorySelectionPopup.xaml;MainWindow.xaml;
 
 True
 

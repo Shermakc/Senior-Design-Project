@@ -13,6 +13,7 @@ using System.Windows.Shell;
 using MySql.Data.MySqlClient;
 using MediStoreManager;
 using System.Collections.ObjectModel;
+using Org.BouncyCastle.Utilities;
 
 namespace MediStoreManager
 {
@@ -164,6 +165,8 @@ namespace MediStoreManager
 
                 // Add patient to user interface
                 PatientList.AddPatient(newPerson, newAddress);
+                addresses.Add(newAddress);
+                persons.Add(newPerson);
             }
         }
 
@@ -179,6 +182,7 @@ namespace MediStoreManager
             AddPatientWindow editPatientWindow = new AddPatientWindow(selectedEntry, true);
             editPatientWindow.Owner = this;
             bool? result = editPatientWindow.ShowDialog();
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
             if (result == true)
             {
                 if (editPatientWindow.DeletePatient == true)
@@ -186,20 +190,33 @@ namespace MediStoreManager
                     int index = PatientListBox.SelectedIndex;
                     if (index >= 0)
                     {
-                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        
                         DatabaseFunctions.DeletePersonEntry(con, PatientList[index].ID);
                         con.Close();
 
                         PatientList.RemoveAt(index);
+                        persons.Remove(persons.Where(p => p.ID == PatientList[index].ID).FirstOrDefault());
                     }
                 }
                 else
                 {
                     int index = PatientListBox.SelectedIndex;
                     if (index >= 0 && editPatientWindow.Patient != null)
-                    {
-                        Person editPerson = persons.Where(p => p.ID == editPatientWindow.Patient.ID).FirstOrDefault();
-                        Person tempPerson = new Person()
+                    {                        
+                        Person originalPerson = persons.Where(p => p.ID == editPatientWindow.Patient.ID).FirstOrDefault();
+                        uint addressID = originalPerson.AddressID;
+
+                        // Create new address if it was edited
+                        if (PatientList[index].StreetAddress != editPatientWindow.Patient.StreetAddress 
+                            || PatientList[index].City != editPatientWindow.Patient.City
+                            || PatientList[index].State != editPatientWindow.Patient.State
+                            || PatientList[index].ZipCode != editPatientWindow.Patient.ZipCode)
+                        {
+                            addressID = CreateAddressEntry(editPatientWindow.Patient);
+                        }
+
+                        // Create a person to use in the update function
+                        Person editPerson = new Person()
                         {
                             ID = editPatientWindow.Patient.ID,
                             FirstName = editPatientWindow.FirstName,
@@ -207,26 +224,52 @@ namespace MediStoreManager
                             MiddleName = editPatientWindow.MiddleName,
                             HomePhone = Convert.ToDecimal(editPatientWindow.HomePhone),
                             CellPhone = Convert.ToDecimal(editPatientWindow.CellPhone),
-                            AddressID = editPerson.AddressID,
+                            AddressID = addressID,
                             InsuranceProvider = editPatientWindow.InsuranceProvider,
-                            IsPatient = editPerson.IsPatient,
-                            ContactID = editPerson.ContactID,
-                            ContactRelationship = editPerson.ContactRelationship
+                            IsPatient = originalPerson.IsPatient,
+                            ContactID = originalPerson.ContactID,
+                            ContactRelationship = originalPerson.ContactRelationship
                         };
 
-                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                        DatabaseFunctions.UpdatePersonEntry(con, tempPerson);
+                        con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdatePersonEntry(con, editPerson);
                         con.Close();
 
+                        // Add person entries for new contacts
                         if (editPatientWindow.Patient.Contacts.Any())
                         {
                             foreach (Patient contact in editPatientWindow.Patient.Contacts)
                             {
-                                // add new person 
+                                // Add new person for contact if they don't already exist
+                                if (!PatientList.Any(p => p.ID == contact.ID))
+                                {
+                                    // Create address entry for the contact
+                                    uint contactAddID = CreateAddressEntry(contact);
+                                    // Create person entry for the contact
+                                    Person contactPerson = new Person()
+                                    {
+                                        ID = contact.ID,
+                                        FirstName = contact.FirstName,
+                                        LastName = contact.LastName,
+                                        MiddleName = contact.MiddleName,
+                                        HomePhone = Convert.ToDecimal(contact.HomePhone),
+                                        CellPhone = Convert.ToDecimal(contact.CellPhone),
+                                        AddressID = contactAddID,
+                                        InsuranceProvider = contact.Insurance,
+                                        IsPatient = false,
+                                        ContactID = editPerson.ID
+                                        //ContactRelationship = contact.Relationsip
+                                    };
+
+                                    con = DatabaseFunctions.OpenMySQLConnection();
+                                    DatabaseFunctions.UpdatePersonEntry(con, contactPerson);
+                                    con.Close();
+                                }                            
                             }
-                        }
 
                         PatientList[index] = editPatientWindow.Patient;
+                        //persons.ElementAt(index) = editPerson;
+                        }                        
                     }
                 }
             }
@@ -261,7 +304,7 @@ namespace MediStoreManager
                 switch (newItem.Type)
                 {
                     case "equipment":
-                        EquipmentList.AddEquipment(newItem);
+                        EquipmentList.AddEquipment(newItem);                    
                         break;
                     case "supply":
                         SupplyList.AddSupply(newItem);
@@ -270,6 +313,7 @@ namespace MediStoreManager
                         PartList.AddPart(newItem);
                         break;
                 }
+                inventoryItems.Add(newItem);
             }
         }
 
@@ -297,6 +341,7 @@ namespace MediStoreManager
                         con.Close();
 
                         EquipmentList.RemoveAt(index);
+                        inventoryItems.Remove(inventoryItems.Where(i => i.ID == EquipmentList[index].ID).FirstOrDefault());
                     }
                 }
                 else
@@ -316,6 +361,26 @@ namespace MediStoreManager
                         EquipmentList.RemoveAt(index);
                         PartList.Add(editInventoryWindow.Part);
                     }
+
+                    InventoryItem originalItem = inventoryItems.Where(i => i.ID == editInventoryWindow.ID).FirstOrDefault();
+                    InventoryItem tempItem = new InventoryItem()
+                    {
+                        ID = originalItem.ID,
+                        Type = editInventoryWindow.Type,
+                        Name = editInventoryWindow.Name,
+                        Size = editInventoryWindow.Size,
+                        Brand = editInventoryWindow.Brand,
+                        NumInStock = editInventoryWindow.Quantity,
+                        Cost = Convert.ToDecimal(editInventoryWindow.Price),
+                        RetailPrice = Convert.ToDecimal(editInventoryWindow.RetailPrice),
+                        //IsRental = editInventoryWindow.,
+                        RentalPrice = Convert.ToDecimal(editInventoryWindow.RentalPrice),
+                        SerialNumber = editInventoryWindow.SerialNumber
+                    };
+
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.UpdateInventoryItemEntry(con, tempItem);
+                    con.Close();
                 }
             }
         }
@@ -344,6 +409,7 @@ namespace MediStoreManager
                         con.Close();
 
                         SupplyList.RemoveAt(index);
+                        inventoryItems.Remove(inventoryItems.Where(i => i.ID == SupplyList[index].ID).FirstOrDefault());
                     }
                 }
                 else
@@ -363,6 +429,23 @@ namespace MediStoreManager
                         SupplyList.RemoveAt(index);
                         PartList.Add(editInventoryWindow.Part);
                     }
+
+                    InventoryItem originalItem = inventoryItems.Where(i => i.ID == editInventoryWindow.ID).FirstOrDefault();
+                    InventoryItem tempItem = new InventoryItem()
+                    {
+                        ID = originalItem.ID,
+                        Type = editInventoryWindow.Type,
+                        Name = editInventoryWindow.Name,
+                        Size = editInventoryWindow.Size,
+                        Brand = editInventoryWindow.Brand,
+                        NumInStock = editInventoryWindow.Quantity,
+                        Cost = Convert.ToDecimal(editInventoryWindow.Price),
+                        RetailPrice = Convert.ToDecimal(editInventoryWindow.RetailPrice)
+                    };
+
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.UpdateInventoryItemEntry(con, tempItem);
+                    con.Close();
                 }
             }
         }
@@ -391,6 +474,7 @@ namespace MediStoreManager
                         con.Close();
 
                         PartList.RemoveAt(index);
+                        inventoryItems.Remove(inventoryItems.Where(i => i.ID == PartList[index].ID).FirstOrDefault());
                     }
                 }
                 else
@@ -410,6 +494,23 @@ namespace MediStoreManager
                         PartList.RemoveAt(index);
                         SupplyList.Add(editInventoryWindow.Supply);
                     }
+
+                    InventoryItem originalItem = inventoryItems.Where(i => i.ID == editInventoryWindow.ID).FirstOrDefault();
+                    InventoryItem tempItem = new InventoryItem()
+                    {
+                        ID = originalItem.ID,
+                        Type = editInventoryWindow.Type,
+                        Name = editInventoryWindow.Name,
+                        Size = editInventoryWindow.Size,
+                        Brand = editInventoryWindow.Brand,
+                        NumInStock = editInventoryWindow.Quantity,
+                        Cost = Convert.ToDecimal(editInventoryWindow.Price),
+                        RetailPrice = Convert.ToDecimal(editInventoryWindow.RetailPrice)
+                    };
+
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.UpdateInventoryItemEntry(con, tempItem);
+                    con.Close();
                 }
             }
         }
@@ -445,6 +546,8 @@ namespace MediStoreManager
                 con.Close();
 
                 SupplierList.AddSupplier(newSupplier, newAddress);
+                addresses.Add(newAddress);
+                suppliers.Add(newSupplier);
             }
         }
 
@@ -472,6 +575,7 @@ namespace MediStoreManager
                         con.Close();
 
                         SupplierList.RemoveAt(index);
+                        suppliers.Remove(suppliers.Where(s => s.Name == SupplierList[index].Name).FirstOrDefault());
                     }
                 }
                 else
@@ -479,8 +583,31 @@ namespace MediStoreManager
                     int index = SupplierListBox.SelectedIndex;
                     if (index >= 0 && editSupplierWindow.Supplier != null)
                     {
+                        Supplier originalSupplier = suppliers.Where(s => s.Name == editSupplierWindow.Name).FirstOrDefault();
+                        uint addressID = originalSupplier.AddressID;
+
+                        if (editSupplierWindow.StreetAddress != SupplierList[index].StreetAddress
+                            || editSupplierWindow.City != SupplierList[index].City
+                            || editSupplierWindow.State != SupplierList[index].State
+                            || editSupplierWindow.ZipCode != SupplierList[index].ZipCode)
+                        {
+                            addressID = CreateAddressEntry(editSupplierWindow);
+                        }
+
+                        Supplier editSupplier = new Supplier()
+                        {
+                            Name = editSupplierWindow.Name,
+                            PhoneNumber = Convert.ToDecimal(editSupplierWindow.PhoneNumber),
+                            PartnerID = editSupplierWindow.PartnerID,
+                            AddressID = originalSupplier.AddressID
+                        };
+
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdateSupplierEntry(con, editSupplier);
+                        con.Close();
+
                         SupplierList[index] = editSupplierWindow.Supplier;
-                    }
+                    }                  
                 }
             }
         }
@@ -511,6 +638,7 @@ namespace MediStoreManager
                     con.Close();
 
                     WorkOrdersList.AddWorkOrder(newCustOrder, persons.FirstOrDefault(p => p.ID == newCustOrder.PersonID), inventoryEntries);
+                    customerOrders.Add(newCustOrder);
                 }
             }
         }
@@ -542,6 +670,9 @@ namespace MediStoreManager
                         }
 
                         WorkOrdersList.RemoveAt(index);
+                        List<CustomerOrder> ordersToRemove = customerOrders.Where(i => i.ID == WorkOrdersList[index].ID).ToList();
+                        foreach (CustomerOrder order in ordersToRemove)
+                            customerOrders.Remove(order);
                     }
                 }
                 else
@@ -550,6 +681,47 @@ namespace MediStoreManager
                     if (index >= 0 && editWorkOrderWindow.WorkOrder != null)
                     {
                         WorkOrdersList[index] = editWorkOrderWindow.WorkOrder;
+                    }
+
+                    List<CustomerOrder> originalOrder = customerOrders.Where(co => co.ID == editWorkOrderWindow.ID).ToList();
+                    foreach (InventoryEntry inventoryEntry in editWorkOrderWindow.FinalInventoryEntries)
+                    {
+                        if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
+                        {
+                            // Edit existing order item
+                            CustomerOrder editOrder = new CustomerOrder(editWorkOrderWindow.ID,
+                                inventoryEntry.MainItem.ID,
+                                editWorkOrderWindow.Type,
+                                editWorkOrderWindow.PatientID,
+                                inventoryEntry.MainItem.QuantitySelected,
+                                editWorkOrderWindow.OrderDate,
+                                editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
+                                editWorkOrderWindow.DateOfPayment,
+                                inventoryEntry.RelatedItem.ID,
+                                editWorkOrderWindow.Notes);
+
+                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.UpdateCustomerOrderEntry(con, editOrder);
+                            con.Close();
+                        }
+                        else
+                        {
+                            // Create new order item
+                            CustomerOrder newOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1,
+                                inventoryEntry.MainItem.ID,
+                                editWorkOrderWindow.Type,
+                                editWorkOrderWindow.PatientID,
+                                inventoryEntry.MainItem.QuantitySelected,
+                                editWorkOrderWindow.OrderDate,
+                                editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
+                                editWorkOrderWindow.DateOfPayment,
+                                inventoryEntry.RelatedItem.ID,
+                                editWorkOrderWindow.Notes);
+
+                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.CreateCustomerOrderEntry(con, newOrder);
+                            con.Close();
+                        }
                     }
                 }
             }
@@ -579,6 +751,7 @@ namespace MediStoreManager
                     con.Close();
 
                     SupplyOrdersList.AddSupplyOrder(newOrder, inventoryEntries);
+                    orders.Add(newOrder);
                 }              
             }
         }
@@ -610,6 +783,9 @@ namespace MediStoreManager
                         }
 
                         SupplyOrdersList.RemoveAt(index);
+                        List<Order> ordersToRemove = orders.Where(i => i.ID == SupplyOrdersList[index].ID).ToList();
+                        foreach (Order order in ordersToRemove)
+                            orders.Remove(order);
                     }
                 }
                 else
@@ -618,6 +794,43 @@ namespace MediStoreManager
                     if (index >= 0 && editSupplyOrderWindow.SupplyOrder != null)
                     {
                         SupplyOrdersList[index] = editSupplyOrderWindow.SupplyOrder;
+                    }
+
+                    List<Order> originalOrder = orders.Where(o => o.ID == editSupplyOrderWindow.ID).ToList();
+                    foreach (InventoryEntry inventoryEntry in editSupplyOrderWindow.FinalInventoryEntries)
+                    {
+                        if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
+                        {
+                            // Edit existing order item
+                            Order editOrder = new Order(editSupplyOrderWindow.ID,
+                                inventoryEntry.MainItem.ID,
+                                inventoryEntry.MainItem.QuantitySelected,
+                                editSupplyOrderWindow.Supplier,
+                                editSupplyOrderWindow.ShippingMethod,
+                                editSupplyOrderWindow.OrderDate,
+                                editSupplyOrderWindow.ReceivedDate != DateTime.MinValue,
+                                editSupplyOrderWindow.ReceivedDate);
+
+                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.UpdateOrderEntry(con, editOrder);
+                            con.Close();
+                        }
+                        else
+                        {
+                            // Create new order item
+                            Order newOrder = new Order(orders.Max(o => o.ID) + 1, 
+                                inventoryEntry.MainItem.ID, 
+                                inventoryEntry.MainItem.QuantitySelected,
+                                editSupplyOrderWindow.Supplier, 
+                                editSupplyOrderWindow.ShippingMethod, 
+                                editSupplyOrderWindow.OrderDate,
+                                editSupplyOrderWindow.ReceivedDate != DateTime.MinValue, 
+                                editSupplyOrderWindow.ReceivedDate);
+
+                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.CreateOrderEntry(con, newOrder);
+                            con.Close();
+                        }
                     }
                 }
             }
@@ -836,6 +1049,44 @@ namespace MediStoreManager
                     WorkOrdersList.AddWorkOrder(order, customer, invEntries);
                 }              
             }
+        }
+
+        private uint CreateAddressEntry(Patient patient)
+        {
+            (string, string) address = SplitAddress(patient.StreetAddress);
+
+            Address newAddress = new Address(addresses.Max(a => a.ID) + 1,
+                address.Item2,
+                address.Item1,
+                patient.City,
+                patient.State,
+                patient.ZipCode);
+
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            DatabaseFunctions.CreateAddressEntry(con, newAddress);
+            con.Close();
+
+            addresses.Add(newAddress);
+            return newAddress.ID;
+        }
+
+        private uint CreateAddressEntry(AddSupplierWindow addSupplierWindow)
+        {
+            (string, string) address = SplitAddress(addSupplierWindow.StreetAddress);
+
+            Address newAddress = new Address(addresses.Max(a => a.ID) + 1,
+                address.Item2,
+                address.Item1,
+                addSupplierWindow.City,
+                addSupplierWindow.State,
+                addSupplierWindow.ZipCode);
+
+            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+            DatabaseFunctions.CreateAddressEntry(con, newAddress);
+            con.Close();
+
+            addresses.Add(newAddress);
+            return newAddress.ID;
         }
         #endregion
 

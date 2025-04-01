@@ -451,6 +451,13 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
+        public static void FullyDeleteAddressEntry(MySqlConnection con, uint id)
+        {
+            string sql = "delete from address where ID = " + id + ";";
+            MySqlCommand cmd = new MySqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+        }
+
         public static List<Order> GetOrderList(MySqlConnection con)
         {
             List<Order> orders = new List<Order>();

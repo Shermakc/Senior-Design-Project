@@ -112,6 +112,8 @@ namespace MediStoreManager
                 PopulatePartList();
                 PopulateWorkOrderList();
                 PopulateSupplyOrderList();
+
+                ClearUnusedAddresses();
             }
             catch (MySqlException ex)
             {
@@ -262,14 +264,17 @@ namespace MediStoreManager
                                     };
 
                                     con = DatabaseFunctions.OpenMySQLConnection();
-                                    DatabaseFunctions.UpdatePersonEntry(con, contactPerson);
+                                    DatabaseFunctions.CreatePersonEntry(con, contactPerson);
                                     con.Close();
-                                }                            
+
+                                    persons.Add(contactPerson);
+                                }
                             }
+                        }
 
                         PatientList[index] = editPatientWindow.Patient;
-                        //persons.ElementAt(index) = editPerson;
-                        }                        
+                        int pIndex = persons.IndexOf(originalPerson);
+                        persons[pIndex] = editPerson;                     
                     }
                 }
             }
@@ -363,7 +368,7 @@ namespace MediStoreManager
                     }
 
                     InventoryItem originalItem = inventoryItems.Where(i => i.ID == editInventoryWindow.ID).FirstOrDefault();
-                    InventoryItem tempItem = new InventoryItem()
+                    InventoryItem editItem = new InventoryItem()
                     {
                         ID = originalItem.ID,
                         Type = editInventoryWindow.Type,
@@ -379,8 +384,11 @@ namespace MediStoreManager
                     };
 
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                    DatabaseFunctions.UpdateInventoryItemEntry(con, tempItem);
+                    DatabaseFunctions.UpdateInventoryItemEntry(con, editItem);
                     con.Close();
+
+                    int eIndex = inventoryItems.IndexOf(originalItem);
+                    inventoryItems[eIndex] = editItem;
                 }
             }
         }
@@ -431,7 +439,7 @@ namespace MediStoreManager
                     }
 
                     InventoryItem originalItem = inventoryItems.Where(i => i.ID == editInventoryWindow.ID).FirstOrDefault();
-                    InventoryItem tempItem = new InventoryItem()
+                    InventoryItem editItem = new InventoryItem()
                     {
                         ID = originalItem.ID,
                         Type = editInventoryWindow.Type,
@@ -444,8 +452,11 @@ namespace MediStoreManager
                     };
 
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                    DatabaseFunctions.UpdateInventoryItemEntry(con, tempItem);
+                    DatabaseFunctions.UpdateInventoryItemEntry(con, editItem);
                     con.Close();
+
+                    int sIndex = inventoryItems.IndexOf(originalItem);
+                    inventoryItems[sIndex] = editItem;
                 }
             }
         }
@@ -496,7 +507,7 @@ namespace MediStoreManager
                     }
 
                     InventoryItem originalItem = inventoryItems.Where(i => i.ID == editInventoryWindow.ID).FirstOrDefault();
-                    InventoryItem tempItem = new InventoryItem()
+                    InventoryItem editItem = new InventoryItem()
                     {
                         ID = originalItem.ID,
                         Type = editInventoryWindow.Type,
@@ -509,8 +520,11 @@ namespace MediStoreManager
                     };
 
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                    DatabaseFunctions.UpdateInventoryItemEntry(con, tempItem);
+                    DatabaseFunctions.UpdateInventoryItemEntry(con, editItem);
                     con.Close();
+
+                    int pIndex = inventoryItems.IndexOf(originalItem);
+                    inventoryItems[pIndex] = editItem;
                 }
             }
         }
@@ -591,7 +605,7 @@ namespace MediStoreManager
                             || editSupplierWindow.State != SupplierList[index].State
                             || editSupplierWindow.ZipCode != SupplierList[index].ZipCode)
                         {
-                            addressID = CreateAddressEntry(editSupplierWindow);
+                            addressID = CreateAddressEntry(editSupplierWindow);                           
                         }
 
                         Supplier editSupplier = new Supplier()
@@ -606,7 +620,10 @@ namespace MediStoreManager
                         DatabaseFunctions.UpdateSupplierEntry(con, editSupplier);
                         con.Close();
 
-                        SupplierList[index] = editSupplierWindow.Supplier;
+                        int sIndex = suppliers.IndexOf(originalSupplier);
+                        suppliers[sIndex] = editSupplier;
+
+                        SupplierList[index] = editSupplierWindow.Supplier;                 
                     }                  
                 }
             }
@@ -670,7 +687,7 @@ namespace MediStoreManager
                         }
 
                         WorkOrdersList.RemoveAt(index);
-                        List<CustomerOrder> ordersToRemove = customerOrders.Where(i => i.ID == WorkOrdersList[index].ID).ToList();
+                        List<CustomerOrder> ordersToRemove = customerOrders.Where(co => co.ID == WorkOrdersList[index].ID).ToList();
                         foreach (CustomerOrder order in ordersToRemove)
                             customerOrders.Remove(order);
                     }
@@ -703,6 +720,9 @@ namespace MediStoreManager
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.UpdateCustomerOrderEntry(con, editOrder);
                             con.Close();
+
+                            int oIndex = customerOrders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                            customerOrders[oIndex] = editOrder;
                         }
                         else
                         {
@@ -721,6 +741,8 @@ namespace MediStoreManager
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.CreateCustomerOrderEntry(con, newOrder);
                             con.Close();
+
+                            customerOrders.Add(newOrder);
                         }
                     }
                 }
@@ -814,6 +836,9 @@ namespace MediStoreManager
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.UpdateOrderEntry(con, editOrder);
                             con.Close();
+
+                            int oIndex = orders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                            orders[oIndex] = editOrder;
                         }
                         else
                         {
@@ -830,6 +855,8 @@ namespace MediStoreManager
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.CreateOrderEntry(con, newOrder);
                             con.Close();
+
+                            orders.Add(newOrder);
                         }
                     }
                 }
@@ -1063,6 +1090,20 @@ namespace MediStoreManager
                     Person customer = persons.Where(p => p.ID == order.PersonID).FirstOrDefault();
                     WorkOrdersList.AddWorkOrder(order, customer, invEntries);
                 }                             
+            }
+        }
+
+        private void ClearUnusedAddresses()
+        {
+            foreach (Address address in addresses)
+            {
+                if (!persons.Any(p => p.AddressID == address.ID)
+                    && !suppliers.Any(s => s.AddressID == address.ID))
+                {
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.FullyDeleteAddressEntry(con, address.ID);
+                    con.Close();
+                }
             }
         }
 

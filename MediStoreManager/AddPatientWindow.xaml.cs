@@ -71,9 +71,10 @@ namespace MediStoreManager
             ZipTextBox.Text = patient.ZipCode;
             StateTextBox.Text = patient.State;
             InsuranceTextBox.Text = patient.Insurance;
-            _contacts = patient.Contacts;
+            _contacts = new ObservableCollection<Patient>(patient.Contacts);
             ID = patient.ID;
             DisplayName = patient.DisplayName;
+            ContactItemsControl.ItemsSource = _contacts;
             DataContext = this;
         }
 

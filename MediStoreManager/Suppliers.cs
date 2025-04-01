@@ -14,7 +14,7 @@ namespace MediStoreManager
            
         }
 
-        public void AddSupplier(Supplier supplier, Address address)
+        public void AddSupplier(Supplier supplier, Address address, ObservableCollection<SupplyOrder> supplyOrders)
         {
             Add(new SupplierL
             {
@@ -24,7 +24,14 @@ namespace MediStoreManager
                 StreetAddress = address.AddressNumber + " " + address.StreetName,
                 City = address.City,
                 ZipCode = address.ZipCode.ToString(),
-                State = address.State
+                State = address.State,
+                SupplyOrders = new ObservableCollection<OrderSummary>(
+                    supplyOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Date = o.OrderDate
+                        }))
             });
         }
     }

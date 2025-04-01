@@ -25,6 +25,7 @@ namespace MediStoreManager
         private uint _contactID;
         private string _relationshipToPatient;
         private ObservableCollection<Patient> _contacts;
+        private ObservableCollection<OrderSummary> _workOrders;
 
         public uint ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string FirstName { get => _firstname; set { _firstname = value; OnPropertyChanged(nameof(FirstName)); } }
@@ -41,6 +42,7 @@ namespace MediStoreManager
         public uint ContactID { get => _contactID; set { _contactID = value; OnPropertyChanged(nameof(ContactID)); } }
         public string RelationshipToPatient { get => _relationshipToPatient; set { _relationshipToPatient = value; OnPropertyChanged(nameof(RelationshipToPatient)); } }
         public ObservableCollection<Patient> Contacts { get => _contacts; set { _contacts = value; OnPropertyChanged(nameof(Contacts)); } }
+        public ObservableCollection<OrderSummary> WorkOrders { get => _workOrders; set { _workOrders = value; OnPropertyChanged(nameof(WorkOrders)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

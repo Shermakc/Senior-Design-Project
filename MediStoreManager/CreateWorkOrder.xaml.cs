@@ -105,8 +105,6 @@ namespace MediStoreManager
                 equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", AllowedQuantity = 100, QuantitySelected = 0 })
             );
 
-            // Bind the ItemsControl to the InventoryEntries collection
-            InventoryItemsControl.ItemsSource = InventoryEntries;
             ID = workOrder.ID;
             TypeComboBox.SelectedItem = workOrder.Type;
             SelectedPatient = patients.FirstOrDefault(p => p.ID == workOrder.PatientID);
@@ -123,8 +121,9 @@ namespace MediStoreManager
             _suppressTextChanged = false;
             OrderDateDatePicker.SelectedDate = workOrder.Date;
             DateOfPaymentDatePicker.SelectedDate = workOrder.PaymentDate;
-            InventoryEntries = workOrder.InventoryEntries;
+            InventoryEntries = new ObservableCollection<InventoryEntry>(workOrder.InventoryEntries);
             NotesTextBox.Text = workOrder.Notes;
+            InventoryItemsControl.ItemsSource = InventoryEntries;
             DataContext = this;
         }
 

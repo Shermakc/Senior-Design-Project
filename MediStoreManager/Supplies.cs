@@ -14,7 +14,7 @@ namespace MediStoreManager
 
         }
 
-        public void AddSupply(InventoryItem item)
+        public void AddSupply(InventoryItem item, ObservableCollection<WorkOrder> workOrders, ObservableCollection<SupplyOrder> supplyOrders)
         {
             Add(new Supply
             {
@@ -26,6 +26,22 @@ namespace MediStoreManager
                 Brand = item.Brand,
                 Price = item.Cost.ToString(),
                 RetailPrice = item.RetailPrice.ToString(),
+                WorkOrders = new ObservableCollection<OrderSummary>(
+                    workOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Type = o.Type,
+                            Date = o.Date,
+                            Notes = o.Notes
+                        })),
+                SupplyOrders = new ObservableCollection<OrderSummary>(
+                    supplyOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Date = o.OrderDate
+                        }))
             });
         }
     }

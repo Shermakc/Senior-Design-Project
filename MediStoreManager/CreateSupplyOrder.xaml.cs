@@ -93,7 +93,6 @@ namespace MediStoreManager
             );
 
             // Bind the ItemsControl to the InventoryEntries collection
-            InventoryItemsControl.ItemsSource = InventoryEntries;
             IsEditMode = true;
             ID = supplyOrder.ID;
             SelectedSupplier = suppliers.FirstOrDefault(s => s.Name == supplyOrder.Supplier);
@@ -108,10 +107,11 @@ namespace MediStoreManager
                 _filteredSuppliers.Add(supplier);
 
             _suppressTextChanged = false;
-            InventoryEntries = supplyOrder.InventoryEntries;
+            InventoryEntries = new ObservableCollection<InventoryEntry>(supplyOrder.InventoryEntries);
             ShippingMethodTextBox.Text = supplyOrder.ShippingMethod;
             OrderDateDatePicker.SelectedDate = supplyOrder.OrderDate;
             ReceivedDateDatePicker.SelectedDate = supplyOrder.ReceivedDate;
+            InventoryItemsControl.ItemsSource = InventoryEntries;
             DataContext = this;
         }
 

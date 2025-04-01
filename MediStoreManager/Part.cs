@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,8 @@ namespace MediStoreManager
         private int _quantity;
         private string _price;
         private string _retailPrice;
+        private ObservableCollection<OrderSummary> _workOrders;
+        private ObservableCollection<OrderSummary> _supplyOrders;
 
         public uint ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string Name { get => _name; set { _name = value; OnPropertyChanged(nameof(Name)); } }
@@ -26,6 +29,8 @@ namespace MediStoreManager
         public int Quantity { get => _quantity; set { _quantity = value; OnPropertyChanged(nameof(Quantity)); } }
         public string Price { get => _price; set { _price = value; OnPropertyChanged(nameof(Price)); } }
         public string RetailPrice { get => _retailPrice; set { _retailPrice = value; OnPropertyChanged(nameof(RetailPrice)); } }
+        public ObservableCollection<OrderSummary> WorkOrders { get => _workOrders; set { _workOrders = value; OnPropertyChanged(nameof(WorkOrders)); } }
+        public ObservableCollection<OrderSummary> SupplyOrders { get => _supplyOrders; set { _supplyOrders = value; OnPropertyChanged(nameof(SupplyOrders)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)

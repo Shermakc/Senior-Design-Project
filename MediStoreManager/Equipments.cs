@@ -14,7 +14,7 @@ namespace MediStoreManager
 
         }
 
-        public void AddEquipment(InventoryItem item)
+        public void AddEquipment(InventoryItem item, ObservableCollection<WorkOrder> workOrders, ObservableCollection<SupplyOrder> supplyOrders)
         {
             Add(new Equipment
             {
@@ -26,7 +26,24 @@ namespace MediStoreManager
                 Brand = item.Brand,
                 Price = item.Cost.ToString(),
                 RetailPrice = item.RetailPrice.ToString(),
-                RentalPrice = item.RentalPrice.ToString()
+                IsRental = item.IsRental,
+                RentalPrice = item.RentalPrice.ToString(),
+                WorkOrders = new ObservableCollection<OrderSummary>(
+                    workOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Type = o.Type,
+                            Date = o.Date,
+                            Notes = o.Notes
+                        })),
+                SupplyOrders = new ObservableCollection<OrderSummary>(
+                    supplyOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Date = o.OrderDate
+                        }))
             });
         }
     }

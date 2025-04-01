@@ -185,13 +185,13 @@ namespace MediStoreManager
                 RetrieveCustomerOrders();
                 RetrieveUsers();
 
+                PopulateWorkOrderList();
+                PopulateSupplyOrderList();
                 PopulatePatientList();
                 PopulateSupplierList();
                 PopulateEquipmentList();
                 PopulateSupplyList();
                 PopulatePartList();
-                PopulateWorkOrderList();
-                PopulateSupplyOrderList();
             }
             catch (MySqlException ex)
             {
@@ -244,7 +244,7 @@ namespace MediStoreManager
                 con.Close();
 
                 // Add patient to user interface
-                PatientList.AddPatient(newPerson, newAddress);
+                PatientList.AddPatient(newPerson, newAddress, null);
                 addresses.Add(newAddress);
                 persons.Add(newPerson);
             }
@@ -384,13 +384,13 @@ namespace MediStoreManager
                 switch (newItem.Type)
                 {
                     case "equipment":
-                        EquipmentList.AddEquipment(newItem);                    
+                        EquipmentList.AddEquipment(newItem, null, null);                    
                         break;
                     case "supply":
-                        SupplyList.AddSupply(newItem);
+                        SupplyList.AddSupply(newItem, null, null);
                         break;
                     case "part":
-                        PartList.AddPart(newItem);
+                        PartList.AddPart(newItem, null, null);
                         break;
                 }
                 inventoryItems.Add(newItem);
@@ -625,7 +625,7 @@ namespace MediStoreManager
                 DatabaseFunctions.CreateSupplierEntry(con, newSupplier);
                 con.Close();
 
-                SupplierList.AddSupplier(newSupplier, newAddress);
+                SupplierList.AddSupplier(newSupplier, newAddress, null);
                 addresses.Add(newAddress);
                 suppliers.Add(newSupplier);
             }
@@ -1014,10 +1014,11 @@ namespace MediStoreManager
             Patients allPersonsList = new Patients();
             foreach (Person person in persons)
             {
-                allPersonsList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.PatientID == person.ID).ToList());
+                allPersonsList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault(), workOrders);
                 if (person.IsPatient)
                 {
-                    PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                    PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault(), workOrders);
                 }                
             }
 
@@ -1037,7 +1038,8 @@ namespace MediStoreManager
         {
             foreach (Supplier supplier in suppliers)
             {
-                SupplierList.AddSupplier(supplier, addresses.Where(a => a.ID == supplier.AddressID).FirstOrDefault());
+                ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.Supplier == supplier.Name).ToList());
+                SupplierList.AddSupplier(supplier, addresses.Where(a => a.ID == supplier.AddressID).FirstOrDefault(), supplyOrders);
             }
         }
 
@@ -1046,7 +1048,13 @@ namespace MediStoreManager
             List<InventoryItem> equipmentItems = inventoryItems.Where(i => i.Type == "equipment").ToList();
             foreach (InventoryItem item in equipmentItems)
             {
-                EquipmentList.AddEquipment(item);
+                ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                    e.MainItem.ID == item.ID ||
+                                                                                                                    e.RelatedItem.ID == item.ID)).ToList());
+                EquipmentList.AddEquipment(item, workOrders, supplyOrders);
             }
         }
 
@@ -1055,7 +1063,13 @@ namespace MediStoreManager
             List<InventoryItem> supplyItems = inventoryItems.Where(i => i.Type == "supply").ToList();
             foreach (InventoryItem item in supplyItems)
             {
-                SupplyList.AddSupply(item);
+                ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                    e.MainItem.ID == item.ID ||
+                                                                                                                    e.RelatedItem.ID == item.ID)).ToList());
+                SupplyList.AddSupply(item, workOrders, supplyOrders);
             }
         }
 
@@ -1064,7 +1078,13 @@ namespace MediStoreManager
             List<InventoryItem> partItems = inventoryItems.Where(i => i.Type == "part").ToList();
             foreach (InventoryItem item in partItems)
             {
-                PartList.AddPart(item);
+                ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                    e.MainItem.ID == item.ID ||
+                                                                                                                    e.RelatedItem.ID == item.ID)).ToList());
+                PartList.AddPart(item, workOrders, supplyOrders);
             }
         }
 

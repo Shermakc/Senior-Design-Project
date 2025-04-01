@@ -48,15 +48,61 @@ namespace MediStoreManager
         public Parts PartList { get; set; }
         public Supplies SupplyList { get; set; }
 
-        private object _selectedInventory;
-
-        public object SelectedInventory
+        public object CurrentItem
         {
-            get => _selectedInventory;
+            get
+            {
+                return SelectedInventoryTabIndex == 0 ? SelectedEquipment :
+                       SelectedInventoryTabIndex == 1 ? SelectedSupply : 
+                       SelectedInventoryTabIndex == 2 ? SelectedPart : null;
+            }
+        }
+
+        private int _selectedInventoryTabIndex;
+        public int SelectedInventoryTabIndex
+        {
+            get => _selectedInventoryTabIndex;
             set
             {
-                _selectedInventory = value;
-                OnPropertyChanged(nameof(SelectedInventory));
+                _selectedInventoryTabIndex = value;
+                OnPropertyChanged(nameof(SelectedInventoryTabIndex));
+                OnPropertyChanged(nameof(CurrentItem)); // Update the display when the tab changes
+            }
+        }
+
+        private object _selectedEquipment;
+        public object SelectedEquipment
+        {
+            get => _selectedEquipment;
+            set
+            {
+                _selectedEquipment = value;
+                OnPropertyChanged(nameof(SelectedEquipment));
+                OnPropertyChanged(nameof(CurrentItem));
+            }
+        }
+
+        private object _selectedSupply;
+        public object SelectedSupply
+        {
+            get => _selectedSupply;
+            set
+            {
+                _selectedSupply = value;
+                OnPropertyChanged(nameof(SelectedSupply));
+                OnPropertyChanged(nameof(CurrentItem));
+            }
+        }
+        private object _selectedPart;
+
+        public object SelectedPart
+        {
+            get => _selectedPart;
+            set
+            {
+                _selectedPart = value;
+                OnPropertyChanged(nameof(SelectedPart));
+                OnPropertyChanged(nameof(CurrentItem));
             }
         }
 
@@ -67,19 +113,19 @@ namespace MediStoreManager
         {
             get
             {
-                return SelectedTabIndex == 0 ? SelectedWorkOrder :
-                       SelectedTabIndex == 1 ? SelectedSupplyOrder : null;
+                return SelectedOrderTabIndex == 0 ? SelectedWorkOrder :
+                       SelectedOrderTabIndex == 1 ? SelectedSupplyOrder : null;
             }
         }
 
-        private int _selectedTabIndex;
-        public int SelectedTabIndex
+        private int _selectedOrderTabIndex;
+        public int SelectedOrderTabIndex
         {
-            get => _selectedTabIndex;
+            get => _selectedOrderTabIndex;
             set
             {
-                _selectedTabIndex = value;
-                OnPropertyChanged(nameof(SelectedTabIndex));
+                _selectedOrderTabIndex = value;
+                OnPropertyChanged(nameof(SelectedOrderTabIndex));
                 OnPropertyChanged(nameof(CurrentOrder)); // Update the display when the tab changes
             }
         }
@@ -571,7 +617,7 @@ namespace MediStoreManager
                         foreach (InventoryEntry invEntry in WorkOrdersList[index].InventoryEntries)
                         {
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.DeleteOrderEntry(con, WorkOrdersList[index].ID, invEntry.MainItem.ID);
+                            DatabaseFunctions.DeleteCustomerOrderEntry(con, WorkOrdersList[index].ID, invEntry.MainItem.ID);
                             con.Close();
                         }
 
@@ -639,7 +685,7 @@ namespace MediStoreManager
                         foreach (InventoryEntry invEntry in SupplyOrdersList[index].InventoryEntries)
                         {
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.DeleteCustomerOrderEntry(con, SupplyOrdersList[index].ID, invEntry.MainItem.ID);
+                            DatabaseFunctions.DeleteOrderEntry(con, SupplyOrdersList[index].ID, invEntry.MainItem.ID);
                             con.Close();
                         }
 
@@ -675,17 +721,17 @@ namespace MediStoreManager
 
         private void EquipmentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedEquipment = ((ListBox)sender).SelectedItem;
         }
 
         private void SuppliesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedSupply = ((ListBox)sender).SelectedItem;
         }
 
         private void PartsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedPart = ((ListBox)sender).SelectedItem;
         }
 
         private void SupplierListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

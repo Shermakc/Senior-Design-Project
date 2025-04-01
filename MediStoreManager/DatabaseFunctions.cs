@@ -211,7 +211,7 @@ namespace MediStoreManager
         {
             string sql = "insert into person " +
                 "(`ID`, `FirstName`, `LastName`, `MiddleName`, `HomePhone`, `CellPhone`, `AddressID`, `InsuranceProvider`, " +
-                "`IsPatientContact`, `ContactID`, `ContactRelationship`) " +
+                "`IsPatient`, `ContactID`, `ContactRelationship`) " +
                 "VALUES ('" + newPerson.ID + "', '" + newPerson.FirstName + "', '" + newPerson.LastName + "', '"
                 + newPerson.MiddleName + "', '" + newPerson.HomePhone + "', '" + newPerson.CellPhone + "', '"
                 + newPerson.AddressID + "', '" + newPerson.InsuranceProvider + "', '" + Convert.ToByte(newPerson.IsPatient) + "', '"
@@ -224,7 +224,7 @@ namespace MediStoreManager
         {
             string sql = "update person set FirstName = '" + person.FirstName + "', LastName = '" + person.LastName +
                 "', MiddleName = '" + person.MiddleName + "', HomePhone = " + person.HomePhone + ", CellPhone = " + person.CellPhone +
-                ", AddressID = " + person.AddressID + ", InsuranceProvider = '" + person.InsuranceProvider + "', IsPatientContact = " + Convert.ToByte(person.IsPatient) +
+                ", AddressID = " + person.AddressID + ", InsuranceProvider = '" + person.InsuranceProvider + "', IsPatient = " + Convert.ToByte(person.IsPatient) +
                 ", ContactID = " + person.ContactID + ", ContactRelationship = '" + person.ContactRelationship +
                 "' where ID = " + person.ID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);

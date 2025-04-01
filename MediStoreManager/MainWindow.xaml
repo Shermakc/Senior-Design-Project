@@ -147,7 +147,7 @@
                     <Grid Height="595" Width="926" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <ContentControl Content="{Binding SelectedInventory}">
+                                <ContentControl Content="{Binding CurrentItem}">
                                     <ContentControl.Resources>
 
                                         <DataTemplate DataType="{x:Type local:Equipment}">
@@ -173,8 +173,8 @@
                                                     <TextBlock Text="{Binding Brand}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding Price}" Width="272" Margin="10,20"/>
-                                                    <!--TextBlock Text="Serial Number: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/-->
-                                                    <!--TextBlock Text="{Binding SerialNumber}" Width="272" Margin="10,20"/-->
+                                                    <TextBlock Text="Serial Number: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                    <TextBlock Text="{Binding SerialNumber}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
                                             </StackPanel>
                                         </DataTemplate>
@@ -247,37 +247,37 @@
                         <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="20" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="681" Width="590" Margin="10,10,0,0">
-                        <TabControl Name="InventoryTabControl">
+                        <TabControl Name="InventoryTabControl" SelectedIndex="{Binding SelectedInventoryTabIndex}">
                             <TabItem Header="Equipment" Margin="0,0,0,0">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
                                     <TextBox>
                                         Search...
                                     </TextBox>
                                     <ListBox Name="EquipmentListBox" ItemsSource="{Binding EquipmentList}" 
                                              DisplayMemberPath="Name" 
-                                             SelectionChanged="EquipmentListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             SelectionChanged="EquipmentListBox_SelectionChanged" SelectedItem="{Binding SelectedEquipment, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Supplies">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
                                     <TextBox>
                                         Search...
                                     </TextBox>
                                     <ListBox Name="SuppliesListBox" ItemsSource="{Binding SupplyList}" 
                                              DisplayMemberPath="Name" 
-                                             SelectionChanged="SuppliesListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             SelectionChanged="SuppliesListBox_SelectionChanged" SelectedItem="{Binding SelectedSupply, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Parts">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
                                     <TextBox>
                                         Search...
                                     </TextBox>
                                     <ListBox Name="PartsListBox" ItemsSource="{Binding PartList}" 
                                              DisplayMemberPath="Name" 
-                                             SelectionChanged="PartsListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             SelectionChanged="PartsListBox_SelectionChanged" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
@@ -469,9 +469,9 @@
                         <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="20" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="681" Width="590" Margin="10,10,0,0">
-                        <TabControl Name="OrdersTabControl" SelectedIndex="{Binding SelectedTabIndex}">
+                        <TabControl Name="OrdersTabControl" SelectedIndex="{Binding SelectedOrderTabIndex}">
                             <TabItem Header="Work" Margin="0,0,0,0">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
                                     <TextBox>
                                         Search...
                                     </TextBox>
@@ -482,7 +482,7 @@
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Supply">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
                                     <TextBox>
                                         Search...
                                     </TextBox>

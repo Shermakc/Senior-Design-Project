@@ -48,29 +48,109 @@ namespace MediStoreManager
         public Parts PartList { get; set; }
         public Supplies SupplyList { get; set; }
 
-        private object _selectedInventory;
-
-        public object SelectedInventory
+        public object CurrentItem
         {
-            get => _selectedInventory;
+            get
+            {
+                return SelectedInventoryTabIndex == 0 ? SelectedEquipment :
+                       SelectedInventoryTabIndex == 1 ? SelectedSupply : 
+                       SelectedInventoryTabIndex == 2 ? SelectedPart : null;
+            }
+        }
+
+        private int _selectedInventoryTabIndex;
+        public int SelectedInventoryTabIndex
+        {
+            get => _selectedInventoryTabIndex;
             set
             {
-                _selectedInventory = value;
-                OnPropertyChanged(nameof(SelectedInventory));
+                _selectedInventoryTabIndex = value;
+                OnPropertyChanged(nameof(SelectedInventoryTabIndex));
+                OnPropertyChanged(nameof(CurrentItem)); // Update the display when the tab changes
+            }
+        }
+
+        private object _selectedEquipment;
+        public object SelectedEquipment
+        {
+            get => _selectedEquipment;
+            set
+            {
+                _selectedEquipment = value;
+                OnPropertyChanged(nameof(SelectedEquipment));
+                OnPropertyChanged(nameof(CurrentItem));
+            }
+        }
+
+        private object _selectedSupply;
+        public object SelectedSupply
+        {
+            get => _selectedSupply;
+            set
+            {
+                _selectedSupply = value;
+                OnPropertyChanged(nameof(SelectedSupply));
+                OnPropertyChanged(nameof(CurrentItem));
+            }
+        }
+        private object _selectedPart;
+
+        public object SelectedPart
+        {
+            get => _selectedPart;
+            set
+            {
+                _selectedPart = value;
+                OnPropertyChanged(nameof(SelectedPart));
+                OnPropertyChanged(nameof(CurrentItem));
             }
         }
 
         public WorkOrders WorkOrdersList { get; set; }
         public SupplyOrders SupplyOrdersList { get; set; }
 
-        private object _selectedOrder;
-        public object SelectedOrder
+        public object CurrentOrder
         {
-            get => _selectedOrder;
+            get
+            {
+                return SelectedOrderTabIndex == 0 ? SelectedWorkOrder :
+                       SelectedOrderTabIndex == 1 ? SelectedSupplyOrder : null;
+            }
+        }
+
+        private int _selectedOrderTabIndex;
+        public int SelectedOrderTabIndex
+        {
+            get => _selectedOrderTabIndex;
             set
             {
-                _selectedOrder = value;
-                OnPropertyChanged(nameof(SelectedOrder));
+                _selectedOrderTabIndex = value;
+                OnPropertyChanged(nameof(SelectedOrderTabIndex));
+                OnPropertyChanged(nameof(CurrentOrder)); // Update the display when the tab changes
+            }
+        }
+
+        private object _selectedWorkOrder;
+        public object SelectedWorkOrder
+        {
+            get => _selectedWorkOrder;
+            set
+            {
+                _selectedWorkOrder = value;
+                OnPropertyChanged(nameof(SelectedWorkOrder));
+                OnPropertyChanged(nameof(CurrentOrder));
+            }
+        }
+
+        private object _selectedSupplyOrder;
+        public object SelectedSupplyOrder
+        {
+            get => _selectedSupplyOrder;
+            set
+            {
+                _selectedSupplyOrder = value;
+                OnPropertyChanged(nameof(SelectedSupplyOrder));
+                OnPropertyChanged(nameof(CurrentOrder));
             }
         }
 
@@ -141,11 +221,29 @@ namespace MediStoreManager
                 string state = addPatientWindow.State;
                 string zipCode = addPatientWindow.ZipCode;
                 string insurance = addPatientWindow.InsuranceProvider;
+                bool isPatient = true;
                 ObservableCollection<Patient> contacts = addPatientWindow.FinalContacts;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nFirst Name = {firstName}\nMiddle Name = {middleName}\nLast Name = {lastName}\nHome Phone # = {homePhone}\nCell Phone # = {cellPhone}\n" +
-                    $"Street Address = {streetAddress}\nCity = {city}\nState = {state}\nZip Code = {zipCode}\nInsurance = {insurance}");
+                // Create new database class items with info from popup
+                (string, string) patientAddress = SplitAddress(streetAddress);
+
+                Address newAddress = new Address(addresses.Max(a => a.ID) + 1, patientAddress.Item2, patientAddress.Item1,
+                    city, state, zipCode);
+
+                Person newPerson = new Person(persons.Max(p => p.ID) + 1, firstName, lastName, middleName, homePhone, cellPhone,
+                    newAddress.ID, insurance, isPatient);
+
+                // Insert new items into the database
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateAddressEntry(con, newAddress);
+                con.Close();
+
+                con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreatePersonEntry(con, newPerson);
+                con.Close();
+
+                // Add patient to user interface
+                PatientList.AddPatient(newPerson, newAddress);
             }
         }
 
@@ -168,6 +266,10 @@ namespace MediStoreManager
                     int index = PatientListBox.SelectedIndex;
                     if (index >= 0)
                     {
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.DeletePersonEntry(con, PatientList[index].ID);
+                        con.Close();
+
                         PatientList.RemoveAt(index);
                     }
                 }
@@ -176,6 +278,34 @@ namespace MediStoreManager
                     int index = PatientListBox.SelectedIndex;
                     if (index >= 0 && editPatientWindow.Patient != null)
                     {
+                        Person editPerson = persons.Where(p => p.ID == editPatientWindow.Patient.ID).FirstOrDefault();
+                        Person tempPerson = new Person()
+                        {
+                            ID = editPatientWindow.Patient.ID,
+                            FirstName = editPatientWindow.FirstName,
+                            LastName = editPatientWindow.LastName,
+                            MiddleName = editPatientWindow.MiddleName,
+                            HomePhone = Convert.ToDecimal(editPatientWindow.HomePhone),
+                            CellPhone = Convert.ToDecimal(editPatientWindow.CellPhone),
+                            AddressID = editPerson.AddressID,
+                            InsuranceProvider = editPatientWindow.InsuranceProvider,
+                            IsPatient = editPerson.IsPatient,
+                            ContactID = editPerson.ContactID,
+                            ContactRelationship = editPerson.ContactRelationship
+                        };
+
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdatePersonEntry(con, tempPerson);
+                        con.Close();
+
+                        if (editPatientWindow.Patient.Contacts.Any())
+                        {
+                            foreach (Patient contact in editPatientWindow.Patient.Contacts)
+                            {
+                                // add new person 
+                            }
+                        }
+
                         PatientList[index] = editPatientWindow.Patient;
                     }
                 }
@@ -197,11 +327,29 @@ namespace MediStoreManager
                 string price = addInventoryWindow.Price;
                 string retailPrice = addInventoryWindow.RetailPrice;
                 string rentalPrice = addInventoryWindow.RentalPrice;
+                bool isRental = rentalPrice != string.Empty;
                 string serialNumber = addInventoryWindow.SerialNumber;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nInventory Name = {inventoryName}\nInventory Type = {type}\nSize = {size}\nBrand = {brand}\n" +
-                    $"Quantity = {quantity}\nPrice = {price}\nRetail Price = {retailPrice}\nRental Price = {rentalPrice}");
+                InventoryItem newItem = new InventoryItem(inventoryItems.Max(i => i.ID) + 1, inventoryName, type, size, brand,
+                    quantity, price, retailPrice, isRental, rentalPrice, serialNumber);
+
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateInventoryItemEntry(con, newItem);
+                con.Close();
+
+                // Add to interface based on type
+                switch (newItem.Type)
+                {
+                    case "equipment":
+                        EquipmentList.AddEquipment(newItem);
+                        break;
+                    case "supply":
+                        SupplyList.AddSupply(newItem);
+                        break;
+                    case "part":
+                        PartList.AddPart(newItem);
+                        break;
+                }
             }
         }
 
@@ -224,6 +372,10 @@ namespace MediStoreManager
                     int index = EquipmentListBox.SelectedIndex;
                     if (index >= 0)
                     {
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.DeleteInventoryItemEntry(con, EquipmentList[index].ID);
+                        con.Close();
+
                         EquipmentList.RemoveAt(index);
                     }
                 }
@@ -267,6 +419,10 @@ namespace MediStoreManager
                     int index = SuppliesListBox.SelectedIndex;
                     if (index >= 0)
                     {
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.DeleteInventoryItemEntry(con, SupplyList[index].ID);
+                        con.Close();
+
                         SupplyList.RemoveAt(index);
                     }
                 }
@@ -310,6 +466,10 @@ namespace MediStoreManager
                     int index = PartsListBox.SelectedIndex;
                     if (index >= 0)
                     {
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.DeleteInventoryItemEntry(con, PartList[index].ID);
+                        con.Close();
+
                         PartList.RemoveAt(index);
                     }
                 }
@@ -347,10 +507,24 @@ namespace MediStoreManager
                 string city = addSupplierWindow.City;
                 string state = addSupplierWindow.State;
                 string zipCode = addSupplierWindow.ZipCode;
+                string partnerID = string.Empty;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nName = {businessName}\nBusiness Phone # = {businessPhone}\n" +
-                    $"Street Address = {streetAddress}\nCity = {city}\nState = {state}\nZip Code = {zipCode}");
+                (string, string) supplierAddress = SplitAddress(streetAddress);
+
+                Address newAddress = new Address(addresses.Max(a => a.ID) + 1, supplierAddress.Item2, supplierAddress.Item1,
+                    city, state, zipCode);
+
+                Supplier newSupplier = new Supplier(businessName, businessPhone, partnerID, newAddress.ID);
+
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateAddressEntry(con, newAddress);
+                con.Close();
+
+                con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateSupplierEntry(con, newSupplier);
+                con.Close();
+
+                SupplierList.AddSupplier(newSupplier, newAddress);
             }
         }
 
@@ -373,6 +547,10 @@ namespace MediStoreManager
                     int index = SupplierListBox.SelectedIndex;
                     if (index >= 0)
                     {
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.DeleteSupplierEntry(con, SupplierList[index].Name);
+                        con.Close();
+
                         SupplierList.RemoveAt(index);
                     }
                 }
@@ -395,15 +573,25 @@ namespace MediStoreManager
             if (result == true)
             {
                 string type = createWorkOrder.Type;
-                string patientID = createWorkOrder.PatientID;
+                uint patientID = createWorkOrder.PatientID;
                 ObservableCollection<InventoryEntry> inventoryEntries = createWorkOrder.FinalInventoryEntries;
                 DateTime orderDate = createWorkOrder.OrderDate;
                 DateTime dateOfPayment = createWorkOrder.DateOfPayment;
+                bool haveReceivedPayment = dateOfPayment != DateTime.MinValue;
                 string notes = createWorkOrder.Notes;
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nType = {type}\nPatient ID = {patientID}\nInventory = {inventoryEntries}\n" +
-                    $"Date = {orderDate.Date.ToShortDateString()}\nDate of Payment = {dateOfPayment.Date.ToShortDateString()}\nNotes = {notes}");
+                // Create a row in work order table for each item in the work order
+                foreach (InventoryEntry inventoryEntry in inventoryEntries)
+                {
+                    CustomerOrder newCustOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1, inventoryEntry.MainItem.ID, type, patientID,
+                    inventoryEntry.MainItem.QuantitySelected, orderDate, haveReceivedPayment, dateOfPayment, inventoryEntry.RelatedItem.ID, notes);
+
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.CreateCustomerOrderEntry(con, newCustOrder);
+                    con.Close();
+
+                    WorkOrdersList.AddWorkOrder(newCustOrder, persons.FirstOrDefault(p => p.ID == newCustOrder.PersonID), inventoryEntries);
+                }
             }
         }
 
@@ -426,6 +614,13 @@ namespace MediStoreManager
                     int index = WorkListBox.SelectedIndex;
                     if (index >= 0)
                     {
+                        foreach (InventoryEntry invEntry in WorkOrdersList[index].InventoryEntries)
+                        {
+                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.DeleteCustomerOrderEntry(con, WorkOrdersList[index].ID, invEntry.MainItem.ID);
+                            con.Close();
+                        }
+
                         WorkOrdersList.RemoveAt(index);
                     }
                 }
@@ -447,14 +642,24 @@ namespace MediStoreManager
             if (result == true)
             {
                 ObservableCollection<InventoryEntry> inventoryEntries = createSupplyOrder.FinalInventoryEntries;
-                string suppplier = createSupplyOrder.Supplier;
+                string supplier = createSupplyOrder.Supplier;              
                 string shippingMethod = createSupplyOrder.ShippingMethod;
                 DateTime orderDate = createSupplyOrder.OrderDate;
                 DateTime receivedDate = createSupplyOrder.ReceivedDate;
+                bool hasBeenReceived = receivedDate != DateTime.MinValue;              
 
-                // Simply for debugging purposes. Not intended to remain after everything is fully setup
-                MessageBox.Show($"User Entered:\nInventory = {inventoryEntries}\nSupplier = {suppplier}\nShipping Method = {shippingMethod}\n" +
-                    $"Order Date = {orderDate.Date.ToShortDateString()}\nReceived Date = {receivedDate.Date.ToShortDateString()}");
+                // Create a row in the order table for each item in the supply order
+                foreach (InventoryEntry inventoryEntry in inventoryEntries)
+                {
+                    Order newOrder = new Order(orders.Max(o => o.ID) + 1, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.QuantitySelected,
+                        supplier, shippingMethod, orderDate, hasBeenReceived, receivedDate);
+
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.CreateOrderEntry(con, newOrder);
+                    con.Close();
+
+                    SupplyOrdersList.AddSupplyOrder(newOrder, inventoryEntries);
+                }              
             }
         }
 
@@ -477,6 +682,13 @@ namespace MediStoreManager
                     int index = SupplyListBox.SelectedIndex;
                     if (index >= 0)
                     {
+                        foreach (InventoryEntry invEntry in SupplyOrdersList[index].InventoryEntries)
+                        {
+                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.DeleteOrderEntry(con, SupplyOrdersList[index].ID, invEntry.MainItem.ID);
+                            con.Close();
+                        }
+
                         SupplyOrdersList.RemoveAt(index);
                     }
                 }
@@ -499,27 +711,27 @@ namespace MediStoreManager
 
         private void WorkListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedOrder = ((ListBox)sender).SelectedItem;
+            SelectedWorkOrder = ((ListBox)sender).SelectedItem;
         }
 
         private void SupplyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedOrder = ((ListBox)sender).SelectedItem;
+            SelectedSupplyOrder = ((ListBox)sender).SelectedItem;
         }
 
         private void EquipmentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedEquipment = ((ListBox)sender).SelectedItem;
         }
 
         private void SuppliesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedSupply = ((ListBox)sender).SelectedItem;
         }
 
         private void PartsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedPart = ((ListBox)sender).SelectedItem;
         }
 
         private void SupplierListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -586,10 +798,26 @@ namespace MediStoreManager
 
         private void PopulatePatientList()
         {
+            Patients allPersonsList = new Patients();
             foreach (Person person in persons)
             {
-                PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                allPersonsList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                if (person.IsPatient)
+                {
+                    PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                }                
             }
+
+            foreach (Patient patient in PatientList)
+            {
+                patient.Contacts = new ObservableCollection<Patient>();
+                List<Patient> contactsList = allPersonsList.Where(p => p.ContactID == patient.ID).ToList();
+                foreach (Patient contact in contactsList)
+                {
+                    patient.Contacts.Add(contact);
+                }
+            }
+
         }
 
         private void PopulateSupplierList()
@@ -631,7 +859,29 @@ namespace MediStoreManager
         {
             foreach (Order order in orders)
             {
-                SupplyOrdersList.AddSupplyOrder(order);
+                ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
+                // Only create 1 SupplyOrder for each ID in the orders
+                if (!SupplyOrdersList.Any(o => o.ID == order.ID))
+                {
+                    // Create collection of inventoryItem for the supply order
+                    List<Order> orders2 = new List<Order>(orders.Where(i => i.ID == order.ID));
+                    foreach (Order continuedOrder in orders.Where(i => i.ID == order.ID))
+                    {
+                        InventoryItem item = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
+                        InventoryEntry entry = new InventoryEntry();
+                        entry.MainItem = new InventoryListItem()
+                        {
+                            ID = item.ID,
+                            Name = item.Name,
+                            Type = item.Type,
+                            QuantitySelected = continuedOrder.Quantity
+                        };
+                        invEntries.Add(entry);
+                    }
+
+                    // Add the new supply order
+                    SupplyOrdersList.AddSupplyOrder(order, invEntries);
+                }           
             }
         }
 
@@ -639,39 +889,38 @@ namespace MediStoreManager
         {
             foreach (CustomerOrder order in customerOrders)
             {
-                WorkOrdersList.AddWorkOrder(order);
+                ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
+                if (!WorkOrdersList.Any(wo => wo.ID == order.ID))
+                {
+                    foreach (CustomerOrder continuedOrder in customerOrders.Where(i => i.ID == order.ID))
+                    {
+                        InventoryItem mainItem = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
+                        InventoryEntry entry = new InventoryEntry();
+                        entry.MainItem = new InventoryListItem()
+                        {
+                            ID = mainItem.ID,
+                            Name = mainItem.Name,
+                            Type = mainItem.Type,
+                            QuantitySelected = continuedOrder.Quantity
+                        };
+                        if (continuedOrder.RelatedInventoryItemID != 0)
+                        {
+                            InventoryItem relatedItem = inventoryItems.Where(i => i.ID == continuedOrder.RelatedInventoryItemID).FirstOrDefault();
+                            entry.RelatedItem = new InventoryListItem()
+                            {
+                                ID = relatedItem.ID,
+                                Name = relatedItem.Name,
+                                Type = relatedItem.Type,
+                            };
+                        }                       
+                        invEntries.Add(entry);
+                    }
+
+                    Person customer = persons.Where(p => p.ID == order.PersonID).FirstOrDefault();
+                    WorkOrdersList.AddWorkOrder(order, customer, invEntries);
+                }              
             }
         }
-
-        //private void ConvertPatientToAddressAndPerson(Patient patient)
-        //{
-        //    (string, string) patientAddress = SplitAddress(patient.StreetAddress);
-        //    Address newAddress = new Address()
-        //    {
-        //        ID = addresses.Max(a => a.ID) + 1,
-        //        StreetName = patientAddress.Item2,
-        //        AddressNumber = Convert.ToInt16(patientAddress.Item1),
-        //        City = patient.City,
-        //        State = patient.State,
-        //        ZipCode = Convert.ToUInt16(patient.ZipCode)
-        //    };
-
-        //    Person newPerson = new Person()
-        //    {
-        //        ID = persons.Max(p => p.ID) + 1,
-        //        FirstName = patient.FirstName,
-        //        LastName = patient.LastName,
-        //        MiddleName = patient.MiddleName,
-        //        HomePhone = Convert.ToInt16(patient.HomePhone),
-        //        CellPhone = Convert.ToInt16(patient.CellPhone),
-        //        AddressID = newAddress.ID,
-        //        InsuranceProvider = ,
-        //        IsPatientContact = ,
-        //        ContactID = ,
-        //        ContactRelationship =
-
-        //    };
-        //}
         #endregion
 
         public (string, string) SplitAddress(string input)
@@ -688,5 +937,16 @@ namespace MediStoreManager
 
             return (addressNum, streetName);
         }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (PatientTab.IsSelected)
+            {
+                string test = "test";
+            }
+
+        }
+
+        // maybe add event for OrdersTabControl
     }
 }

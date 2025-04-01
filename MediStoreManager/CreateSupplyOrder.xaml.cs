@@ -40,7 +40,7 @@ namespace MediStoreManager
         public SupplyOrder SupplyOrder { get; private set; }
         public bool IsEditMode { get; private set; }
         public bool DeleteOrder { get; private set; }
-        public string ID { get; private set; }
+        public uint ID { get; private set; }
 
         public CreateSupplyOrder(ObservableCollection<SupplierL> suppliers, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
@@ -108,7 +108,7 @@ namespace MediStoreManager
                 _filteredSuppliers.Add(supplier);
 
             _suppressTextChanged = false;
-            InventoryEntries = supplyOrder.Entries;
+            InventoryEntries = supplyOrder.InventoryEntries;
             ShippingMethodTextBox.Text = supplyOrder.ShippingMethod;
             OrderDateDatePicker.SelectedDate = supplyOrder.OrderDate;
             ReceivedDateDatePicker.SelectedDate = supplyOrder.ReceivedDate;
@@ -136,7 +136,7 @@ namespace MediStoreManager
                     ShippingMethod = ShippingMethod,
                     OrderDate = OrderDate,
                     ReceivedDate = ReceivedDate,
-                    Entries = FinalInventoryEntries
+                    InventoryEntries = FinalInventoryEntries
                 };
             }
             DeleteOrder = false;

@@ -14,17 +14,19 @@ namespace MediStoreManager
 
         }
 
-        public void AddWorkOrder(CustomerOrder order)
+        public void AddWorkOrder(CustomerOrder order, Person person, ObservableCollection<InventoryEntry> invEntries)
         {
             Add(new WorkOrder
             {
-                ID = order.ID.ToString(),
+                ID = order.ID,
                 Type = order.Type,
-                PatientID = order.PersonID.ToString(),
+                PatientID = order.PersonID,
                 Quantity = order.Quantity.ToString(),
                 InventoryID = order.InventoryID.ToString(),
                 Date = order.Date,
-                Notes = order.Notes
+                Notes = order.Notes,
+                InventoryEntries = invEntries,
+                DisplayName = person.FirstName + " " + person.LastName + " - " + order.Date.Month.ToString() + "/" + order.Date.Day.ToString() + "/" + order.Date.Year.ToString()
             });
         }
     }

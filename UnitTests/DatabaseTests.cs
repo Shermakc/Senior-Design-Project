@@ -59,7 +59,7 @@ namespace MediStoreManager
             newPerson.CellPhone = 9999999999;
             newPerson.AddressID = testAddress.ID;
             newPerson.InsuranceProvider = "TestInsurance";
-            newPerson.IsPatientContact = false;
+            newPerson.IsPatient = false;
 
             DatabaseFunctions.CreatePersonEntry(con, newPerson);
             con.Close();
@@ -212,7 +212,7 @@ namespace MediStoreManager
                 && retrievedPerson.CellPhone == newPerson.CellPhone
                 && retrievedPerson.AddressID == newPerson.AddressID
                 && retrievedPerson.InsuranceProvider == newPerson.InsuranceProvider
-                && retrievedPerson.IsPatientContact == newPerson.IsPatientContact);
+                && retrievedPerson.IsPatient == newPerson.IsPatient);
 
             con = DatabaseFunctions.OpenMySQLConnection();
             DatabaseFunctions.DeletePersonEntry(con, newPerson.ID);
@@ -236,7 +236,7 @@ namespace MediStoreManager
             newPerson.CellPhone = 9888888888;
             newPerson.AddressID = 9999;
             newPerson.InsuranceProvider = "ChangedInsurance";
-            newPerson.IsPatientContact = false;
+            newPerson.IsPatient = false;
 
             DatabaseFunctions.UpdatePersonEntry(con, newPerson);
             con.Close();
@@ -253,7 +253,7 @@ namespace MediStoreManager
                 && retrievedPerson.CellPhone == newPerson.CellPhone
                 && retrievedPerson.AddressID == newPerson.AddressID
                 && retrievedPerson.InsuranceProvider == newPerson.InsuranceProvider
-                && retrievedPerson.IsPatientContact == newPerson.IsPatientContact);
+                && retrievedPerson.IsPatient == newPerson.IsPatient);
 
             con = DatabaseFunctions.OpenMySQLConnection();
             DatabaseFunctions.DeletePersonEntry(con, retrievedPerson.ID);

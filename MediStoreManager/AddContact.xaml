@@ -7,31 +7,33 @@
         mc:Ignorable="d"
         Title="Add Contact" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel Height="360" Width="380">
+    <StackPanel Height="380" Width="400">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Enter Contact Information
         </Label>
-        <WrapPanel Height="300" Width="400">
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="First Name: " Margin="0,5,0,0" />
+        <WrapPanel Height="320" Width="400">
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="First Name: " Margin="0,5,0,0" />
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="FirstNameTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Middle Name: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Middle Name: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="MiddleNameTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Last Name: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Last Name: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="LastNameTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Home Phone #: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Home Phone #: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="HomePhoneTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Cell Phone #: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Cell Phone #: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="CellPhoneTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Street Address: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Street Address: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="StreetAddressTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="City: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="City: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="CityTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="State: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="State: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="StateTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Zip Code: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Zip Code: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ZipTextBox"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Insurance Provider: " Margin="0,5,0,0"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Insurance Provider: " Margin="0,5,0,0"/>
             <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="InsuranceTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Relationship to Patient: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="RelationshipTextBox"/>
         </WrapPanel>
         <StackPanel Width="400" Height="20" Orientation="Horizontal" HorizontalAlignment="Center">
             <Grid Width="194">

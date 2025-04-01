@@ -11,7 +11,7 @@ namespace MediStoreManager
     {
         public Suppliers()
         {
-
+           
         }
 
         public void AddSupplier(Supplier supplier, Address address)

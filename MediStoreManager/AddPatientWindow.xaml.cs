@@ -35,7 +35,7 @@ namespace MediStoreManager
         public Patient Patient { get; private set; }
         public bool IsEditMode { get; private set; }
         public bool DeletePatient { get; private set; }
-        public string ID { get; private set; }
+        public uint ID { get; private set; }
         public string DisplayName { get; private set; }
 
         public AddPatientWindow()
@@ -138,7 +138,8 @@ namespace MediStoreManager
                     ZipCode = popup.ZipCode,
                     State = popup.State,
                     Insurance = popup.InsuranceProvider,
-                    DisplayName = popup.LastName + ", " + popup.FirstName
+                    DisplayName = popup.LastName + ", " + popup.FirstName,
+                    RelationshipToPatient = popup.RelationshipToPatient
                 });
             }
         }

@@ -34,6 +34,7 @@ namespace MediStoreManager
             tempPerson.IsPatient = reader.GetBoolean(8);
             tempPerson.ContactID = GetColValAsUInt(reader, nameof(tempPerson.ContactID));
             tempPerson.ContactRelationship = GetColValAsString(reader, nameof(tempPerson.ContactRelationship));
+            tempPerson.Deleted = reader.GetBoolean(11);
 
             return tempPerson;
         }
@@ -53,6 +54,7 @@ namespace MediStoreManager
             tempItem.RentalPrice = GetColValAsDecimal(reader, nameof(tempItem.RentalPrice));
             tempItem.PersonID = GetColValAsUInt(reader, nameof(tempItem.PersonID));
             tempItem.SerialNumber = GetColValAsString(reader, nameof(tempItem.SerialNumber));
+            tempItem.Deleted = reader.GetBoolean(12);
 
             return tempItem;
         }
@@ -64,6 +66,7 @@ namespace MediStoreManager
             tempSupplier.PhoneNumber = GetColValAsDecimal(reader, nameof(tempSupplier.PhoneNumber));
             tempSupplier.PartnerID = GetColValAsInt(reader, nameof(tempSupplier.PartnerID));
             tempSupplier.AddressID = GetColValAsUInt(reader, nameof(tempSupplier.AddressID));
+            tempSupplier.Deleted = reader.GetBoolean(4);
 
             return tempSupplier;
         }
@@ -77,6 +80,7 @@ namespace MediStoreManager
             tempAddress.City = GetColValAsString(reader, nameof(tempAddress.City));
             tempAddress.State = GetColValAsString(reader, nameof(tempAddress.State));
             tempAddress.ZipCode = GetColValAsUInt(reader, nameof(tempAddress.ZipCode));
+            tempAddress.Deleted = reader.GetBoolean(6);
 
             return tempAddress;
         }
@@ -92,6 +96,7 @@ namespace MediStoreManager
             tempOrder.OrderDateTime = GetColValAsDateTime(reader, nameof(tempOrder.OrderDateTime));
             tempOrder.HasBeenReceived = reader.GetBoolean(6);
             tempOrder.ReceivedDate = GetColValAsDateTime(reader, nameof(tempOrder.ReceivedDate));
+            tempOrder.Deleted = reader.GetBoolean(8);
 
             return tempOrder;
         }
@@ -109,6 +114,7 @@ namespace MediStoreManager
             tempCustomerOrder.PaymentDate = GetColValAsDateTime(reader, nameof(tempCustomerOrder.PaymentDate));
             tempCustomerOrder.RelatedInventoryItemID = GetColValAsUInt(reader, nameof(tempCustomerOrder.RelatedInventoryItemID));
             tempCustomerOrder.Notes = GetColValAsString(reader, nameof(tempCustomerOrder.Notes));
+            tempCustomerOrder.Deleted = reader.GetBoolean(10);
 
             return tempCustomerOrder;
         }
@@ -122,6 +128,7 @@ namespace MediStoreManager
             tempUser.Username = GetColValAsString(reader, nameof(tempUser.Username));
             tempUser.Password = GetColValAsString(reader, nameof(tempUser.Password));
             tempUser.Position = GetColValAsString(reader, nameof(tempUser.Position));
+            tempUser.Deleted = reader.GetBoolean(6);
 
             return tempUser;
         }
@@ -165,8 +172,6 @@ namespace MediStoreManager
             else
                 return (DateTime)reader[colName];
         }
-
-
 
         public static List<Person> GetPersonList(MySqlConnection con)
         {
@@ -233,7 +238,7 @@ namespace MediStoreManager
 
         public static void DeletePersonEntry(MySqlConnection con, uint id)
         {
-            string sql = "delete from person where ID = " + id + ";";
+            string sql = "update person set Deleted = 1 where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -304,7 +309,7 @@ namespace MediStoreManager
 
         public static void DeleteInventoryItemEntry(MySqlConnection con, uint id)
         {
-            string sql = "delete from inventory_item where ID = " + id + ";";
+            string sql = "update inventory_item set Deleted = 1 where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -381,7 +386,7 @@ namespace MediStoreManager
 
         public static void DeleteSupplierEntry(MySqlConnection con, string name)
         {
-            string sql = "delete from supplier where Name = '" + name + "';";
+            string sql = "update supplier set Deleted = 1 where Name = " + name + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -441,7 +446,7 @@ namespace MediStoreManager
 
         public static void DeleteAddressEntry(MySqlConnection con, uint id)
         {
-            string sql = "delete from address where ID = " + id + ";";
+            string sql = "update address set Deleted = 1 where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -506,7 +511,7 @@ namespace MediStoreManager
 
         public static void DeleteOrderEntry(MySqlConnection con, uint id, uint inventoryID)
         {
-            string sql = "delete from `order` where ID = " + id + " and InventoryID = " + inventoryID + ";";
+            string sql = "update order set Deleted = 1 where ID = " + id + " and InventoryID = " + inventoryID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -575,7 +580,7 @@ namespace MediStoreManager
 
         public static void DeleteCustomerOrderEntry(MySqlConnection con, uint id, uint inventoryID)
         {
-            string sql = "delete from customer_order where ID = " + id + " and InventoryID = " + inventoryID + ";";
+            string sql = "update customer_order set Deleted = 1 where ID = " + id + " and InventoryID = " + inventoryID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -635,14 +640,7 @@ namespace MediStoreManager
 
         public static void DeleteUserEntry(MySqlConnection con, uint id)
         {
-            string sql = "delete from user where ID = " + id + ";";
-            MySqlCommand cmd = new MySqlCommand(sql, con);
-            cmd.ExecuteNonQuery();
-        }
-
-        public static void DeleteSupplierEntry(MySqlConnection con, uint id)
-        {
-            string sql = "delete from user where ID = " + id + ";";
+            string sql = "update user set Deleted = 1 where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }

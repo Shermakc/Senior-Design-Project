@@ -934,11 +934,14 @@ namespace MediStoreManager
             Patients allPersonsList = new Patients();
             foreach (Person person in persons)
             {
-                allPersonsList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
-                if (person.IsPatient)
+                if (!person.Deleted)
                 {
-                    PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
-                }                
+                    allPersonsList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                    if (person.IsPatient)
+                    {
+                        PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                    }
+                }                           
             }
 
             foreach (Patient patient in PatientList)
@@ -957,7 +960,10 @@ namespace MediStoreManager
         {
             foreach (Supplier supplier in suppliers)
             {
-                SupplierList.AddSupplier(supplier, addresses.Where(a => a.ID == supplier.AddressID).FirstOrDefault());
+                if (!supplier.Deleted)
+                {
+                    SupplierList.AddSupplier(supplier, addresses.Where(a => a.ID == supplier.AddressID).FirstOrDefault());
+                }
             }
         }
 
@@ -966,7 +972,10 @@ namespace MediStoreManager
             List<InventoryItem> equipmentItems = inventoryItems.Where(i => i.Type == "equipment").ToList();
             foreach (InventoryItem item in equipmentItems)
             {
-                EquipmentList.AddEquipment(item);
+                if (!item.Deleted)
+                {
+                    EquipmentList.AddEquipment(item);
+                }             
             }
         }
 
@@ -975,7 +984,10 @@ namespace MediStoreManager
             List<InventoryItem> supplyItems = inventoryItems.Where(i => i.Type == "supply").ToList();
             foreach (InventoryItem item in supplyItems)
             {
-                SupplyList.AddSupply(item);
+                if (!item.Deleted)
+                {
+                    SupplyList.AddSupply(item);
+                }             
             }
         }
 
@@ -984,7 +996,10 @@ namespace MediStoreManager
             List<InventoryItem> partItems = inventoryItems.Where(i => i.Type == "part").ToList();
             foreach (InventoryItem item in partItems)
             {
-                PartList.AddPart(item);
+                if (!item.Deleted)
+                {
+                    PartList.AddPart(item);
+                }
             }
         }
 
@@ -994,7 +1009,7 @@ namespace MediStoreManager
             foreach (Order order in orders)
             {
                 // Only create 1 SupplyOrder for each ID in the orders
-                if (!SupplyOrdersList.Any(o => o.ID == order.ID))
+                if (!order.Deleted && !SupplyOrdersList.Any(o => o.ID == order.ID))
                 {
                     // Create collection of inventoryItem for the supply order
                     foreach (InventoryItem item in inventoryItems.Where(i => i.ID == order.InventoryID))
@@ -1021,7 +1036,7 @@ namespace MediStoreManager
             ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
             foreach (CustomerOrder order in customerOrders)
             {
-                if (!WorkOrdersList.Any(wo => wo.ID == order.ID))
+                if (!order.Deleted && !WorkOrdersList.Any(wo => wo.ID == order.ID))
                 {
                     foreach (InventoryItem item in inventoryItems.Where(i => i.ID == order.InventoryID))
                     {
@@ -1041,13 +1056,13 @@ namespace MediStoreManager
                                 Name = relatedItem.Name,
                                 Type = relatedItem.Type,
                             };
-                        }                       
+                        }
                         invEntries.Add(entry);
                     }
 
                     Person customer = persons.Where(p => p.ID == order.PersonID).FirstOrDefault();
                     WorkOrdersList.AddWorkOrder(order, customer, invEntries);
-                }              
+                }                             
             }
         }
 
@@ -1113,7 +1128,5 @@ namespace MediStoreManager
             }
 
         }
-
-        // maybe add event for OrdersTabControl
     }
 }

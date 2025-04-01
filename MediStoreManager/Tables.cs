@@ -32,6 +32,7 @@ namespace MediStoreManager
         public string City;
         public string State;
         public uint ZipCode;
+        public bool Deleted;
     }
 
     public class CustomerOrder
@@ -63,6 +64,7 @@ namespace MediStoreManager
         public DateTime PaymentDate;
         public uint RelatedInventoryItemID;
         public string Notes;
+        public bool Deleted;
     }
 
     public class InventoryItem
@@ -114,6 +116,7 @@ namespace MediStoreManager
         public decimal RentalPrice;
         public uint PersonID;
         public string SerialNumber;
+        public bool Deleted;
     }
 
     public class Order
@@ -141,6 +144,7 @@ namespace MediStoreManager
         public DateTime OrderDateTime;
         public bool HasBeenReceived;
         public DateTime ReceivedDate;
+        public bool Deleted;
     }
 
     public class Person
@@ -188,6 +192,7 @@ namespace MediStoreManager
         public bool IsPatient;
         public uint ContactID;
         public string? ContactRelationship;
+        public bool Deleted;
     }
 
     public class Supplier
@@ -208,6 +213,7 @@ namespace MediStoreManager
         public decimal PhoneNumber;
         public int PartnerID;
         public uint AddressID;
+        public bool Deleted;
     }
 
     public class User
@@ -218,5 +224,6 @@ namespace MediStoreManager
         public string Username;
         public string Password;
         public string Position;
+        public bool Deleted;
     }
 }

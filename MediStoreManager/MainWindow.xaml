@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="MediStore Manager" SizeToContent="WidthAndHeight">
+        Title="MediStore Manager" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:WorkTabVisibilityConverter x:Key="WorkTabVisibilityConverter"/>
         <local:SupplyTabVisibilityConverter x:Key="SupplyTabVisibilityConverter"/>

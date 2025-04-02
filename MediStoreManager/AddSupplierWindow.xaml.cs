@@ -30,6 +30,7 @@ namespace MediStoreManager
         public SupplierL Supplier { get; private set; }
         public bool IsEditMode { get; private set; }
         public bool DeleteSupplier { get; private set; }
+        public bool isAdmin { get; private set; }
 
         public AddSupplierWindow()
         {
@@ -47,6 +48,7 @@ namespace MediStoreManager
         public AddSupplierWindow(SupplierL supplier)
         {
             IsEditMode = true;
+            isAdmin = MainWindow.IsAdmin;
             InitializeComponent();
             NameTextBox.Text = supplier.Name;
             BusinessPhoneTextBox.Text = supplier.PhoneNumber;

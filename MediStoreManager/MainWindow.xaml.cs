@@ -22,6 +22,7 @@ namespace MediStoreManager
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public static bool IsAdmin {  get; private set; }
         public Patients PatientList { get; set; }
         private object _selectedPatient;
         public object SelectedPatient
@@ -163,9 +164,12 @@ namespace MediStoreManager
         private List<Order> orders = new List<Order>();
         private List<CustomerOrder> customerOrders = new List<CustomerOrder>();
 
-        public MainWindow()
+        public MainWindow(bool isAdmin)
         {
             InitializeComponent();
+
+            IsAdmin = isAdmin;
+
             WorkOrdersList = new WorkOrders();
             SupplyOrdersList = new SupplyOrders();
             EquipmentList = new Equipments();
@@ -663,7 +667,7 @@ namespace MediStoreManager
                     int index = SupplierListBox.SelectedIndex;
                     if (index >= 0 && editSupplierWindow.Supplier != null)
                     {
-                        Supplier originalSupplier = suppliers.Where(s => s.Name == editSupplierWindow.Name).FirstOrDefault();
+                        Supplier originalSupplier = suppliers.Where(s => s.Name == editSupplierWindow.BusinessName).FirstOrDefault();
                         uint addressID = originalSupplier.AddressID;
 
                         if (editSupplierWindow.StreetAddress != SupplierList[index].StreetAddress

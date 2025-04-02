@@ -41,6 +41,7 @@ namespace MediStoreManager
         public bool IsEditMode { get; private set; }
         public bool DeleteOrder { get; private set; }
         public uint ID { get; private set; }
+        public bool isAdmin { get; private set; }
 
         public CreateSupplyOrder(ObservableCollection<SupplierL> suppliers, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
@@ -94,6 +95,7 @@ namespace MediStoreManager
 
             // Bind the ItemsControl to the InventoryEntries collection
             IsEditMode = true;
+            isAdmin = MainWindow.IsAdmin;
             ID = supplyOrder.ID;
             SelectedSupplier = suppliers.FirstOrDefault(s => s.Name == supplyOrder.Supplier);
             _suppressTextChanged = true;

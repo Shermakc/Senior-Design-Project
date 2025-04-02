@@ -46,6 +46,7 @@ namespace MediStoreManager
         public bool IsEditMode { get; private set; }
         public bool DeleteOrder { get; private set; }
         public uint ID { get; private set; }
+        public bool isAdmin { get; private set; }
 
         public CreateWorkOrder(ObservableCollection<Patient> patients, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
@@ -83,6 +84,7 @@ namespace MediStoreManager
         public CreateWorkOrder(ObservableCollection<Patient> patients, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts, WorkOrder workOrder)
         {
             IsEditMode = true;
+            isAdmin = MainWindow.IsAdmin;
             InitializeComponent();
             _patients = patients;
             _filteredPatients = new ObservableCollection<Patient>(patients);

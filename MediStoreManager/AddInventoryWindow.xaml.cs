@@ -38,6 +38,7 @@ namespace MediStoreManager
         public Part Part { get; private set; }
         public uint ID { get; private set; }
         public bool? IsRental = null;
+        public bool isAdmin { get; private set; }
 
         public AddInventoryWindow()
         {
@@ -58,6 +59,7 @@ namespace MediStoreManager
         {
             InitializeComponent();
             IsEditMode = isEditMode;
+            isAdmin = MainWindow.IsAdmin;
             if (equipment != null)
             {
                 InventoryNameTextBox.Text = equipment.Name;
@@ -131,15 +133,6 @@ namespace MediStoreManager
                 else if (NotApplicableRadioButton.IsChecked == true)
                 {
                     IsRental = null;
-                }
-
-                if (IsRental.HasValue)
-                {
-                    MessageBox.Show($"Response: {IsRental.Value}");
-                }
-                else
-                {
-                    MessageBox.Show("Response not applicable (left unset)");
                 }
             }
 

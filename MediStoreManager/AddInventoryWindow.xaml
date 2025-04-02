@@ -14,7 +14,8 @@
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Enter Inventory Information
         </Label>
-        <Button Content="Delete Inventory Item" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" Click="DeleteInventoryButton_Click"/>
+        <Button Content="Delete Inventory Item" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                IsEnabled ="{Binding isAdmin}" Click="DeleteInventoryButton_Click"/>
         <WrapPanel Height="300" Width="380">
             <WrapPanel.Resources>
                 <local:InventoryTypes x:Key="InventoryTypes"/>

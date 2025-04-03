@@ -16,8 +16,8 @@ namespace MediStoreManager
         private string _size;
         private string _brand;
         private int _quantity;
-        private string _price;
-        private string _retailPrice;
+        private decimal _price;
+        private decimal _retailPrice;
         private ObservableCollection<OrderSummary> _workOrders;
         private ObservableCollection<OrderSummary> _supplyOrders;
 
@@ -27,8 +27,8 @@ namespace MediStoreManager
         public string Size { get => _size; set { _size = value; OnPropertyChanged(nameof(Size)); } }
         public string Brand { get => _brand; set { _brand = value; OnPropertyChanged(nameof(Brand)); } }
         public int Quantity { get => _quantity; set { _quantity = value; OnPropertyChanged(nameof(Quantity)); } }
-        public string Price { get => _price; set { _price = value; OnPropertyChanged(nameof(Price)); } }
-        public string RetailPrice { get => _retailPrice; set { _retailPrice = value; OnPropertyChanged(nameof(RetailPrice)); } }
+        public decimal Price { get => _price; set { _price = value; OnPropertyChanged(nameof(Price)); } }
+        public decimal RetailPrice { get => _retailPrice; set { _retailPrice = value; OnPropertyChanged(nameof(RetailPrice)); } }
         public ObservableCollection<OrderSummary> WorkOrders { get => _workOrders; set { _workOrders = value; OnPropertyChanged(nameof(WorkOrders)); } }
         public ObservableCollection<OrderSummary> SupplyOrders { get => _supplyOrders; set { _supplyOrders = value; OnPropertyChanged(nameof(SupplyOrders)); } }
 

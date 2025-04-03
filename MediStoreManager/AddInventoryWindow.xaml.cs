@@ -27,9 +27,9 @@ namespace MediStoreManager
         public string Size { get; private set; }
         public string Brand { get; private set; }
         public int Quantity { get; private set; }
-        public string Price { get; private set; }
-        public string RetailPrice { get; private set; }
-        public string RentalPrice { get; private set; }
+        public decimal Price { get; private set; }
+        public decimal RetailPrice { get; private set; }
+        public decimal RentalPrice { get; private set; }
         public string SerialNumber { get; private set; }
         public bool IsEditMode { get; private set; }
         public bool DeleteItem { get; private set; }
@@ -46,9 +46,6 @@ namespace MediStoreManager
             Type = "";
             Size = "";
             Brand = "";
-            Price = "";
-            RetailPrice = "";
-            RentalPrice = "";
             SerialNumber = "";
             IsEditMode = false;
             InitializeComponent();
@@ -67,9 +64,9 @@ namespace MediStoreManager
                 SizeTextBox.Text = equipment.Size;
                 BrandTextBox.Text = equipment.Brand;
                 QuantityTextBox.Text = equipment.Quantity.ToString();
-                PriceTextBox.Text = equipment.Price;
-                RetailPriceTextBox.Text = equipment.RetailPrice;
-                RentalPriceTextBox.Text = equipment.RentalPrice;
+                PriceTextBox.Text = equipment.Price.ToString();
+                RetailPriceTextBox.Text = equipment.RetailPrice.ToString();
+                RentalPriceTextBox.Text = equipment.RentalPrice.ToString();
                 SerialNumberTextBox.Text = equipment.SerialNumber;
                 ID = equipment.ID;
 
@@ -81,8 +78,8 @@ namespace MediStoreManager
                 SizeTextBox.Text = part.Size;
                 BrandTextBox.Text = part.Brand;
                 QuantityTextBox.Text = part.Quantity.ToString();
-                PriceTextBox.Text = part.Price;
-                RetailPriceTextBox.Text = part.RetailPrice;
+                PriceTextBox.Text = part.Price.ToString();
+                RetailPriceTextBox.Text = part.RetailPrice.ToString();
                 ID = part.ID;
             }
             else if (supply != null)
@@ -92,8 +89,8 @@ namespace MediStoreManager
                 SizeTextBox.Text = supply.Size;
                 BrandTextBox.Text = supply.Brand;
                 QuantityTextBox.Text = supply.Quantity.ToString();
-                PriceTextBox.Text = supply.Price;
-                RetailPriceTextBox.Text = supply.RetailPrice;
+                PriceTextBox.Text = supply.Price.ToString();
+                RetailPriceTextBox.Text = supply.RetailPrice.ToString();
                 ID = supply.ID;
             }
             DataContext = this;
@@ -116,9 +113,28 @@ namespace MediStoreManager
                 return;
             }
             Quantity = int.TryParse(QuantityTextBox.Text, out int qty) ? qty : 0;
-            Price = PriceTextBox.Text;
-            RetailPrice = RetailPriceTextBox.Text;
-            RentalPrice = RentalPriceTextBox.Text;
+            if (string.IsNullOrWhiteSpace(PriceTextBox.Text)) {
+                Price = 0.00m;
+            } else
+            {
+                Price = decimal.Parse(PriceTextBox.Text);
+            }
+            if (string.IsNullOrWhiteSpace(RetailPriceTextBox.Text))
+            {
+                RetailPrice = 0.00m;
+            } else
+            {
+                RetailPrice = decimal.Parse(RetailPriceTextBox.Text);
+            }
+
+            if (string.IsNullOrWhiteSpace(RentalPriceTextBox.Text))
+            {
+                RentalPrice = 0.00m;
+            } else
+            {
+                RentalPrice = decimal.Parse(RentalPriceTextBox.Text);
+            }
+
             SerialNumber = SerialNumberTextBox.Text;
             if (Type.Equals("equipment"))
             {

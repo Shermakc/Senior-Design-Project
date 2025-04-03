@@ -414,10 +414,10 @@ namespace MediStoreManager
                 string size = addInventoryWindow.Size;
                 string brand = addInventoryWindow.Brand;
                 int quantity = addInventoryWindow.Quantity;
-                string price = addInventoryWindow.Price;
-                string retailPrice = addInventoryWindow.RetailPrice;
-                string rentalPrice = addInventoryWindow.RentalPrice;
-                bool isRental = rentalPrice != string.Empty;
+                decimal price = addInventoryWindow.Price;
+                decimal retailPrice = addInventoryWindow.RetailPrice;
+                decimal rentalPrice = addInventoryWindow.RentalPrice;
+                bool isRental = rentalPrice != 0.00m;
                 string serialNumber = addInventoryWindow.SerialNumber;
 
                 InventoryItem newItem = new InventoryItem(inventoryItems.Max(i => i.ID) + 1, inventoryName, type, size, brand,

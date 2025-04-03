@@ -24,8 +24,8 @@ namespace MediStoreManager
                 Quantity = item.NumInStock,
                 Size = item.Size,
                 Brand = item.Brand,
-                Price = item.Cost.ToString(),
-                RetailPrice = item.RetailPrice.ToString(),
+                Price = item.Cost,
+                RetailPrice = item.RetailPrice,
                 WorkOrders = new ObservableCollection<OrderSummary>(
                     workOrders
                         .Select(o => new OrderSummary

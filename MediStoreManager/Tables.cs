@@ -69,8 +69,8 @@ namespace MediStoreManager
     {
         public InventoryItem() { }
 
-        public InventoryItem(uint id, string type, string name, string size, string brand, int numInStock, string cost,
-            string retailPrice, bool isRental, string rentalPrice, string personID, string serialNumber)
+        public InventoryItem(uint id, string type, string name, string size, string brand, int numInStock, decimal cost,
+            decimal retailPrice, bool isRental, decimal rentalPrice, string personID, string serialNumber)
         {
             ID = id;
             Type = type;
@@ -78,16 +78,16 @@ namespace MediStoreManager
             Size = size;
             Brand = brand;
             NumInStock = numInStock;
-            if (cost != string.Empty) { Cost = Convert.ToDecimal(cost); }
-            if (retailPrice != string.Empty) { RetailPrice = Convert.ToDecimal(retailPrice); }
+            Cost = cost;
+            RetailPrice = retailPrice;
             IsRental = isRental;
-            if (rentalPrice != string.Empty) { RentalPrice = Convert.ToDecimal(rentalPrice); }
+            RentalPrice = rentalPrice;
             if (personID != string.Empty) { PersonID = Convert.ToUInt16(personID); }
             SerialNumber = serialNumber;
         }
 
-        public InventoryItem(uint id, string type, string name, string size, string brand, int numInStock, string cost,
-            string retailPrice, bool isRental, string rentalPrice, string serialNumber)
+        public InventoryItem(uint id, string type, string name, string size, string brand, int numInStock, decimal cost,
+            decimal retailPrice, bool isRental, decimal rentalPrice, string serialNumber)
         {
             ID = id;
             Type = type;
@@ -95,10 +95,10 @@ namespace MediStoreManager
             Size = size;
             Brand = brand;
             NumInStock = numInStock;
-            if (cost != string.Empty) { Cost = Convert.ToDecimal(cost); }
-            if (retailPrice != string.Empty) { RetailPrice = Convert.ToDecimal(retailPrice); }
+            Cost = cost;
+            RetailPrice = retailPrice;
             IsRental = isRental;
-            if (rentalPrice != string.Empty) { RentalPrice = Convert.ToDecimal(rentalPrice); }
+            RentalPrice = rentalPrice;
             SerialNumber = serialNumber;
         }
 

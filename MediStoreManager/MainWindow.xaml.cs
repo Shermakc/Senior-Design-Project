@@ -164,6 +164,14 @@ namespace MediStoreManager
         private List<Order> orders = new List<Order>();
         private List<CustomerOrder> customerOrders = new List<CustomerOrder>();
 
+        private CollectionViewSource _patientViewSource;
+        private CollectionViewSource _equipmentViewSource;
+        private CollectionViewSource _partViewSource;
+        private CollectionViewSource _supplyViewSource;
+        private CollectionViewSource _supplierViewSource;
+        private CollectionViewSource _workOrderViewSource;
+        private CollectionViewSource _supplyOrderViewSource;
+
         public MainWindow(bool isAdmin)
         {
             InitializeComponent();
@@ -201,6 +209,41 @@ namespace MediStoreManager
             {
                 MessageBox.Show(ex.ToString());
             }
+
+            _patientViewSource = new CollectionViewSource { Source = PatientList };
+            _patientViewSource.Filter += PatientFilter;
+
+            PatientListBox.ItemsSource = _patientViewSource.View;
+
+            _equipmentViewSource = new CollectionViewSource { Source = EquipmentList };
+            _equipmentViewSource.Filter += EquipmentFilter;
+
+            EquipmentListBox.ItemsSource = _equipmentViewSource.View;
+
+            _partViewSource = new CollectionViewSource { Source = PartList };
+            _partViewSource.Filter += PartFilter;
+
+            PartsListBox.ItemsSource = _partViewSource.View;
+
+            _supplyViewSource = new CollectionViewSource { Source = SupplyList };
+            _supplyViewSource.Filter += SupplyFilter;
+
+            SuppliesListBox.ItemsSource = _supplyViewSource.View;
+
+            _supplierViewSource = new CollectionViewSource { Source = SupplierList };
+            _supplierViewSource.Filter += SupplierFilter;
+
+            SupplierListBox.ItemsSource = _supplierViewSource.View;
+
+            _workOrderViewSource = new CollectionViewSource { Source = WorkOrdersList };
+            _workOrderViewSource.Filter += WorkOrderFilter;
+
+            WorkListBox.ItemsSource = _workOrderViewSource.View;
+
+            _supplyOrderViewSource = new CollectionViewSource { Source = SupplyOrdersList };
+            _supplyOrderViewSource.Filter += SupplyOrderFilter;
+
+            SupplyListBox.ItemsSource = _supplyOrderViewSource.View;
         }
 
         private void PatientListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1220,6 +1263,118 @@ namespace MediStoreManager
                 string test = "test";
             }
 
+        }
+
+        private void PatientSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _patientViewSource.View.Refresh();
+        }
+
+        private void PatientFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Patient patient)
+            {
+                string filter = PatientSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             patient.DisplayName.ToLower().Contains(filter);
+            }
+        }
+
+        private void EquipmentSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _equipmentViewSource.View.Refresh();
+        }
+
+        private void EquipmentFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Equipment equipment)
+            {
+                string filter = EquipmentSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             equipment.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void PartSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _partViewSource.View.Refresh();
+        }
+
+        private void PartFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Part part)
+            {
+                string filter = PartSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             part.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void SupplySearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _supplyViewSource.View.Refresh();
+        }
+
+        private void SupplyFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Supply supply)
+            {
+                string filter = SupplySearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             supply.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void SupplierSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _supplierViewSource.View.Refresh();
+        }
+
+        private void SupplierFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is SupplierL supplier)
+            {
+                string filter = SupplierSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             supplier.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void WorkOrderSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _workOrderViewSource.View.Refresh();
+        }
+
+        private void WorkOrderFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is WorkOrder workOrder)
+            {
+                string filter = WorkOrderSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             workOrder.DisplayName.ToLower().Contains(filter);
+            }
+        }
+
+        private void SupplyOrderSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _supplyOrderViewSource.View.Refresh();
+        }
+
+        private void SupplyOrderFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is SupplyOrder supplyOrder)
+            {
+                string filter = SupplyOrderSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             supplyOrder.DisplayName.ToLower().Contains(filter);
+            }
         }
 
         // maybe add event for OrdersTabControl

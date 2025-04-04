@@ -31,6 +31,8 @@ namespace MediStoreManager
         public string ZipCode { get; private set; }
         public string State { get; private set; }
         public string InsuranceProvider { get; private set; }
+        public string RelationshipToPatient { get; private set; }
+
         public AddContact()
         {
             FirstName = "";
@@ -43,6 +45,7 @@ namespace MediStoreManager
             ZipCode = "";
             State = "";
             InsuranceProvider = "";
+            RelationshipToPatient = "";
             InitializeComponent();
         }
 
@@ -63,6 +66,7 @@ namespace MediStoreManager
             ZipCode = ZipTextBox.Text;
             State = StateTextBox.Text;
             InsuranceProvider = InsuranceTextBox.Text;
+            RelationshipToPatient = RelationshipTextBox.Text;
             this.DialogResult = true;
         }
     }

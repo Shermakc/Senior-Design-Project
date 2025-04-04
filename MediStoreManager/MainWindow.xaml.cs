@@ -22,6 +22,7 @@ namespace MediStoreManager
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        public static bool IsAdmin {  get; private set; }
         public Patients PatientList { get; set; }
         private object _selectedPatient;
         public object SelectedPatient
@@ -49,29 +50,109 @@ namespace MediStoreManager
         public Parts PartList { get; set; }
         public Supplies SupplyList { get; set; }
 
-        private object _selectedInventory;
-
-        public object SelectedInventory
+        public object CurrentItem
         {
-            get => _selectedInventory;
+            get
+            {
+                return SelectedInventoryTabIndex == 0 ? SelectedEquipment :
+                       SelectedInventoryTabIndex == 1 ? SelectedSupply : 
+                       SelectedInventoryTabIndex == 2 ? SelectedPart : null;
+            }
+        }
+
+        private int _selectedInventoryTabIndex;
+        public int SelectedInventoryTabIndex
+        {
+            get => _selectedInventoryTabIndex;
             set
             {
-                _selectedInventory = value;
-                OnPropertyChanged(nameof(SelectedInventory));
+                _selectedInventoryTabIndex = value;
+                OnPropertyChanged(nameof(SelectedInventoryTabIndex));
+                OnPropertyChanged(nameof(CurrentItem)); // Update the display when the tab changes
+            }
+        }
+
+        private object _selectedEquipment;
+        public object SelectedEquipment
+        {
+            get => _selectedEquipment;
+            set
+            {
+                _selectedEquipment = value;
+                OnPropertyChanged(nameof(SelectedEquipment));
+                OnPropertyChanged(nameof(CurrentItem));
+            }
+        }
+
+        private object _selectedSupply;
+        public object SelectedSupply
+        {
+            get => _selectedSupply;
+            set
+            {
+                _selectedSupply = value;
+                OnPropertyChanged(nameof(SelectedSupply));
+                OnPropertyChanged(nameof(CurrentItem));
+            }
+        }
+        private object _selectedPart;
+
+        public object SelectedPart
+        {
+            get => _selectedPart;
+            set
+            {
+                _selectedPart = value;
+                OnPropertyChanged(nameof(SelectedPart));
+                OnPropertyChanged(nameof(CurrentItem));
             }
         }
 
         public WorkOrders WorkOrdersList { get; set; }
         public SupplyOrders SupplyOrdersList { get; set; }
 
-        private object _selectedOrder;
-        public object SelectedOrder
+        public object CurrentOrder
         {
-            get => _selectedOrder;
+            get
+            {
+                return SelectedOrderTabIndex == 0 ? SelectedWorkOrder :
+                       SelectedOrderTabIndex == 1 ? SelectedSupplyOrder : null;
+            }
+        }
+
+        private int _selectedOrderTabIndex;
+        public int SelectedOrderTabIndex
+        {
+            get => _selectedOrderTabIndex;
             set
             {
-                _selectedOrder = value;
-                OnPropertyChanged(nameof(SelectedOrder));
+                _selectedOrderTabIndex = value;
+                OnPropertyChanged(nameof(SelectedOrderTabIndex));
+                OnPropertyChanged(nameof(CurrentOrder)); // Update the display when the tab changes
+            }
+        }
+
+        private object _selectedWorkOrder;
+        public object SelectedWorkOrder
+        {
+            get => _selectedWorkOrder;
+            set
+            {
+                _selectedWorkOrder = value;
+                OnPropertyChanged(nameof(SelectedWorkOrder));
+                OnPropertyChanged(nameof(CurrentOrder));
+            }
+        }
+
+        private object _selectedSupplyOrder;
+        public object SelectedSupplyOrder
+        {
+            get => _selectedSupplyOrder;
+            set
+            {
+                _selectedSupplyOrder = value;
+                OnPropertyChanged(nameof(SelectedSupplyOrder));
+                OnPropertyChanged(nameof(CurrentOrder));
             }
         }
 
@@ -83,9 +164,20 @@ namespace MediStoreManager
         private List<Order> orders = new List<Order>();
         private List<CustomerOrder> customerOrders = new List<CustomerOrder>();
 
-        public MainWindow()
+        private CollectionViewSource _patientViewSource;
+        private CollectionViewSource _equipmentViewSource;
+        private CollectionViewSource _partViewSource;
+        private CollectionViewSource _supplyViewSource;
+        private CollectionViewSource _supplierViewSource;
+        private CollectionViewSource _workOrderViewSource;
+        private CollectionViewSource _supplyOrderViewSource;
+
+        public MainWindow(bool isAdmin)
         {
             InitializeComponent();
+
+            IsAdmin = isAdmin;
+
             WorkOrdersList = new WorkOrders();
             SupplyOrdersList = new SupplyOrders();
             EquipmentList = new Equipments();
@@ -105,13 +197,13 @@ namespace MediStoreManager
                 RetrieveCustomerOrders();
                 RetrieveUsers();
 
+                PopulateWorkOrderList();
+                PopulateSupplyOrderList();
                 PopulatePatientList();
                 PopulateSupplierList();
                 PopulateEquipmentList();
                 PopulateSupplyList();
                 PopulatePartList();
-                PopulateWorkOrderList();
-                PopulateSupplyOrderList();
 
                 ClearUnusedAddresses();
             }
@@ -119,6 +211,41 @@ namespace MediStoreManager
             {
                 MessageBox.Show(ex.ToString());
             }
+
+            _patientViewSource = new CollectionViewSource { Source = PatientList };
+            _patientViewSource.Filter += PatientFilter;
+
+            PatientListBox.ItemsSource = _patientViewSource.View;
+
+            _equipmentViewSource = new CollectionViewSource { Source = EquipmentList };
+            _equipmentViewSource.Filter += EquipmentFilter;
+
+            EquipmentListBox.ItemsSource = _equipmentViewSource.View;
+
+            _partViewSource = new CollectionViewSource { Source = PartList };
+            _partViewSource.Filter += PartFilter;
+
+            PartsListBox.ItemsSource = _partViewSource.View;
+
+            _supplyViewSource = new CollectionViewSource { Source = SupplyList };
+            _supplyViewSource.Filter += SupplyFilter;
+
+            SuppliesListBox.ItemsSource = _supplyViewSource.View;
+
+            _supplierViewSource = new CollectionViewSource { Source = SupplierList };
+            _supplierViewSource.Filter += SupplierFilter;
+
+            SupplierListBox.ItemsSource = _supplierViewSource.View;
+
+            _workOrderViewSource = new CollectionViewSource { Source = WorkOrdersList };
+            _workOrderViewSource.Filter += WorkOrderFilter;
+
+            WorkListBox.ItemsSource = _workOrderViewSource.View;
+
+            _supplyOrderViewSource = new CollectionViewSource { Source = SupplyOrdersList };
+            _supplyOrderViewSource.Filter += SupplyOrderFilter;
+
+            SupplyListBox.ItemsSource = _supplyOrderViewSource.View;
         }
 
         private void PatientListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -166,7 +293,7 @@ namespace MediStoreManager
                 con.Close();
 
                 // Add patient to user interface
-                PatientList.AddPatient(newPerson, newAddress);
+                PatientList.AddPatient(newPerson, newAddress, null);
                 addresses.Add(newAddress);
                 persons.Add(newPerson);
             }
@@ -292,10 +419,10 @@ namespace MediStoreManager
                 string size = addInventoryWindow.Size;
                 string brand = addInventoryWindow.Brand;
                 int quantity = addInventoryWindow.Quantity;
-                string price = addInventoryWindow.Price;
-                string retailPrice = addInventoryWindow.RetailPrice;
-                string rentalPrice = addInventoryWindow.RentalPrice;
-                bool isRental = rentalPrice != string.Empty;
+                decimal price = addInventoryWindow.Price;
+                decimal retailPrice = addInventoryWindow.RetailPrice;
+                decimal rentalPrice = addInventoryWindow.RentalPrice;
+                bool isRental = rentalPrice != 0.00m;
                 string serialNumber = addInventoryWindow.SerialNumber;
 
                 InventoryItem newItem = new InventoryItem(inventoryItems.Max(i => i.ID) + 1, inventoryName, type, size, brand,
@@ -309,13 +436,13 @@ namespace MediStoreManager
                 switch (newItem.Type)
                 {
                     case "equipment":
-                        EquipmentList.AddEquipment(newItem);                    
+                        EquipmentList.AddEquipment(newItem, null, null);                    
                         break;
                     case "supply":
-                        SupplyList.AddSupply(newItem);
+                        SupplyList.AddSupply(newItem, null, null);
                         break;
                     case "part":
-                        PartList.AddPart(newItem);
+                        PartList.AddPart(newItem, null, null);
                         break;
                 }
                 inventoryItems.Add(newItem);
@@ -559,7 +686,7 @@ namespace MediStoreManager
                 DatabaseFunctions.CreateSupplierEntry(con, newSupplier);
                 con.Close();
 
-                SupplierList.AddSupplier(newSupplier, newAddress);
+                SupplierList.AddSupplier(newSupplier, newAddress, null);
                 addresses.Add(newAddress);
                 suppliers.Add(newSupplier);
             }
@@ -723,7 +850,7 @@ namespace MediStoreManager
                         foreach (InventoryEntry invEntry in WorkOrdersList[index].InventoryEntries)
                         {
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.DeleteOrderEntry(con, WorkOrdersList[index].ID, invEntry.MainItem.ID);
+                            DatabaseFunctions.DeleteCustomerOrderEntry(con, WorkOrdersList[index].ID, invEntry.MainItem.ID);
                             con.Close();
                         }
 
@@ -855,7 +982,7 @@ namespace MediStoreManager
                         foreach (InventoryEntry invEntry in SupplyOrdersList[index].InventoryEntries)
                         {
                             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.DeleteCustomerOrderEntry(con, SupplyOrdersList[index].ID, invEntry.MainItem.ID);
+                            DatabaseFunctions.DeleteOrderEntry(con, SupplyOrdersList[index].ID, invEntry.MainItem.ID);
                             con.Close();
                         }
 
@@ -942,27 +1069,27 @@ namespace MediStoreManager
 
         private void WorkListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedOrder = ((ListBox)sender).SelectedItem;
+            SelectedWorkOrder = ((ListBox)sender).SelectedItem;
         }
 
         private void SupplyListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedOrder = ((ListBox)sender).SelectedItem;
+            SelectedSupplyOrder = ((ListBox)sender).SelectedItem;
         }
 
         private void EquipmentListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedEquipment = ((ListBox)sender).SelectedItem;
         }
 
         private void SuppliesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedSupply = ((ListBox)sender).SelectedItem;
         }
 
         private void PartsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            SelectedInventory = ((ListBox)sender).SelectedItem;
+            SelectedPart = ((ListBox)sender).SelectedItem;
         }
 
         private void SupplierListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -1034,12 +1161,13 @@ namespace MediStoreManager
             {
                 if (!person.Deleted)
                 {
-                    allPersonsList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                    ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.PatientID == person.ID).ToList());
+                    allPersonsList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault(), workOrders);
                     if (person.IsPatient)
                     {
-                        PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault());
+                        PatientList.AddPatient(person, addresses.Where(a => a.ID == person.AddressID).FirstOrDefault(), workOrders);
                     }
-                }                           
+                }                                
             }
 
             foreach (Patient patient in PatientList)
@@ -1060,8 +1188,9 @@ namespace MediStoreManager
             {
                 if (!supplier.Deleted)
                 {
-                    SupplierList.AddSupplier(supplier, addresses.Where(a => a.ID == supplier.AddressID).FirstOrDefault());
-                }
+                    ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.Supplier == supplier.Name).ToList());
+                    SupplierList.AddSupplier(supplier, addresses.Where(a => a.ID == supplier.AddressID).FirstOrDefault(), supplyOrders);
+                }                
             }
         }
 
@@ -1072,8 +1201,15 @@ namespace MediStoreManager
             {
                 if (!item.Deleted)
                 {
-                    EquipmentList.AddEquipment(item);
-                }             
+                    ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                    ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                    EquipmentList.AddEquipment(item, workOrders, supplyOrders);
+                }
+                
             }
         }
 
@@ -1084,8 +1220,14 @@ namespace MediStoreManager
             {
                 if (!item.Deleted)
                 {
-                    SupplyList.AddSupply(item);
-                }             
+                    ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                    ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                    SupplyList.AddSupply(item, workOrders, supplyOrders);
+                }                
             }
         }
 
@@ -1096,58 +1238,68 @@ namespace MediStoreManager
             {
                 if (!item.Deleted)
                 {
-                    PartList.AddPart(item);
-                }
+                    ObservableCollection<SupplyOrder> supplyOrders = new ObservableCollection<SupplyOrder>(SupplyOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                    ObservableCollection<WorkOrder> workOrders = new ObservableCollection<WorkOrder>(WorkOrdersList.Where(o => o.InventoryEntries.Any(e =>
+                                                                                                                        e.MainItem.ID == item.ID ||
+                                                                                                                        e.RelatedItem.ID == item.ID)).ToList());
+                    PartList.AddPart(item, workOrders, supplyOrders);
+                }                
             }
         }
 
         private void PopulateSupplyOrderList()
         {
-            ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
             foreach (Order order in orders)
             {
+                ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
                 // Only create 1 SupplyOrder for each ID in the orders
                 if (!order.Deleted && !SupplyOrdersList.Any(o => o.ID == order.ID))
                 {
                     // Create collection of inventoryItem for the supply order
-                    foreach (InventoryItem item in inventoryItems.Where(i => i.ID == order.InventoryID))
+                    List<Order> orders2 = new List<Order>(orders.Where(i => i.ID == order.ID));
+                    foreach (Order continuedOrder in orders.Where(i => i.ID == order.ID))
                     {
+                        InventoryItem item = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
                         InventoryEntry entry = new InventoryEntry();
                         entry.MainItem = new InventoryListItem()
                         {
                             ID = item.ID,
                             Name = item.Name,
                             Type = item.Type,
+                            QuantitySelected = continuedOrder.Quantity
                         };
                         invEntries.Add(entry);
                     }
 
                     // Add the new supply order
                     SupplyOrdersList.AddSupplyOrder(order, invEntries);
-                    invEntries.Clear();
                 }           
             }
         }
 
         private void PopulateWorkOrderList()
         {
-            ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
             foreach (CustomerOrder order in customerOrders)
             {
+                ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
                 if (!order.Deleted && !WorkOrdersList.Any(wo => wo.ID == order.ID))
                 {
-                    foreach (InventoryItem item in inventoryItems.Where(i => i.ID == order.InventoryID))
+                    foreach (CustomerOrder continuedOrder in customerOrders.Where(i => i.ID == order.ID))
                     {
+                        InventoryItem mainItem = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
                         InventoryEntry entry = new InventoryEntry();
                         entry.MainItem = new InventoryListItem()
                         {
-                            ID = item.ID,
-                            Name = item.Name,
-                            Type = item.Type,
+                            ID = mainItem.ID,
+                            Name = mainItem.Name,
+                            Type = mainItem.Type,
+                            QuantitySelected = continuedOrder.Quantity
                         };
-                        if (order.RelatedInventoryItemID != 0)
+                        if (continuedOrder.RelatedInventoryItemID != 0)
                         {
-                            InventoryItem relatedItem = inventoryItems.Where(i => i.ID == order.RelatedInventoryItemID).FirstOrDefault();
+                            InventoryItem relatedItem = inventoryItems.Where(i => i.ID == continuedOrder.RelatedInventoryItemID).FirstOrDefault();
                             entry.RelatedItem = new InventoryListItem()
                             {
                                 ID = relatedItem.ID,
@@ -1239,6 +1391,118 @@ namespace MediStoreManager
                 string test = "test";
             }
 
+        }
+
+        private void PatientSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _patientViewSource.View.Refresh();
+        }
+
+        private void PatientFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Patient patient)
+            {
+                string filter = PatientSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             patient.DisplayName.ToLower().Contains(filter);
+            }
+        }
+
+        private void EquipmentSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _equipmentViewSource.View.Refresh();
+        }
+
+        private void EquipmentFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Equipment equipment)
+            {
+                string filter = EquipmentSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             equipment.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void PartSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _partViewSource.View.Refresh();
+        }
+
+        private void PartFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Part part)
+            {
+                string filter = PartSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             part.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void SupplySearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _supplyViewSource.View.Refresh();
+        }
+
+        private void SupplyFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is Supply supply)
+            {
+                string filter = SupplySearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             supply.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void SupplierSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _supplierViewSource.View.Refresh();
+        }
+
+        private void SupplierFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is SupplierL supplier)
+            {
+                string filter = SupplierSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             supplier.Name.ToLower().Contains(filter);
+            }
+        }
+
+        private void WorkOrderSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _workOrderViewSource.View.Refresh();
+        }
+
+        private void WorkOrderFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is WorkOrder workOrder)
+            {
+                string filter = WorkOrderSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             workOrder.DisplayName.ToLower().Contains(filter);
+            }
+        }
+
+        private void SupplyOrderSearchBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _supplyOrderViewSource.View.Refresh();
+        }
+
+        private void SupplyOrderFilter(object sender, FilterEventArgs e)
+        {
+            if (e.Item is SupplyOrder supplyOrder)
+            {
+                string filter = SupplyOrderSearchBox.Text.Trim().ToLower();
+
+                e.Accepted = string.IsNullOrWhiteSpace(filter) ||
+                             supplyOrder.DisplayName.ToLower().Contains(filter);
+            }
         }
     }
 }

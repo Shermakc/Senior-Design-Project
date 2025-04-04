@@ -14,7 +14,7 @@ namespace MediStoreManager
             
         }
 
-        public void AddPatient(Person person, Address address)
+        public void AddPatient(Person person, Address address, ObservableCollection<WorkOrder> workOrders)
         {
             Add(new Patient
             {
@@ -30,7 +30,16 @@ namespace MediStoreManager
                 State = address.State,
                 Insurance = person.InsuranceProvider,
                 ContactID = person.ContactID,
-                DisplayName = person.LastName + ", " + person.FirstName,              
+                DisplayName = person.LastName + ", " + person.FirstName,
+                WorkOrders = new ObservableCollection<OrderSummary>(
+                    workOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Type = o.Type,
+                            Date = o.Date,
+                            Notes = o.Notes
+                        }))
             });
         }
     }

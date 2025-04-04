@@ -46,6 +46,7 @@ namespace MediStoreManager
         public bool IsEditMode { get; private set; }
         public bool DeleteOrder { get; private set; }
         public uint ID { get; private set; }
+        public bool isAdmin { get; private set; }
 
         public CreateWorkOrder(ObservableCollection<Patient> patients, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
@@ -83,6 +84,7 @@ namespace MediStoreManager
         public CreateWorkOrder(ObservableCollection<Patient> patients, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts, WorkOrder workOrder)
         {
             IsEditMode = true;
+            isAdmin = MainWindow.IsAdmin;
             InitializeComponent();
             _patients = patients;
             _filteredPatients = new ObservableCollection<Patient>(patients);
@@ -105,8 +107,6 @@ namespace MediStoreManager
                 equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", AllowedQuantity = 100, QuantitySelected = 0 })
             );
 
-            // Bind the ItemsControl to the InventoryEntries collection
-            InventoryItemsControl.ItemsSource = InventoryEntries;
             ID = workOrder.ID;
             TypeComboBox.SelectedItem = workOrder.Type;
             SelectedPatient = patients.FirstOrDefault(p => p.ID == workOrder.PatientID);
@@ -123,8 +123,9 @@ namespace MediStoreManager
             _suppressTextChanged = false;
             OrderDateDatePicker.SelectedDate = workOrder.Date;
             DateOfPaymentDatePicker.SelectedDate = workOrder.PaymentDate;
-            InventoryEntries = workOrder.InventoryEntries;
+            InventoryEntries = new ObservableCollection<InventoryEntry>(workOrder.InventoryEntries);
             NotesTextBox.Text = workOrder.Notes;
+            InventoryItemsControl.ItemsSource = InventoryEntries;
             DataContext = this;
         }
 

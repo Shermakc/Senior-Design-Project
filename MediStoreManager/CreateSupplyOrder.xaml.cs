@@ -41,6 +41,7 @@ namespace MediStoreManager
         public bool IsEditMode { get; private set; }
         public bool DeleteOrder { get; private set; }
         public uint ID { get; private set; }
+        public bool isAdmin { get; private set; }
 
         public CreateSupplyOrder(ObservableCollection<SupplierL> suppliers, ObservableCollection<Equipment> equipment, ObservableCollection<Supply> supplies, ObservableCollection<Part> parts)
         {
@@ -93,8 +94,8 @@ namespace MediStoreManager
             );
 
             // Bind the ItemsControl to the InventoryEntries collection
-            InventoryItemsControl.ItemsSource = InventoryEntries;
             IsEditMode = true;
+            isAdmin = MainWindow.IsAdmin;
             ID = supplyOrder.ID;
             SelectedSupplier = suppliers.FirstOrDefault(s => s.Name == supplyOrder.Supplier);
             _suppressTextChanged = true;
@@ -108,10 +109,11 @@ namespace MediStoreManager
                 _filteredSuppliers.Add(supplier);
 
             _suppressTextChanged = false;
-            InventoryEntries = supplyOrder.InventoryEntries;
+            InventoryEntries = new ObservableCollection<InventoryEntry>(supplyOrder.InventoryEntries);
             ShippingMethodTextBox.Text = supplyOrder.ShippingMethod;
             OrderDateDatePicker.SelectedDate = supplyOrder.OrderDate;
             ReceivedDateDatePicker.SelectedDate = supplyOrder.ReceivedDate;
+            InventoryItemsControl.ItemsSource = InventoryEntries;
             DataContext = this;
         }
 

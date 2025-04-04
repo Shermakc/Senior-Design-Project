@@ -5,13 +5,17 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="MediStore Manager" SizeToContent="WidthAndHeight">
+        Title="MediStore Manager" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <local:WorkTabVisibilityConverter x:Key="WorkTabVisibilityConverter"/>
         <local:SupplyTabVisibilityConverter x:Key="SupplyTabVisibilityConverter"/>
         <local:EquipmentTabVisibilityConverter x:Key="EquipmentTabVisibilityConverter"/>
         <local:SuppliesTabVisibilityConverter x:Key="SuppliesTabVisibilityConverter"/>
         <local:PartsTabVisibilityConverter x:Key="PartsTabVisibilityConverter"/>
+        <local:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+        <local:RelatedInventoryVisibilityConverter x:Key="RelatedInventoryVisibilityConverter"/>
+        <local:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <Grid Height="796" Width="1550">
         <TabControl FontSize="16" Name="MainTabControl" SelectionChanged="MainTabControl_SelectionChanged">
@@ -60,10 +64,94 @@
                                 </ContentControl>
                             </TabItem>
                             <TabItem Header="History">
+                                <ContentControl Content="{Binding SelectedPatient}">
+                                    <ContentControl.Resources>
 
+                                        <DataTemplate DataType="{x:Type local:Patient}">
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <StackPanel Margin="10">
+                                                    <TextBlock Text="Work Orders:" FontWeight="Bold" Margin="0,10,0,10"/>
+
+                                                    <ItemsControl ItemsSource="{Binding WorkOrders}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                    <StackPanel Width="926" Orientation="Horizontal">
+                                                                        <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                            <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                        </WrapPanel>
+                                                                        <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                            <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding Type}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Notes: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding Notes}" Width="272" Margin="10,20"/>
+                                                                        </WrapPanel>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </ScrollViewer>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
                             </TabItem>
                             <TabItem Header="Additional">
+                                <ContentControl Content="{Binding SelectedPatient}">
+                                    <ContentControl.Resources>
 
+                                        <DataTemplate DataType="{x:Type local:Patient}">
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <StackPanel Margin="10">
+                                                    <TextBlock Text="Emergency Contacts:" FontWeight="Bold" Margin="0,10,0,10"/>
+
+                                                    <ItemsControl ItemsSource="{Binding Contacts}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                    <StackPanel Width="926" Orientation="Horizontal">
+                                                                        <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                            <TextBlock Text="First Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding FirstName}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Last Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding LastName}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Street Address: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding StreetAddress}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding City}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="State: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding State}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Insurance: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding Insurance}" Width="272" Margin="10,20"/>
+                                                                        </WrapPanel>
+                                                                        <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                            <TextBlock Text="Middle Name: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding MiddleName}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Home Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding HomePhone}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Cell Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding CellPhone}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding ZipCode}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="Relationship: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding RelationshipToPatient}" Width="272" Margin="10,20"/>
+                                                                        </WrapPanel>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </ScrollViewer>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
                             </TabItem>
                         </TabControl>
                     </Grid>
@@ -72,10 +160,8 @@
                         <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="20" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="681" Width="590" Margin="10,10,0,0">
-                        <TextBox>
-                            Search...
-                        </TextBox>
-                        <ListBox Name="PatientListBox" ItemsSource="{Binding PatientList}" 
+                        <TextBox Name="PatientSearchBox" TextChanged="PatientSearchBox_TextChanged"/>
+                        <ListBox Name="PatientListBox" 
                                  DisplayMemberPath="DisplayName" 
                                  SelectionChanged="PatientListBox_SelectionChanged" SelectedItem="{Binding SelectedPatient, Mode=TwoWay}" 
                                  IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
@@ -95,7 +181,7 @@
                     <Grid Height="595" Width="926" Margin="610,10,0,0">
                         <TabControl Margin="0,0,0,0">
                             <TabItem Header="Info">
-                                <ContentControl Content="{Binding SelectedInventory}">
+                                <ContentControl Content="{Binding CurrentItem}">
                                     <ContentControl.Resources>
 
                                         <DataTemplate DataType="{x:Type local:Equipment}">
@@ -109,8 +195,12 @@
                                                     <TextBlock Text="{Binding Quantity}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Retail Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding RetailPrice}" Width="272" Margin="10,20"/>
-                                                    <TextBlock Text="Rental Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding RentalPrice}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="Rental Item(?): " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                    <TextBlock Text="{Binding IsRental, Converter={StaticResource BoolToYesNoConverter}}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="Rental Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"
+                                                               Visibility="{Binding IsRental, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                                                    <TextBlock Text="{Binding RentalPrice}" Width="272" Margin="10,20"
+                                                               Visibility="{Binding IsRental, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                                 </WrapPanel>
                                                 <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                     <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
@@ -121,8 +211,8 @@
                                                     <TextBlock Text="{Binding Brand}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Price: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding Price}" Width="272" Margin="10,20"/>
-                                                    <!--TextBlock Text="Serial Number: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/-->
-                                                    <!--TextBlock Text="{Binding SerialNumber}" Width="272" Margin="10,20"/-->
+                                                    <TextBlock Text="Serial Number: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                    <TextBlock Text="{Binding SerialNumber}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
                                             </StackPanel>
                                         </DataTemplate>
@@ -181,10 +271,188 @@
                                 </ContentControl>
                             </TabItem>
                             <TabItem Header="History">
+                                <ContentControl Content="{Binding CurrentItem}">
+                                    <ContentControl.Resources>
 
-                            </TabItem>
-                            <TabItem Header="Additional">
+                                        <DataTemplate DataType="{x:Type local:Equipment}">
+                                            <StackPanel>
+                                                <TextBlock Text="Work Orders:" FontWeight="Bold" Margin="10,20,0,10"/>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
+                                                    <StackPanel Margin="10">
 
+
+                                                        <ItemsControl ItemsSource="{Binding WorkOrders}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                        <StackPanel Width="926" Orientation="Horizontal">
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                                <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                                <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Type}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Notes: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Notes}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </ScrollViewer>
+                                                <TextBlock Text="Supply Orders:" FontWeight="Bold" Margin="10,10,0,10"/>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="160">
+                                                    <StackPanel Margin="10">
+
+
+                                                        <ItemsControl ItemsSource="{Binding SupplyOrders}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                        <StackPanel Width="926" Orientation="Horizontal">
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                                <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                                <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </ScrollViewer>
+                                            </StackPanel>
+                                        </DataTemplate>
+
+                                        <DataTemplate DataType="{x:Type local:Supply}">
+                                            <StackPanel>
+                                                <TextBlock Text="Work Orders:" FontWeight="Bold" Margin="10,20,0,10"/>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
+                                                    <StackPanel Margin="10">
+
+
+                                                        <ItemsControl ItemsSource="{Binding WorkOrders}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                        <StackPanel Width="926" Orientation="Horizontal">
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                                <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                                <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Type}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Notes: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Notes}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </ScrollViewer>
+                                                <TextBlock Text="Supply Orders:" FontWeight="Bold" Margin="10,10,0,10"/>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="160">
+                                                    <StackPanel Margin="10">
+
+
+                                                        <ItemsControl ItemsSource="{Binding SupplyOrders}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                        <StackPanel Width="926" Orientation="Horizontal">
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                                <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                                <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </ScrollViewer>
+                                            </StackPanel>
+                                        </DataTemplate>
+
+                                        <DataTemplate DataType="{x:Type local:Part}">
+                                            <StackPanel>
+                                                <TextBlock Text="Work Orders:" FontWeight="Bold" Margin="10,20,0,10"/>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="300">
+                                                    <StackPanel Margin="10">
+
+
+                                                        <ItemsControl ItemsSource="{Binding WorkOrders}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                        <StackPanel Width="926" Orientation="Horizontal">
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                                <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                                <TextBlock Text="Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Type}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Notes: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Notes}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </ScrollViewer>
+                                                <TextBlock Text="Supply Orders:" FontWeight="Bold" Margin="10,10,0,10"/>
+                                                <ScrollViewer VerticalScrollBarVisibility="Auto" Height="160">
+                                                    <StackPanel Margin="10">
+
+
+                                                        <ItemsControl ItemsSource="{Binding SupplyOrders}">
+                                                            <ItemsControl.ItemTemplate>
+                                                                <DataTemplate>
+                                                                    <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                        <StackPanel Width="926" Orientation="Horizontal">
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                                <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                            <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                                <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                            </WrapPanel>
+                                                                        </StackPanel>
+                                                                    </Border>
+                                                                </DataTemplate>
+                                                            </ItemsControl.ItemTemplate>
+                                                        </ItemsControl>
+                                                    </StackPanel>
+                                                </ScrollViewer>
+                                            </StackPanel>
+                                        </DataTemplate>
+
+                                    </ContentControl.Resources>
+                                </ContentControl>
                             </TabItem>
                         </TabControl>
                     </Grid>
@@ -198,37 +466,31 @@
                         <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="20" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="681" Width="590" Margin="10,10,0,0">
-                        <TabControl Name="InventoryTabControl">
+                        <TabControl Name="InventoryTabControl" SelectedIndex="{Binding SelectedInventoryTabIndex}">
                             <TabItem Header="Equipment" Margin="0,0,0,0">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
-                                    <TextBox>
-                                        Search...
-                                    </TextBox>
-                                    <ListBox Name="EquipmentListBox" ItemsSource="{Binding EquipmentList}" 
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
+                                    <TextBox Name="EquipmentSearchBox" TextChanged="EquipmentSearchBox_TextChanged"/>
+                                    <ListBox Name="EquipmentListBox"
                                              DisplayMemberPath="Name" 
-                                             SelectionChanged="EquipmentListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             SelectionChanged="EquipmentListBox_SelectionChanged" SelectedItem="{Binding SelectedEquipment, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Supplies">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
-                                    <TextBox>
-                                        Search...
-                                    </TextBox>
-                                    <ListBox Name="SuppliesListBox" ItemsSource="{Binding SupplyList}" 
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
+                                    <TextBox Name="SupplySearchBox" TextChanged="SupplySearchBox_TextChanged"/>
+                                    <ListBox Name="SuppliesListBox"
                                              DisplayMemberPath="Name" 
-                                             SelectionChanged="SuppliesListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             SelectionChanged="SuppliesListBox_SelectionChanged" SelectedItem="{Binding SelectedSupply, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Parts">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
-                                    <TextBox>
-                                        Search...
-                                    </TextBox>
-                                    <ListBox Name="PartsListBox" ItemsSource="{Binding PartList}" 
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
+                                    <TextBox Name="PartSearchBox" TextChanged="PartSearchBox_TextChanged"/>
+                                    <ListBox Name="PartsListBox"
                                              DisplayMemberPath="Name" 
-                                             SelectionChanged="PartsListBox_SelectionChanged" SelectedItem="{Binding SelectedInventory, Mode=TwoWay}" 
+                                             SelectionChanged="PartsListBox_SelectionChanged" SelectedItem="{Binding SelectedPart, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
@@ -277,10 +539,37 @@
                                 </ContentControl>
                             </TabItem>
                             <TabItem Header="History">
+                                <ContentControl Content="{Binding SelectedSupplier}">
+                                    <ContentControl.Resources>
 
-                            </TabItem>
-                            <TabItem Header="Additional">
+                                        <DataTemplate DataType="{x:Type local:SupplierL}">
+                                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                                <StackPanel Margin="10">
+                                                    <TextBlock Text="Orders:" FontWeight="Bold" Margin="0,10,0,10"/>
 
+                                                    <ItemsControl ItemsSource="{Binding SupplyOrders}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="0,0,0,10" Padding="10">
+                                                                    <StackPanel Width="926" Orientation="Horizontal">
+                                                                        <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                            <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                        </WrapPanel>
+                                                                        <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                                            <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                            <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                        </WrapPanel>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </StackPanel>
+                                            </ScrollViewer>
+                                        </DataTemplate>
+                                    </ContentControl.Resources>
+                                </ContentControl>
                             </TabItem>
                         </TabControl>
                     </Grid>
@@ -289,10 +578,8 @@
                         <Button Content="Create Supply Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="20" Click="Button_CreateSupplyOrder"/>
                     </Grid>
                     <Grid Height="681" Width="590" Margin="10,10,0,0">
-                        <TextBox>
-                            Search...
-                        </TextBox>
-                        <ListBox Name="SupplierListBox" ItemsSource="{Binding SupplierList}" 
+                        <TextBox Name="SupplierSearchBox" TextChanged="SupplierSearchBox_TextChanged"/>
+                        <ListBox Name="SupplierListBox"
                                  DisplayMemberPath="Name" 
                                  SelectionChanged="SupplierListBox_SelectionChanged" SelectedItem="{Binding SelectedSupplier, Mode=TwoWay}" 
                                  IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
@@ -308,92 +595,137 @@
                         <local:SupplyOrders x:Key="supply"/>
                         <local:WorkOrders x:Key="work"/>
                     </Canvas.Resources>
-                    <Grid Height="595" Width="926" Margin="610,10,0,0">
-                        <TabControl Margin="0,0,0,0">
-                            <TabItem Header="Info">
-                                <ContentControl Content="{Binding SelectedOrder}">
-                                    <ContentControl.Resources>
+                    <Border BorderBrush="{DynamicResource {x:Static SystemColors.ControlDarkBrushKey}}"
+                            BorderThickness="1" Margin="610,38,0,0" Height="567" Width="926" SnapsToDevicePixels="True">
+                        <Grid Height="567" Width="926" Background="White">
+                            <!--TabControl Margin="0,0,0,0"-->
+                            <!--TabItem Header="Info"-->
+                            <ContentControl Content="{Binding CurrentOrder}">
+                                <ContentControl.Resources>
 
-                                        <DataTemplate DataType="{x:Type local:WorkOrder}">
-                                            <StackPanel Width="926" Orientation="Horizontal">
-                                                <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                    <DataTemplate DataType="{x:Type local:WorkOrder}">
+                                        <StackPanel  Width="922">
+                                            <StackPanel Orientation="Horizontal">
+                                                <WrapPanel Margin="0,0,0,0" Width="461" HorizontalAlignment="Left">
                                                     <TextBlock Text="Order ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Patient ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding PatientID}" Width="272" Margin="10,20"/>
-                                                    <TextBlock Text="Quantity: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding Quantity}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Notes: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding Notes}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
-                                                <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                <WrapPanel Margin="0,0,0,0" Width="461" HorizontalAlignment="Right">
                                                     <TextBlock Text="Order Type: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding Type}" Width="272" Margin="10,20"/>
-                                                    <TextBlock Text="Inventory ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding InventoryID}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding Date}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="Date of Payment: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                    <TextBlock Text="{Binding PaymentDate, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
                                             </StackPanel>
-                                        </DataTemplate>
+                                            <TextBlock Text="Inventory Items:" FontWeight="Bold" Margin="10,10,0,5"/>
+                                            <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10,5,10,10">
+                                                <ScrollViewer Height="330" Width="892" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                                                    <ItemsControl ItemsSource="{Binding InventoryEntries}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="10,5" Padding="6">
+                                                                    <StackPanel>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding MainItem.Name}" />
+                                                                        <TextBlock Text="Inventory ID: " FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding MainItem.ID}" Margin="10,0,0,0"/>
 
-                                        <DataTemplate DataType="{x:Type local:SupplyOrder}">
-                                            <StackPanel Width="926" Orientation="Horizontal">
-                                                <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
+                                                                        <TextBlock Text="Quantity: " FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding MainItem.QuantitySelected}" Margin="10,0,0,0"/>
+
+                                                                        <StackPanel Margin="0,10,0,0"
+                                                                                            Visibility="{Binding RelatedItem.Name, Converter={StaticResource RelatedInventoryVisibilityConverter}}">
+                                                                            <TextBlock Text="Related Inventory:" FontWeight="Bold"/>
+                                                                            <TextBlock Text="{Binding RelatedItem}" Margin="10,0,0,0"/>
+                                                                        </StackPanel>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </ScrollViewer>
+                                            </Border>
+                                        </StackPanel>
+                                    </DataTemplate>
+
+                                    <DataTemplate DataType="{x:Type local:SupplyOrder}">
+                                        <StackPanel Width="922">
+                                            <StackPanel Orientation="Horizontal">
+                                                <WrapPanel Margin="0,0,0,0" Width="461" HorizontalAlignment="Left">
                                                     <TextBlock Text="Order ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Quantity: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding Quantity}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Shipping Method: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ShippingMethod}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="Received Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                    <TextBlock Text="{Binding ReceivedDate, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
-                                                <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
+                                                <WrapPanel Margin="0,0,0,0" Width="461" HorizontalAlignment="Right">
                                                     <TextBlock Text="Inventory ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding InventoryID}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Supplier: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding Supplier}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Order Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding OrderDate}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="{Binding OrderDate, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
                                             </StackPanel>
-                                        </DataTemplate>
+                                            <TextBlock Text="Inventory Items:" FontWeight="Bold" Margin="10,10,0,5"/>
+                                            <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10,5,10,10">
+                                                <ScrollViewer Height="269" Width="892" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                                                    <ItemsControl ItemsSource="{Binding InventoryEntries}">
+                                                        <ItemsControl.ItemTemplate>
+                                                            <DataTemplate>
+                                                                <Border BorderBrush="Gray" BorderThickness="1" Margin="10,5" Padding="6">
+                                                                    <StackPanel>
+                                                                        <TextBlock FontWeight="Bold" Text="{Binding MainItem.Name}" />
+                                                                        <TextBlock Text="Inventory ID: " FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding MainItem.ID}" Margin="10,0,0,0"/>
 
-                                    </ContentControl.Resources>
-                                </ContentControl>
-                            </TabItem>
-                            <TabItem Header="History">
+                                                                        <TextBlock Text="Quantity: " FontWeight="Bold"/>
+                                                                        <TextBlock Text="{Binding MainItem.QuantitySelected}" Margin="10,0,0,0"/>
+                                                                    </StackPanel>
+                                                                </Border>
+                                                            </DataTemplate>
+                                                        </ItemsControl.ItemTemplate>
+                                                    </ItemsControl>
+                                                </ScrollViewer>
+                                            </Border>
+                                        </StackPanel>
+                                    </DataTemplate>
 
-                            </TabItem>
-                            <TabItem Header="Additional">
-
-                            </TabItem>
-                        </TabControl>
-                    </Grid>
+                                </ContentControl.Resources>
+                            </ContentControl>
+                            <!--/TabItem-->
+                            <!--/TabControl-->
+                        </Grid>
+                    </Border>
                     <Grid Height="140" Width="906" Margin="620,615,0,0">
                         <Button Content="Create Supply Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Left" FontSize="20" Click="Button_CreateSupplyOrder"/>
                         <Button Content="Create Work Order" Height="140" Width="448" Margin="0,0,0,0" HorizontalAlignment="Right" FontSize="20" Click="Button_CreateWorkOrder"/>
                     </Grid>
                     <Grid Height="681" Width="590" Margin="10,10,0,0">
-                        <TabControl Name="OrdersTabControl">
+                        <TabControl Name="OrdersTabControl" SelectedIndex="{Binding SelectedOrderTabIndex}">
                             <TabItem Header="Work" Margin="0,0,0,0">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
-                                    <TextBox>
-                                        Search...
-                                    </TextBox>
-                                    <ListBox Name="WorkListBox" ItemsSource="{Binding WorkOrdersList}" 
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
+                                    <TextBox Name="WorkOrderSearchBox" TextChanged="WorkOrderSearchBox_TextChanged"/>
+                                    <ListBox Name="WorkListBox" 
                                              DisplayMemberPath="DisplayName" 
-                                             SelectionChanged="WorkListBox_SelectionChanged" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}" 
+                                             SelectionChanged="WorkListBox_SelectionChanged" SelectedItem="{Binding SelectedWorkOrder, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>
                             <TabItem Header="Supply">
-                                <Grid Height="659" Width="584" Margin="0,0,0,0">
-                                    <TextBox>
-                                        Search...
-                                    </TextBox>
-                                    <ListBox Name="SupplyListBox" ItemsSource="{Binding SupplyOrdersList}" 
+                                <Grid Height="650" Width="584" Margin="0,0,0,0">
+                                    <TextBox Name="SupplyOrderSearchBox" TextChanged="SupplyOrderSearchBox_TextChanged"/>
+                                    <ListBox Name="SupplyListBox"
                                              DisplayMemberPath="DisplayName" 
-                                             SelectionChanged="SupplyListBox_SelectionChanged" SelectedItem="{Binding SelectedOrder, Mode=TwoWay}" 
+                                             SelectionChanged="SupplyListBox_SelectionChanged" SelectedItem="{Binding SelectedSupplyOrder, Mode=TwoWay}" 
                                              IsSynchronizedWithCurrentItem="True" Margin="0,20,0,0"/>
                                 </Grid>
                             </TabItem>

@@ -15,7 +15,8 @@
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Work Order
         </Label>
-        <Button Content="Delete Work Order" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" Click="DeleteWorkOrderButton_Click"/>
+        <Button Content="Delete Work Order" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                IsEnabled ="{Binding isAdmin}" Click="DeleteWorkOrderButton_Click"/>
         <ScrollViewer VerticalScrollBarVisibility="Auto" Height="345">
             <WrapPanel Width="380">
                 <WrapPanel.Resources>

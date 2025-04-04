@@ -37,6 +37,7 @@ namespace MediStoreManager
         public bool DeletePatient { get; private set; }
         public uint ID { get; private set; }
         public string DisplayName { get; private set; }
+        public bool isAdmin { get; private set; }
 
         public AddPatientWindow()
         {
@@ -60,6 +61,7 @@ namespace MediStoreManager
         public AddPatientWindow(Patient patient, bool isEditMode = true)
         {
             IsEditMode = isEditMode;
+            isAdmin = MainWindow.IsAdmin;
             InitializeComponent();
             FirstNameTextBox.Text = patient.FirstName;
             MiddleNameTextBox.Text = patient.MiddleName;
@@ -71,9 +73,10 @@ namespace MediStoreManager
             ZipTextBox.Text = patient.ZipCode;
             StateTextBox.Text = patient.State;
             InsuranceTextBox.Text = patient.Insurance;
-            _contacts = patient.Contacts;
+            _contacts = new ObservableCollection<Patient>(patient.Contacts);
             ID = patient.ID;
             DisplayName = patient.DisplayName;
+            ContactItemsControl.ItemsSource = _contacts;
             DataContext = this;
         }
 
@@ -110,7 +113,7 @@ namespace MediStoreManager
                     ZipCode = ZipCode,
                     State = State,
                     Insurance = InsuranceProvider,
-                    Contacts = FinalContacts,
+                    Contacts = new ObservableCollection<Patient>(FinalContacts),
                     DisplayName = DisplayName
                 };
             }
@@ -138,7 +141,8 @@ namespace MediStoreManager
                     ZipCode = popup.ZipCode,
                     State = popup.State,
                     Insurance = popup.InsuranceProvider,
-                    DisplayName = popup.LastName + ", " + popup.FirstName
+                    DisplayName = popup.LastName + ", " + popup.FirstName,
+                    RelationshipToPatient = popup.RelationshipToPatient
                 });
             }
         }

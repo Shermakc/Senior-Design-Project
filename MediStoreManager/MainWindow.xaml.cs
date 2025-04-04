@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using Org.BouncyCastle.Utilities;
 using Mysqlx.Crud;
 using Org.BouncyCastle.Asn1.X509;
+using Google.Protobuf.WellKnownTypes;
 
 namespace MediStoreManager
 {
@@ -787,14 +788,22 @@ namespace MediStoreManager
                     customerOrders.Add(newCustOrder);
                 }
 
-                if (type == "delivery" || type == "pickup" || type == "repair")
+                if (type == "delivery" || type == "pickup")
                 {                  
-                    foreach (InventoryEntry inventoryEntry in inventoryEntries.Where(ie => ie.MainItem.Type == "equipment"))
+                    foreach (InventoryEntry inventoryEntry in inventoryEntries)
                     {
-                        // assign patient ID to equipment
                         MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                        DatabaseFunctions.UpdateInventoryItemPersonID(con, inventoryEntry.MainItem.ID, patientID);
-                        con.Close();
+                        int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
+
+                        if (inventoryEntry.MainItem.Type == "equipment")
+                        {
+                            // assign patient ID to equipment                           
+                            DatabaseFunctions.UpdateInventoryItemPersonID(con, inventoryEntry.MainItem.ID, patientID);
+                            con.Close();
+
+                            // update patient ID in inventory list
+                            inventoryItems[invIndex].PersonID = patientID;
+                        }
 
                         // reduce number in stock of inventory item
                         con = DatabaseFunctions.OpenMySQLConnection();
@@ -802,11 +811,13 @@ namespace MediStoreManager
                         DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
                         con.Close();
 
-                        // update inventory list
-                        int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
-                        inventoryItems[invIndex].NumInStock = inventoryEntry.MainItem.AllowedQuantity;
+                        // update NumInStock in inventory lists
+                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+
+                        inventoryItems[invIndex].NumInStock = inventoryEntry.MainItem.AllowedQuantity;                        
                     }
                 }
+
                 if (type == "rental pickup")
                 {
                     
@@ -822,9 +833,12 @@ namespace MediStoreManager
                         DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID,  1);
                         con.Close();
 
-                        // update inventory list
+                        // update inventory lists
+                        UpdateQuantityInItemList("equipment", inventoryEntry.MainItem.ID, 1);
+
                         int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
                         inventoryItems[invIndex].NumInStock = 1;
+                        inventoryItems[invIndex].PersonID = 0;
                     }
                 }
             }
@@ -876,6 +890,7 @@ namespace MediStoreManager
                     }
 
                     List<CustomerOrder> originalOrder = customerOrders.Where(co => co.ID == editWorkOrderWindow.ID).ToList();
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                     foreach (InventoryEntry inventoryEntry in editWorkOrderWindow.FinalInventoryEntries)
                     {
                         if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
@@ -892,12 +907,12 @@ namespace MediStoreManager
                                 inventoryEntry.RelatedItem.ID,
                                 editWorkOrderWindow.Notes);
 
-                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.UpdateCustomerOrderEntry(con, editOrder);
                             con.Close();
 
                             int oIndex = customerOrders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
-                            customerOrders[oIndex] = editOrder;
+                            customerOrders[oIndex] = editOrder;                           
                         }
                         else
                         {
@@ -913,12 +928,63 @@ namespace MediStoreManager
                                 inventoryEntry.RelatedItem.ID,
                                 editWorkOrderWindow.Notes);
 
-                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.CreateCustomerOrderEntry(con, newOrder);
                             con.Close();
 
                             customerOrders.Add(newOrder);
                         }
+
+                        // Edit inventory item ID and NumInStock
+                        con = DatabaseFunctions.OpenMySQLConnection();
+
+                        int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                        if (inventoryEntry.MainItem.Type == "equipment")
+                        {
+                            // assign patient ID to equipment                           
+                            DatabaseFunctions.UpdateInventoryItemPersonID(con, inventoryEntry.MainItem.ID, editWorkOrderWindow.PatientID);
+                            con.Close();
+
+                            // update patient ID in inventory list
+                            inventoryItems[invIndex].PersonID = editWorkOrderWindow.PatientID;                          
+                        }
+
+                        // update number in stock of inventory item
+                        con = DatabaseFunctions.OpenMySQLConnection();
+                        // get num in stock from original database item
+                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+                        con.Close();
+
+                        // update NumInStock in inventory lists
+                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+                       
+                        inventoryItems[invIndex].NumInStock = inventoryEntry.MainItem.AllowedQuantity;                        
+                    }
+
+                    // update PatientID and NumInStock for items removed from order
+                    foreach (CustomerOrder orderItem in originalOrder
+                        .Where(o => !editWorkOrderWindow.FinalInventoryEntries
+                        .Any(ie => ie.MainItem.ID == o.InventoryID)).ToList())
+                    {
+                        InventoryItem item = inventoryItems.Where(i => i.ID == orderItem.InventoryID).FirstOrDefault();
+                        int invIndex = inventoryItems.IndexOf(item);
+
+                        if (item.Type == "equipment")
+                        {
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.UpdateInventoryItemPersonID(con, item.ID, 0);
+                            con.Close();
+
+                            inventoryItems[invIndex].PersonID = 0;
+                        }
+
+                        con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdateInventoryQuantity(con, item.ID, item.NumInStock + orderItem.Quantity);
+                        con.Close();
+
+                        UpdateQuantityInItemList(item.Type, item.ID, item.NumInStock + orderItem.Quantity);
+
+                        inventoryItems[invIndex].NumInStock = item.NumInStock + orderItem.Quantity;
                     }
                 }
             }
@@ -959,6 +1025,7 @@ namespace MediStoreManager
                         DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
                         con.Close();
 
+                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.AllowedQuantity);
 
                         inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
                     }
@@ -1064,6 +1131,8 @@ namespace MediStoreManager
                             con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
                             con.Close();
+
+                            UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock +  inventoryEntry.MainItem.AllowedQuantity);
 
                             inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
                         }                 
@@ -1513,6 +1582,28 @@ namespace MediStoreManager
 
                 e.Accepted = string.IsNullOrWhiteSpace(filter) ||
                              supplyOrder.DisplayName.ToLower().Contains(filter);
+            }
+        }
+
+        private void UpdateQuantityInItemList(string type, uint itemID, int quantity)
+        {
+            switch (type)
+            {
+                case "equipment":
+                    Equipment equip = EquipmentList.Where(e => e.ID == itemID).FirstOrDefault();
+                    int eIndex = EquipmentList.IndexOf(equip);
+                    EquipmentList[eIndex].Quantity = quantity;
+                    break;
+                case "supply":
+                    Supply supply = SupplyList.Where(s => s.ID == itemID).FirstOrDefault();
+                    int sIndex = SupplyList.IndexOf(supply);
+                    SupplyList[sIndex].Quantity = quantity;
+                    break;
+                case "part":
+                    Part part = PartList.Where(p => p.ID == itemID).FirstOrDefault();
+                    int pIndex = PartList.IndexOf(part);
+                    PartList[pIndex].Quantity = quantity;
+                    break;
             }
         }
     }

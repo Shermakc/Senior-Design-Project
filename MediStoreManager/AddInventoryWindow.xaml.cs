@@ -37,7 +37,7 @@ namespace MediStoreManager
         public Supply Supply { get; private set; }
         public Part Part { get; private set; }
         public uint ID { get; private set; }
-        public bool? IsRental = null;
+        public bool IsRental;
         public bool isAdmin { get; private set; }
 
         public AddInventoryWindow()
@@ -69,7 +69,14 @@ namespace MediStoreManager
                 RentalPriceTextBox.Text = equipment.RentalPrice.ToString();
                 SerialNumberTextBox.Text = equipment.SerialNumber;
                 ID = equipment.ID;
-
+                if (equipment.IsRental)
+                {
+                    YesRadioButton.IsChecked = true;
+                }
+                else
+                {
+                    NoRadioButton.IsChecked = true;
+                }
             }
             else if (part != null)
             {
@@ -81,6 +88,7 @@ namespace MediStoreManager
                 PriceTextBox.Text = part.Price.ToString();
                 RetailPriceTextBox.Text = part.RetailPrice.ToString();
                 ID = part.ID;
+                NotApplicableRadioButton.IsChecked = true;
             }
             else if (supply != null)
             {
@@ -92,6 +100,7 @@ namespace MediStoreManager
                 PriceTextBox.Text = supply.Price.ToString();
                 RetailPriceTextBox.Text = supply.RetailPrice.ToString();
                 ID = supply.ID;
+                NotApplicableRadioButton.IsChecked = true;
             }
             DataContext = this;
         }
@@ -148,7 +157,7 @@ namespace MediStoreManager
                 }
                 else if (NotApplicableRadioButton.IsChecked == true)
                 {
-                    IsRental = null;
+                    IsRental = false;
                 }
             }
 

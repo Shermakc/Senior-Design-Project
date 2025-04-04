@@ -20,7 +20,7 @@ namespace MediStoreManager
         private decimal _retailPrice;
         private decimal _rentalPrice;
         private string _serialNumber;
-        private bool? _isRental;
+        private bool _isRental;
         private ObservableCollection<OrderSummary> _workOrders;
         private ObservableCollection<OrderSummary> _supplyOrders;
 
@@ -34,7 +34,7 @@ namespace MediStoreManager
         public decimal RetailPrice { get => _retailPrice; set { _retailPrice = value; OnPropertyChanged(nameof(RetailPrice)); } }
         public decimal RentalPrice { get => _rentalPrice; set { _rentalPrice = value; OnPropertyChanged(nameof(RentalPrice)); } }
         public string SerialNumber { get => _serialNumber; set { _serialNumber = value; OnPropertyChanged(nameof(SerialNumber)); } }
-        public bool? IsRental { get => _isRental; set { _isRental = value; OnPropertyChanged(nameof(IsRental)); } }
+        public bool IsRental { get => _isRental; set { _isRental = value; OnPropertyChanged(nameof(IsRental)); } }
         public ObservableCollection<OrderSummary> WorkOrders { get => _workOrders; set { _workOrders = value; OnPropertyChanged(nameof(WorkOrders)); } }
         public ObservableCollection<OrderSummary> SupplyOrders { get => _supplyOrders; set { _supplyOrders = value; OnPropertyChanged(nameof(SupplyOrders)); } }
 

@@ -260,7 +260,7 @@ namespace MediStoreManager
                                         InsuranceProvider = contact.Insurance,
                                         IsPatient = false,
                                         ContactID = editPerson.ID
-                                        //ContactRelationship = contact.Relationsip
+                                        // ContactRelationship = contact.
                                     };
 
                                     con = DatabaseFunctions.OpenMySQLConnection();
@@ -597,7 +597,7 @@ namespace MediStoreManager
                     int index = SupplierListBox.SelectedIndex;
                     if (index >= 0 && editSupplierWindow.Supplier != null)
                     {
-                        Supplier originalSupplier = suppliers.Where(s => s.Name == editSupplierWindow.Name).FirstOrDefault();
+                        Supplier originalSupplier = suppliers.Where(s => s.Name == editSupplierWindow.BusinessName).FirstOrDefault();
                         uint addressID = originalSupplier.AddressID;
 
                         if (editSupplierWindow.StreetAddress != SupplierList[index].StreetAddress
@@ -657,6 +657,47 @@ namespace MediStoreManager
                     WorkOrdersList.AddWorkOrder(newCustOrder, persons.FirstOrDefault(p => p.ID == newCustOrder.PersonID), inventoryEntries);
                     customerOrders.Add(newCustOrder);
                 }
+
+                if (type == "delivery" || type == "pickup" || type == "repair")
+                {                  
+                    foreach (InventoryEntry inventoryEntry in inventoryEntries.Where(ie => ie.MainItem.Type == "equipment"))
+                    {
+                        // assign patient ID to equipment
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdateInventoryItemPersonID(con, inventoryEntry.MainItem.ID, patientID);
+                        con.Close();
+
+                        // reduce number in stock of inventory item
+                        con = DatabaseFunctions.OpenMySQLConnection();
+                        // get num in stock from original database item
+                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+                        con.Close();
+
+                        // update inventory list
+                        int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                        inventoryItems[invIndex].NumInStock = inventoryEntry.MainItem.AllowedQuantity;
+                    }
+                }
+                if (type == "rental pickup")
+                {
+                    
+                    foreach (InventoryEntry inventoryEntry in inventoryEntries.Where(ie => ie.MainItem.Type == "equipment"))
+                    {
+                        // remove patient ID from equipment
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdateInventoryItemPersonID(con, inventoryEntry.MainItem.ID, 0);
+                        con.Close();
+
+                        // increase number in stock of inventory item
+                        con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID,  1);
+                        con.Close();
+
+                        // update inventory list
+                        int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                        inventoryItems[invIndex].NumInStock = 1;
+                    }
+                }
             }
         }
 
@@ -698,6 +739,7 @@ namespace MediStoreManager
                     if (index >= 0 && editWorkOrderWindow.WorkOrder != null)
                     {
                         WorkOrdersList[index] = editWorkOrderWindow.WorkOrder;
+                        WorkOrdersList[index].DisplayName = editWorkOrderWindow.WorkOrder.DisplayName;
                     }
 
                     List<CustomerOrder> originalOrder = customerOrders.Where(co => co.ID == editWorkOrderWindow.ID).ToList();
@@ -774,6 +816,19 @@ namespace MediStoreManager
 
                     SupplyOrdersList.AddSupplyOrder(newOrder, inventoryEntries);
                     orders.Add(newOrder);
+
+                    if (hasBeenReceived)
+                    {
+                        InventoryItem orderInventoryItem = inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
+                        int invIndex = inventoryItems.IndexOf(orderInventoryItem);
+
+                        con = DatabaseFunctions.OpenMySQLConnection();
+                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
+                        con.Close();
+
+
+                        inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
+                    }
                 }              
             }
         }
@@ -818,7 +873,9 @@ namespace MediStoreManager
                         SupplyOrdersList[index] = editSupplyOrderWindow.SupplyOrder;
                     }
 
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                     List<Order> originalOrder = orders.Where(o => o.ID == editSupplyOrderWindow.ID).ToList();
+                    bool newlyReceived = false;
                     foreach (InventoryEntry inventoryEntry in editSupplyOrderWindow.FinalInventoryEntries)
                     {
                         if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
@@ -833,12 +890,14 @@ namespace MediStoreManager
                                 editSupplyOrderWindow.ReceivedDate != DateTime.MinValue,
                                 editSupplyOrderWindow.ReceivedDate);
 
-                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.UpdateOrderEntry(con, editOrder);
                             con.Close();
 
                             int oIndex = orders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
                             orders[oIndex] = editOrder;
+
+                            newlyReceived = !originalOrder.FirstOrDefault().HasBeenReceived && editOrder.HasBeenReceived;
                         }
                         else
                         {
@@ -852,12 +911,24 @@ namespace MediStoreManager
                                 editSupplyOrderWindow.ReceivedDate != DateTime.MinValue, 
                                 editSupplyOrderWindow.ReceivedDate);
 
-                            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                            con = DatabaseFunctions.OpenMySQLConnection();
                             DatabaseFunctions.CreateOrderEntry(con, newOrder);
                             con.Close();
 
                             orders.Add(newOrder);
                         }
+
+                        if (newlyReceived)
+                        {
+                            InventoryItem orderInventoryItem = inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
+                            int invIndex = inventoryItems.IndexOf(orderInventoryItem);
+
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
+                            con.Close();
+
+                            inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
+                        }                 
                     }
                 }
             }

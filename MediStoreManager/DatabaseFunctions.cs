@@ -307,6 +307,20 @@ namespace MediStoreManager
             cmd.ExecuteNonQuery();
         }
 
+        public static void UpdateInventoryItemPersonID(MySqlConnection con, uint id, uint personID)
+        {
+            string sql = "update inventory_item set PersonID = " + personID + " where ID = " + id + ";";
+            MySqlCommand cmd = new MySqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateInventoryQuantity(MySqlConnection con, uint id, int quantity)
+        {
+            string sql = "update inventory_item set NumInStock = " + quantity + " where ID = " + id + ";";
+            MySqlCommand cmd = new MySqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+        }
+
         public static void DeleteInventoryItemEntry(MySqlConnection con, uint id)
         {
             string sql = "update inventory_item set Deleted = 1 where ID = " + id + ";";

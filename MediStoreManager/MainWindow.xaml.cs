@@ -14,6 +14,8 @@ using MySql.Data.MySqlClient;
 using MediStoreManager;
 using System.Collections.ObjectModel;
 using Org.BouncyCastle.Utilities;
+using Mysqlx.Crud;
+using Org.BouncyCastle.Asn1.X509;
 
 namespace MediStoreManager
 {
@@ -865,8 +867,12 @@ namespace MediStoreManager
                     int index = WorkListBox.SelectedIndex;
                     if (index >= 0 && editWorkOrderWindow.WorkOrder != null)
                     {
+                        Person orderPerson = persons.Where(p => p.ID == editWorkOrderWindow.WorkOrder.PatientID).FirstOrDefault();
                         WorkOrdersList[index] = editWorkOrderWindow.WorkOrder;
-                        WorkOrdersList[index].DisplayName = editWorkOrderWindow.WorkOrder.DisplayName;
+                        WorkOrdersList[index].DisplayName = orderPerson.FirstName + " " +
+                            orderPerson.LastName + " - " + editWorkOrderWindow.WorkOrder.Date.Month.ToString() +
+                            "/" + editWorkOrderWindow.WorkOrder.Date.Day.ToString() +
+                            "/" + editWorkOrderWindow.WorkOrder.Date.Year.ToString();
                     }
 
                     List<CustomerOrder> originalOrder = customerOrders.Where(co => co.ID == editWorkOrderWindow.ID).ToList();
@@ -998,6 +1004,11 @@ namespace MediStoreManager
                     if (index >= 0 && editSupplyOrderWindow.SupplyOrder != null)
                     {
                         SupplyOrdersList[index] = editSupplyOrderWindow.SupplyOrder;
+                        SupplyOrdersList[index].DisplayName =
+                            editSupplyOrderWindow.SupplyOrder.Supplier + " - " +
+                            editSupplyOrderWindow.SupplyOrder.OrderDate.Month.ToString() +
+                            "/" + editSupplyOrderWindow.SupplyOrder.OrderDate.Day.ToString() +
+                            "/" + editSupplyOrderWindow.SupplyOrder.OrderDate.Year.ToString();
                     }
 
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();

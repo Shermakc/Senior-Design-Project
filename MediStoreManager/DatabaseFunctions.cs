@@ -298,11 +298,24 @@ namespace MediStoreManager
 
         public static void UpdateInventoryItemEntry(MySqlConnection con, InventoryItem item)
         {
-            string sql = "update inventory_item set Name = '" + item.Name + "', Size = '" + item.Size +
+            string sql;
+            if (item.PersonID != 0)
+            {
+                sql = "update inventory_item set Name = '" + item.Name + "', Size = '" + item.Size +
                 "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
                 ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
                 ", RentalPrice = " + item.RentalPrice + ", PersonID = " + item.PersonID + ", SerialNumber = '" + item.SerialNumber +
                 "' where ID = " + item.ID + " and Type = '" + item.Type + "';";
+            }
+            else
+            {
+                sql = "update inventory_item set Name = '" + item.Name + "', Size = '" + item.Size +
+                "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
+                ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
+                ", RentalPrice = " + item.RentalPrice + ", SerialNumber = '" + item.SerialNumber +
+                "' where ID = " + item.ID + " and Type = '" + item.Type + "';";
+            }
+
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -590,11 +603,23 @@ namespace MediStoreManager
 
         public static void UpdateCustomerOrderEntry(MySqlConnection con, CustomerOrder customerOrder)
         {
-            string sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
+            string sql;
+            if (customerOrder.RelatedInventoryItemID != 0)
+            {
+                sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
                 ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
                 "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
                 "', RelatedInventoryItemID = " + customerOrder.RelatedInventoryItemID + ", Notes = '" + customerOrder.Notes +
                 "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
+            }
+            else
+            {
+                sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
+                ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
+                "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                "', Notes = '" + customerOrder.Notes + "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
+            }
+            
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }

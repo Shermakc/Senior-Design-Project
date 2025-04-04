@@ -28,6 +28,7 @@ namespace MediStoreManager
                 RetailPrice = item.RetailPrice,
                 IsRental = item.IsRental,
                 RentalPrice = item.RentalPrice,
+                SerialNumber = item.SerialNumber,
                 WorkOrders = new ObservableCollection<OrderSummary>(
                     workOrders
                         .Select(o => new OrderSummary

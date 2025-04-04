@@ -424,10 +424,10 @@ namespace MediStoreManager
                 decimal price = addInventoryWindow.Price;
                 decimal retailPrice = addInventoryWindow.RetailPrice;
                 decimal rentalPrice = addInventoryWindow.RentalPrice;
-                bool isRental = rentalPrice != 0.00m;
+                bool isRental = addInventoryWindow.IsRental;
                 string serialNumber = addInventoryWindow.SerialNumber;
 
-                InventoryItem newItem = new InventoryItem(inventoryItems.Max(i => i.ID) + 1, inventoryName, type, size, brand,
+                InventoryItem newItem = new InventoryItem(inventoryItems.Max(i => i.ID) + 1, type, inventoryName, size, brand,
                     quantity, price, retailPrice, isRental, rentalPrice, serialNumber);
 
                 MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
@@ -438,13 +438,13 @@ namespace MediStoreManager
                 switch (newItem.Type)
                 {
                     case "equipment":
-                        EquipmentList.AddEquipment(newItem, null, null);                    
+                        EquipmentList.AddEquipment(newItem);                    
                         break;
                     case "supply":
-                        SupplyList.AddSupply(newItem, null, null);
+                        SupplyList.AddSupply(newItem);
                         break;
                     case "part":
-                        PartList.AddPart(newItem, null, null);
+                        PartList.AddPart(newItem);
                         break;
                 }
                 inventoryItems.Add(newItem);
@@ -501,13 +501,13 @@ namespace MediStoreManager
                     {
                         ID = originalItem.ID,
                         Type = editInventoryWindow.Type,
-                        Name = editInventoryWindow.Name,
+                        Name = editInventoryWindow.InventoryName,
                         Size = editInventoryWindow.Size,
                         Brand = editInventoryWindow.Brand,
                         NumInStock = editInventoryWindow.Quantity,
                         Cost = Convert.ToDecimal(editInventoryWindow.Price),
                         RetailPrice = Convert.ToDecimal(editInventoryWindow.RetailPrice),
-                        //IsRental = editInventoryWindow.,
+                        IsRental = editInventoryWindow.IsRental,
                         RentalPrice = Convert.ToDecimal(editInventoryWindow.RentalPrice),
                         SerialNumber = editInventoryWindow.SerialNumber
                     };
@@ -572,7 +572,7 @@ namespace MediStoreManager
                     {
                         ID = originalItem.ID,
                         Type = editInventoryWindow.Type,
-                        Name = editInventoryWindow.Name,
+                        Name = editInventoryWindow.InventoryName,
                         Size = editInventoryWindow.Size,
                         Brand = editInventoryWindow.Brand,
                         NumInStock = editInventoryWindow.Quantity,
@@ -640,7 +640,7 @@ namespace MediStoreManager
                     {
                         ID = originalItem.ID,
                         Type = editInventoryWindow.Type,
-                        Name = editInventoryWindow.Name,
+                        Name = editInventoryWindow.InventoryName,
                         Size = editInventoryWindow.Size,
                         Brand = editInventoryWindow.Brand,
                         NumInStock = editInventoryWindow.Quantity,

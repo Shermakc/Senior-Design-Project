@@ -44,5 +44,20 @@ namespace MediStoreManager
                         }))
             });
         }
+        
+        public void AddSupply(InventoryItem item)
+        {
+            Add(new Supply
+            {
+                ID = item.ID,
+                Type = item.Type,
+                Name = item.Name,
+                Quantity = item.NumInStock,
+                Size = item.Size,
+                Brand = item.Brand,
+                Price = item.Cost,
+                RetailPrice = item.RetailPrice
+            });
+        }
     }
 }

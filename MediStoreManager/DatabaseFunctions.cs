@@ -285,13 +285,28 @@ namespace MediStoreManager
 
         public static void CreateInventoryItemEntry(MySqlConnection con, InventoryItem newItem)
         {
-            string sql = "insert into inventory_item " +
-                "(`ID`, `Type`, `Name`, `Size`, `Brand`, `NumInStock`, `Cost`, `RetailPrice`, " +
-                "`IsRental`, `RentalPrice`, `PersonID`, `SerialNumber`) " +
-                "VALUES ('" + newItem.ID + "', '" + newItem.Type + "', '" + newItem.Name + "', '"
-                + newItem.Size + "', '" + newItem.Brand + "', '" + newItem.NumInStock + "', '"
-                + newItem.Cost + "', '" + newItem.RetailPrice + "', '" + Convert.ToByte(newItem.IsRental) + "', '"
-                + newItem.RentalPrice + "', '" + newItem.PersonID + "', '" + newItem.SerialNumber + "');";
+            string sql;
+            if (newItem.PersonID != 0)
+            {
+                sql = "insert into inventory_item " +
+                    "(`ID`, `Type`, `Name`, `Size`, `Brand`, `NumInStock`, `Cost`, `RetailPrice`, " +
+                    "`IsRental`, `RentalPrice`, `PersonID`, `SerialNumber`) " +
+                    "VALUES ('" + newItem.ID + "', '" + newItem.Type + "', '" + newItem.Name + "', '"
+                    + newItem.Size + "', '" + newItem.Brand + "', '" + newItem.NumInStock + "', '"
+                    + newItem.Cost + "', '" + newItem.RetailPrice + "', '" + Convert.ToByte(newItem.IsRental) + "', '"
+                    + newItem.RentalPrice + "', '" + newItem.PersonID + "', '" + newItem.SerialNumber + "');";
+            }
+            else
+            {
+                sql = "insert into inventory_item " +
+                    "(`ID`, `Type`, `Name`, `Size`, `Brand`, `NumInStock`, `Cost`, `RetailPrice`, " +
+                    "`IsRental`, `RentalPrice`, `SerialNumber`) " +
+                    "VALUES ('" + newItem.ID + "', '" + newItem.Type + "', '" + newItem.Name + "', '"
+                    + newItem.Size + "', '" + newItem.Brand + "', '" + newItem.NumInStock + "', '"
+                    + newItem.Cost + "', '" + newItem.RetailPrice + "', '" + Convert.ToByte(newItem.IsRental) + "', '"
+                    + newItem.RentalPrice + "', '" + newItem.SerialNumber + "');";
+            }
+
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -301,19 +316,19 @@ namespace MediStoreManager
             string sql;
             if (item.PersonID != 0)
             {
-                sql = "update inventory_item set Name = '" + item.Name + "', Size = '" + item.Size +
-                "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
-                ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
-                ", RentalPrice = " + item.RentalPrice + ", PersonID = " + item.PersonID + ", SerialNumber = '" + item.SerialNumber +
-                "' where ID = " + item.ID + " and Type = '" + item.Type + "';";
+                sql = "update inventory_item set Type = '" + item.Type + "', Name = '" + item.Name + "', Size = '" + item.Size +
+                    "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
+                    ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
+                    ", RentalPrice = " + item.RentalPrice + ", PersonID = " + item.PersonID + ", SerialNumber = '" + item.SerialNumber +
+                    "' where ID = " + item.ID + ";";
             }
             else
             {
-                sql = "update inventory_item set Name = '" + item.Name + "', Size = '" + item.Size +
-                "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
-                ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
-                ", RentalPrice = " + item.RentalPrice + ", SerialNumber = '" + item.SerialNumber +
-                "' where ID = " + item.ID + " and Type = '" + item.Type + "';";
+                sql = "update inventory_item set Type = '" + item.Type + "', Name = '" + item.Name + "', Size = '" + item.Size +
+                    "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
+                    ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
+                    ", RentalPrice = " + item.RentalPrice + ", SerialNumber = '" + item.SerialNumber +
+                    "' where ID = " + item.ID + ";";
             }
 
             MySqlCommand cmd = new MySqlCommand(sql, con);
@@ -590,13 +605,28 @@ namespace MediStoreManager
 
         public static void CreateCustomerOrderEntry(MySqlConnection con, CustomerOrder newCustomerOrder)
         {
-            string sql = "insert into customer_order " +
-                "(`ID`, `InventoryID`, `Type`, `PersonID`, `Quantity`, `Date`, `HaveReceivedPayment`, " +
-                "`PaymentDate`, `RelatedInventoryItemID`, `Notes`) " +
-                "VALUES ('" + newCustomerOrder.ID + "', '" + newCustomerOrder.InventoryID + "', '" + newCustomerOrder.Type + "', '"
-                + newCustomerOrder.PersonID + "', '" + newCustomerOrder.Quantity + "', '" + newCustomerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
-                + Convert.ToByte(newCustomerOrder.HaveReceivedPayment) + "', '" + newCustomerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
-                + newCustomerOrder.RelatedInventoryItemID + "', '" + newCustomerOrder.Notes + "');";
+            string sql;
+            if (newCustomerOrder.RelatedInventoryItemID != 0)
+            {
+                sql = "insert into customer_order " +
+                    "(`ID`, `InventoryID`, `Type`, `PersonID`, `Quantity`, `Date`, `HaveReceivedPayment`, " +
+                    "`PaymentDate`, `RelatedInventoryItemID`, `Notes`) " +
+                    "VALUES ('" + newCustomerOrder.ID + "', '" + newCustomerOrder.InventoryID + "', '" + newCustomerOrder.Type + "', '"
+                    + newCustomerOrder.PersonID + "', '" + newCustomerOrder.Quantity + "', '" + newCustomerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
+                    + Convert.ToByte(newCustomerOrder.HaveReceivedPayment) + "', '" + newCustomerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
+                    + newCustomerOrder.RelatedInventoryItemID + "', '" + newCustomerOrder.Notes + "');";
+            }
+            else
+            {
+                sql = "insert into customer_order " +
+                    "(`ID`, `InventoryID`, `Type`, `PersonID`, `Quantity`, `Date`, `HaveReceivedPayment`, " +
+                    "`PaymentDate`, `Notes`) " +
+                    "VALUES ('" + newCustomerOrder.ID + "', '" + newCustomerOrder.InventoryID + "', '" + newCustomerOrder.Type + "', '"
+                    + newCustomerOrder.PersonID + "', '" + newCustomerOrder.Quantity + "', '" + newCustomerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
+                    + Convert.ToByte(newCustomerOrder.HaveReceivedPayment) + "', '" + newCustomerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '" 
+                    + newCustomerOrder.Notes + "');";
+            }
+
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -607,17 +637,17 @@ namespace MediStoreManager
             if (customerOrder.RelatedInventoryItemID != 0)
             {
                 sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
-                ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
-                "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
-                "', RelatedInventoryItemID = " + customerOrder.RelatedInventoryItemID + ", Notes = '" + customerOrder.Notes +
-                "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
+                    ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', RelatedInventoryItemID = " + customerOrder.RelatedInventoryItemID + ", Notes = '" + customerOrder.Notes +
+                    "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
             }
             else
             {
                 sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
-                ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
-                "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
-                "', Notes = '" + customerOrder.Notes + "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
+                    ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', Notes = '" + customerOrder.Notes + "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
             }
             
             MySqlCommand cmd = new MySqlCommand(sql, con);

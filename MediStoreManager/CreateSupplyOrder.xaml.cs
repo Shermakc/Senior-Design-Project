@@ -100,8 +100,11 @@ namespace MediStoreManager
             SelectedSupplier = suppliers.FirstOrDefault(s => s.Name == supplyOrder.Supplier);
             _suppressTextChanged = true;
 
-            // Update the textbox explicitly
-            SupplierSearchBox.Text = $"{SelectedSupplier.Name}";
+            if (SelectedSupplier != null)
+            {
+                // Update the textbox explicitly
+                SupplierSearchBox.Text = $"{SelectedSupplier.Name}";
+            }
 
             // Clear filter (show full list again)
             _filteredSuppliers.Clear();

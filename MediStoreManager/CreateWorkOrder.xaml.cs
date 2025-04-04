@@ -112,8 +112,11 @@ namespace MediStoreManager
             SelectedPatient = patients.FirstOrDefault(p => p.ID == workOrder.PatientID);
             _suppressTextChanged = true;
 
-            // Update the textbox explicitly
-            PatientSearchBox.Text = $"{SelectedPatient.DisplayName} [{SelectedPatient.ID}]";
+            if (SelectedPatient != null)
+            {
+                // Update the textbox explicitly
+                PatientSearchBox.Text = $"{SelectedPatient.DisplayName} [{SelectedPatient.ID}]";
+            }
 
             // Clear filter (show full list again)
             _filteredPatients.Clear();

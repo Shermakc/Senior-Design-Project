@@ -388,8 +388,8 @@ namespace MediStoreManager
                                         AddressID = contactAddID,
                                         InsuranceProvider = contact.Insurance,
                                         IsPatient = false,
-                                        ContactID = editPerson.ID
-                                        // ContactRelationship = contact.
+                                        ContactID = editPerson.ID,
+                                        ContactRelationship = contact.RelationshipToPatient
                                     };
 
                                     con = DatabaseFunctions.OpenMySQLConnection();

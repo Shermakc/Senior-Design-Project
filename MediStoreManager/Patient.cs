@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,7 @@ namespace MediStoreManager
 {
     public class Patient : INotifyPropertyChanged
     {
-        private string _ID;
+        private uint _ID;
         private string _firstname;
         private string _lastname;
         private string _middlename;
@@ -20,8 +21,13 @@ namespace MediStoreManager
         private string _zipcode;
         private string _state;
         private string _displayname;
+        private string _insurance;
+        private uint _contactID;
+        private string _relationshipToPatient;
+        private ObservableCollection<Patient> _contacts;
+        private ObservableCollection<OrderSummary> _workOrders;
 
-        public string ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
+        public uint ID { get => _ID; set { _ID = value; OnPropertyChanged(nameof(ID)); } }
         public string FirstName { get => _firstname; set { _firstname = value; OnPropertyChanged(nameof(FirstName)); } }
         public string LastName { get => _lastname; set { _lastname = value; OnPropertyChanged(nameof(LastName)); } }
         public string MiddleName { get => _middlename; set { _middlename = value; OnPropertyChanged(nameof(MiddleName)); } }
@@ -32,11 +38,20 @@ namespace MediStoreManager
         public string ZipCode { get => _zipcode; set { _zipcode = value; OnPropertyChanged(nameof(ZipCode)); } }
         public string State { get => _state; set { _state = value; OnPropertyChanged(nameof(State)); } }
         public string DisplayName { get => _displayname; set { _displayname = value; OnPropertyChanged(nameof(DisplayName)); } }
+        public string Insurance { get => _insurance; set { _insurance = value; OnPropertyChanged(nameof(Insurance)); } }
+        public uint ContactID { get => _contactID; set { _contactID = value; OnPropertyChanged(nameof(ContactID)); } }
+        public string RelationshipToPatient { get => _relationshipToPatient; set { _relationshipToPatient = value; OnPropertyChanged(nameof(RelationshipToPatient)); } }
+        public ObservableCollection<Patient> Contacts { get => _contacts; set { _contacts = value; OnPropertyChanged(nameof(Contacts)); } }
+        public ObservableCollection<OrderSummary> WorkOrders { get => _workOrders; set { _workOrders = value; OnPropertyChanged(nameof(WorkOrders)); } }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        public override string ToString()
+        {
+            return $"{DisplayName} [{ID}]";
         }
     }
 }

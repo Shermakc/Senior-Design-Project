@@ -10,15 +10,6 @@ namespace MediStoreManager
 {
     public class DatabaseFunctions
     {
-        //private static List<Address> addressList;
-        //private static List<Person> personList;
-        //private static List<InventoryItem> inventoryList;
-        //private static List<Supplier> supplierList;
-        //private static List<User> userList;
-        //private static List<Order> orderList;
-        //private static List<CustomerOrder> customerOrderList;
-
-
         public static string connString = "server=localhost;uid=root;pwd=Enough@99;database=medistore manager"; // Don't leave this as plain text
 
         public static MySqlConnection OpenMySQLConnection()
@@ -40,9 +31,10 @@ namespace MediStoreManager
             tempPerson.CellPhone = GetColValAsDecimal(reader, nameof(tempPerson.CellPhone));
             tempPerson.AddressID = GetColValAsUInt(reader, nameof(tempPerson.AddressID));
             tempPerson.InsuranceProvider = GetColValAsString(reader, nameof(tempPerson.InsuranceProvider));
-            tempPerson.IsPatientContact = reader.GetBoolean(8);
+            tempPerson.IsPatient = reader.GetBoolean(8);
             tempPerson.ContactID = GetColValAsUInt(reader, nameof(tempPerson.ContactID));
             tempPerson.ContactRelationship = GetColValAsString(reader, nameof(tempPerson.ContactRelationship));
+            tempPerson.Deleted = reader.GetBoolean(11);
 
             return tempPerson;
         }
@@ -61,6 +53,8 @@ namespace MediStoreManager
             tempItem.IsRental = reader.GetBoolean(8);
             tempItem.RentalPrice = GetColValAsDecimal(reader, nameof(tempItem.RentalPrice));
             tempItem.PersonID = GetColValAsUInt(reader, nameof(tempItem.PersonID));
+            tempItem.SerialNumber = GetColValAsString(reader, nameof(tempItem.SerialNumber));
+            tempItem.Deleted = reader.GetBoolean(12);
 
             return tempItem;
         }
@@ -72,6 +66,7 @@ namespace MediStoreManager
             tempSupplier.PhoneNumber = GetColValAsDecimal(reader, nameof(tempSupplier.PhoneNumber));
             tempSupplier.PartnerID = GetColValAsInt(reader, nameof(tempSupplier.PartnerID));
             tempSupplier.AddressID = GetColValAsUInt(reader, nameof(tempSupplier.AddressID));
+            tempSupplier.Deleted = reader.GetBoolean(4);
 
             return tempSupplier;
         }
@@ -85,6 +80,7 @@ namespace MediStoreManager
             tempAddress.City = GetColValAsString(reader, nameof(tempAddress.City));
             tempAddress.State = GetColValAsString(reader, nameof(tempAddress.State));
             tempAddress.ZipCode = GetColValAsUInt(reader, nameof(tempAddress.ZipCode));
+            tempAddress.Deleted = reader.GetBoolean(6);
 
             return tempAddress;
         }
@@ -100,6 +96,7 @@ namespace MediStoreManager
             tempOrder.OrderDateTime = GetColValAsDateTime(reader, nameof(tempOrder.OrderDateTime));
             tempOrder.HasBeenReceived = reader.GetBoolean(6);
             tempOrder.ReceivedDate = GetColValAsDateTime(reader, nameof(tempOrder.ReceivedDate));
+            tempOrder.Deleted = reader.GetBoolean(8);
 
             return tempOrder;
         }
@@ -117,6 +114,7 @@ namespace MediStoreManager
             tempCustomerOrder.PaymentDate = GetColValAsDateTime(reader, nameof(tempCustomerOrder.PaymentDate));
             tempCustomerOrder.RelatedInventoryItemID = GetColValAsUInt(reader, nameof(tempCustomerOrder.RelatedInventoryItemID));
             tempCustomerOrder.Notes = GetColValAsString(reader, nameof(tempCustomerOrder.Notes));
+            tempCustomerOrder.Deleted = reader.GetBoolean(10);
 
             return tempCustomerOrder;
         }
@@ -130,6 +128,7 @@ namespace MediStoreManager
             tempUser.Username = GetColValAsString(reader, nameof(tempUser.Username));
             tempUser.Password = GetColValAsString(reader, nameof(tempUser.Password));
             tempUser.Position = GetColValAsString(reader, nameof(tempUser.Position));
+            tempUser.Deleted = reader.GetBoolean(6);
 
             return tempUser;
         }
@@ -174,8 +173,6 @@ namespace MediStoreManager
                 return (DateTime)reader[colName];
         }
 
-
-
         public static List<Person> GetPersonList(MySqlConnection con)
         {
             List<Person> persons = new List<Person>();
@@ -207,7 +204,7 @@ namespace MediStoreManager
                 tempPerson.CellPhone = GetColValAsDecimal(reader, nameof(tempPerson.CellPhone));
                 tempPerson.AddressID = GetColValAsUInt(reader, nameof(tempPerson.AddressID));
                 tempPerson.InsuranceProvider = GetColValAsString(reader, nameof(tempPerson.InsuranceProvider));
-                tempPerson.IsPatientContact = reader.GetBoolean(8);
+                tempPerson.IsPatient = reader.GetBoolean(8);
                 tempPerson.ContactID = GetColValAsUInt(reader, nameof(tempPerson.ContactID));
                 tempPerson.ContactRelationship = GetColValAsString(reader, nameof(tempPerson.ContactRelationship));
             }
@@ -219,10 +216,10 @@ namespace MediStoreManager
         {
             string sql = "insert into person " +
                 "(`ID`, `FirstName`, `LastName`, `MiddleName`, `HomePhone`, `CellPhone`, `AddressID`, `InsuranceProvider`, " +
-                "`IsPatientContact`, `ContactID`, `ContactRelationship`) " +
+                "`IsPatient`, `ContactID`, `ContactRelationship`) " +
                 "VALUES ('" + newPerson.ID + "', '" + newPerson.FirstName + "', '" + newPerson.LastName + "', '"
                 + newPerson.MiddleName + "', '" + newPerson.HomePhone + "', '" + newPerson.CellPhone + "', '"
-                + newPerson.AddressID + "', '" + newPerson.InsuranceProvider + "', '" + Convert.ToByte(newPerson.IsPatientContact) + "', '"
+                + newPerson.AddressID + "', '" + newPerson.InsuranceProvider + "', '" + Convert.ToByte(newPerson.IsPatient) + "', '"
                 + newPerson.ContactID + "', '" + newPerson.ContactRelationship + "');";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
@@ -232,7 +229,7 @@ namespace MediStoreManager
         {
             string sql = "update person set FirstName = '" + person.FirstName + "', LastName = '" + person.LastName +
                 "', MiddleName = '" + person.MiddleName + "', HomePhone = " + person.HomePhone + ", CellPhone = " + person.CellPhone +
-                ", AddressID = " + person.AddressID + ", InsuranceProvider = '" + person.InsuranceProvider + "', IsPatientContact = " + Convert.ToByte(person.IsPatientContact) +
+                ", AddressID = " + person.AddressID + ", InsuranceProvider = '" + person.InsuranceProvider + "', IsPatient = " + Convert.ToByte(person.IsPatient) +
                 ", ContactID = " + person.ContactID + ", ContactRelationship = '" + person.ContactRelationship +
                 "' where ID = " + person.ID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
@@ -241,7 +238,7 @@ namespace MediStoreManager
 
         public static void DeletePersonEntry(MySqlConnection con, uint id)
         {
-            string sql = "delete from person where ID = " + id + ";";
+            string sql = "update person set Deleted = 1 where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -280,6 +277,7 @@ namespace MediStoreManager
                 tempItem.IsRental = reader.GetBoolean(8);
                 tempItem.RentalPrice = GetColValAsDecimal(reader, nameof(tempItem.RentalPrice));
                 tempItem.PersonID = GetColValAsUInt(reader, nameof(tempItem.PersonID));
+                tempItem.SerialNumber = GetColValAsString(reader, nameof(tempItem.SerialNumber));
             }
 
             return tempItem;
@@ -287,31 +285,73 @@ namespace MediStoreManager
 
         public static void CreateInventoryItemEntry(MySqlConnection con, InventoryItem newItem)
         {
-            string sql = "insert into inventory_item " +
-                "(`ID`, `Type`, `Name`, `Size`, `Brand`, `NumInStock`, `Cost`, `RetailPrice`, " +
-                "`IsRental`, `RentalPrice`, `PersonID`) " +
-                "VALUES ('" + newItem.ID + "', '" + newItem.Type + "', '" + newItem.Name + "', '"
-                + newItem.Size + "', '" + newItem.Brand + "', '" + newItem.NumInStock + "', '"
-                + newItem.Cost + "', '" + newItem.RetailPrice + "', '" + Convert.ToByte(newItem.IsRental) + "', '"
-                + newItem.RentalPrice + "', '" + newItem.PersonID + "');";
+            string sql;
+            if (newItem.PersonID != 0)
+            {
+                sql = "insert into inventory_item " +
+                    "(`ID`, `Type`, `Name`, `Size`, `Brand`, `NumInStock`, `Cost`, `RetailPrice`, " +
+                    "`IsRental`, `RentalPrice`, `PersonID`, `SerialNumber`) " +
+                    "VALUES ('" + newItem.ID + "', '" + newItem.Type + "', '" + newItem.Name + "', '"
+                    + newItem.Size + "', '" + newItem.Brand + "', '" + newItem.NumInStock + "', '"
+                    + newItem.Cost + "', '" + newItem.RetailPrice + "', '" + Convert.ToByte(newItem.IsRental) + "', '"
+                    + newItem.RentalPrice + "', '" + newItem.PersonID + "', '" + newItem.SerialNumber + "');";
+            }
+            else
+            {
+                sql = "insert into inventory_item " +
+                    "(`ID`, `Type`, `Name`, `Size`, `Brand`, `NumInStock`, `Cost`, `RetailPrice`, " +
+                    "`IsRental`, `RentalPrice`, `SerialNumber`) " +
+                    "VALUES ('" + newItem.ID + "', '" + newItem.Type + "', '" + newItem.Name + "', '"
+                    + newItem.Size + "', '" + newItem.Brand + "', '" + newItem.NumInStock + "', '"
+                    + newItem.Cost + "', '" + newItem.RetailPrice + "', '" + Convert.ToByte(newItem.IsRental) + "', '"
+                    + newItem.RentalPrice + "', '" + newItem.SerialNumber + "');";
+            }
+
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
 
         public static void UpdateInventoryItemEntry(MySqlConnection con, InventoryItem item)
         {
-            string sql = "update inventory_item set Name = '" + item.Name + "', Size = '" + item.Size +
-                "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
-                ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
-                ", RentalPrice = " + item.RentalPrice + ", PersonID = " + item.PersonID +
-                " where ID = " + item.ID + " and Type = '" + item.Type + "';";
+            string sql;
+            if (item.PersonID != 0)
+            {
+                sql = "update inventory_item set Type = '" + item.Type + "', Name = '" + item.Name + "', Size = '" + item.Size +
+                    "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
+                    ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
+                    ", RentalPrice = " + item.RentalPrice + ", PersonID = " + item.PersonID + ", SerialNumber = '" + item.SerialNumber +
+                    "' where ID = " + item.ID + ";";
+            }
+            else
+            {
+                sql = "update inventory_item set Type = '" + item.Type + "', Name = '" + item.Name + "', Size = '" + item.Size +
+                    "', Brand = '" + item.Brand + "', NumInStock = " + item.NumInStock + ", Cost = " + item.Cost +
+                    ", RetailPrice = " + item.RetailPrice + ", IsRental = " + Convert.ToByte(item.IsRental) +
+                    ", RentalPrice = " + item.RentalPrice + ", SerialNumber = '" + item.SerialNumber +
+                    "' where ID = " + item.ID + ";";
+            }
+
+            MySqlCommand cmd = new MySqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateInventoryItemPersonID(MySqlConnection con, uint id, uint personID)
+        {
+            string sql = "update inventory_item set PersonID = " + personID + " where ID = " + id + ";";
+            MySqlCommand cmd = new MySqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void UpdateInventoryQuantity(MySqlConnection con, uint id, int quantity)
+        {
+            string sql = "update inventory_item set NumInStock = " + quantity + " where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
 
         public static void DeleteInventoryItemEntry(MySqlConnection con, uint id)
         {
-            string sql = "delete from inventory_item where ID = " + id + ";";
+            string sql = "update inventory_item set Deleted = 1 where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -388,7 +428,7 @@ namespace MediStoreManager
 
         public static void DeleteSupplierEntry(MySqlConnection con, string name)
         {
-            string sql = "delete from supplier where Name = '" + name + "';";
+            string sql = "update supplier set Deleted = 1 where Name = " + name + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -447,6 +487,13 @@ namespace MediStoreManager
         }
 
         public static void DeleteAddressEntry(MySqlConnection con, uint id)
+        {
+            string sql = "update address set Deleted = 1 where ID = " + id + ";";
+            MySqlCommand cmd = new MySqlCommand(sql, con);
+            cmd.ExecuteNonQuery();
+        }
+
+        public static void FullyDeleteAddressEntry(MySqlConnection con, uint id)
         {
             string sql = "delete from address where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
@@ -513,7 +560,7 @@ namespace MediStoreManager
 
         public static void DeleteOrderEntry(MySqlConnection con, uint id, uint inventoryID)
         {
-            string sql = "delete from `order` where ID = " + id + " and InventoryID = " + inventoryID + ";";
+            string sql = "update order set Deleted = 1 where ID = " + id + " and InventoryID = " + inventoryID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -558,31 +605,58 @@ namespace MediStoreManager
 
         public static void CreateCustomerOrderEntry(MySqlConnection con, CustomerOrder newCustomerOrder)
         {
-            string sql = "insert into customer_order " +
-                "(`ID`, `InventoryID`, `Type`, `PersonID`, `Quantity`, `Date`, `HaveReceivedPayment`, " +
-                "`PaymentDate`, `RelatedInventoryItemID`, `Notes`) " +
-                "VALUES ('" + newCustomerOrder.ID + "', '" + newCustomerOrder.InventoryID + "', '" + newCustomerOrder.Type + "', '"
-                + newCustomerOrder.PersonID + "', '" + newCustomerOrder.Quantity + "', '" + newCustomerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
-                + Convert.ToByte(newCustomerOrder.HaveReceivedPayment) + "', '" + newCustomerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
-                + newCustomerOrder.RelatedInventoryItemID + "', '" + newCustomerOrder.Notes + "');";
+            string sql;
+            if (newCustomerOrder.RelatedInventoryItemID != 0)
+            {
+                sql = "insert into customer_order " +
+                    "(`ID`, `InventoryID`, `Type`, `PersonID`, `Quantity`, `Date`, `HaveReceivedPayment`, " +
+                    "`PaymentDate`, `RelatedInventoryItemID`, `Notes`) " +
+                    "VALUES ('" + newCustomerOrder.ID + "', '" + newCustomerOrder.InventoryID + "', '" + newCustomerOrder.Type + "', '"
+                    + newCustomerOrder.PersonID + "', '" + newCustomerOrder.Quantity + "', '" + newCustomerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
+                    + Convert.ToByte(newCustomerOrder.HaveReceivedPayment) + "', '" + newCustomerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
+                    + newCustomerOrder.RelatedInventoryItemID + "', '" + newCustomerOrder.Notes + "');";
+            }
+            else
+            {
+                sql = "insert into customer_order " +
+                    "(`ID`, `InventoryID`, `Type`, `PersonID`, `Quantity`, `Date`, `HaveReceivedPayment`, " +
+                    "`PaymentDate`, `Notes`) " +
+                    "VALUES ('" + newCustomerOrder.ID + "', '" + newCustomerOrder.InventoryID + "', '" + newCustomerOrder.Type + "', '"
+                    + newCustomerOrder.PersonID + "', '" + newCustomerOrder.Quantity + "', '" + newCustomerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") + "', '"
+                    + Convert.ToByte(newCustomerOrder.HaveReceivedPayment) + "', '" + newCustomerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") + "', '" 
+                    + newCustomerOrder.Notes + "');";
+            }
+
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
 
         public static void UpdateCustomerOrderEntry(MySqlConnection con, CustomerOrder customerOrder)
         {
-            string sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
-                ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
-                "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
-                "', RelatedInventoryItemID = " + customerOrder.RelatedInventoryItemID + ", Notes = '" + customerOrder.Notes +
-                "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
+            string sql;
+            if (customerOrder.RelatedInventoryItemID != 0)
+            {
+                sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
+                    ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', RelatedInventoryItemID = " + customerOrder.RelatedInventoryItemID + ", Notes = '" + customerOrder.Notes +
+                    "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
+            }
+            else
+            {
+                sql = "update customer_order set Type = '" + customerOrder.Type + "', PersonID = " + customerOrder.PersonID +
+                    ", Quantity = " + customerOrder.Quantity + ", Date = '" + customerOrder.Date.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', HaveReceivedPayment = " + Convert.ToByte(customerOrder.HaveReceivedPayment) + ", PaymentDate = '" + customerOrder.PaymentDate.ToString("yyyy-MM-dd HH:mm:ss") +
+                    "', Notes = '" + customerOrder.Notes + "' where ID = " + customerOrder.ID + " and InventoryID = " + customerOrder.InventoryID + ";";
+            }
+            
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
 
         public static void DeleteCustomerOrderEntry(MySqlConnection con, uint id, uint inventoryID)
         {
-            string sql = "delete from customer_order where ID = " + id + " and InventoryID = " + inventoryID + ";";
+            string sql = "update customer_order set Deleted = 1 where ID = " + id + " and InventoryID = " + inventoryID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }
@@ -642,14 +716,7 @@ namespace MediStoreManager
 
         public static void DeleteUserEntry(MySqlConnection con, uint id)
         {
-            string sql = "delete from user where ID = " + id + ";";
-            MySqlCommand cmd = new MySqlCommand(sql, con);
-            cmd.ExecuteNonQuery();
-        }
-
-        public static void DeleteSupplierEntry(MySqlConnection con, uint id)
-        {
-            string sql = "delete from user where ID = " + id + ";";
+            string sql = "update user set Deleted = 1 where ID = " + id + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }

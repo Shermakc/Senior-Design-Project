@@ -7,30 +7,80 @@
         mc:Ignorable="d"
         Title="Supply Order" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel Height="240" Width="380">
+    <Window.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <StackPanel Height="420" Width="400">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
-            Create Supply Order
+            Supply Order
         </Label>
-        <WrapPanel Height="180" Width="400">
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Inventory: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Quantity: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Supplier Name: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Shipping Method: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Order Date: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Received Date: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-        </WrapPanel>
+        <Button Content="Delete Supply Order" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                IsEnabled ="{Binding isAdmin}" Click="DeleteSupplyOrderButton_Click"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="340">
+            <WrapPanel Width="380">
+                <StackPanel Width="380" Margin="0,10,0,5">
+
+                    <Grid Width="380">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="260"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Inventory Items: " TextAlignment="Right" VerticalAlignment="Center" Grid.Column="0"/>
+                        <Button Content="Add New Inventory Item" Width="260" Click="AddNewInventory_Click" Grid.Column="1" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <ItemsControl Name="InventoryItemsControl" Width="260" Margin="110,0,10,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,5,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding MainItem.Name}" Width="150" FontWeight="Bold"/>
+                                        <TextBlock Text="Qty:" Width="30" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding MainItem.QuantitySelected}" Width="40"/>
+                                        <Button Content="X" Width="30" Click="RemoveInventoryItem_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Supplier Name: " Margin="0,5,0,0"/>
+                <StackPanel Width="260" HorizontalAlignment="Right" Margin="0,5,0,5">
+                    <TextBox Name="SupplierSearchBox"
+                             Width="260"
+                             HorizontalAlignment="Right"
+                             TextChanged="SupplierSearchBox_TextChanged"/>
+
+                    <ListBox Name="SupplierResultsListBox"
+                             Width="260"
+                             Height="150"
+                             HorizontalAlignment="Right"
+                             SelectionChanged="SupplierResultsListBox_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Shipping Method: " Margin="0,5,0,0"/>
+                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ShippingMethodTextBox"/>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Order Date: " Margin="0,5,0,0"/>
+                <DatePicker Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="OrderDateDatePicker"/>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Received Date: " Margin="0,5,0,0"/>
+                <DatePicker Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ReceivedDateDatePicker"/>
+            </WrapPanel>
+        </ScrollViewer>
         <StackPanel Width="400" Height="20" Orientation="Horizontal" HorizontalAlignment="Center">
             <Grid Width="194">
-                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Button_OK"/>
             </Grid>
             <Grid Width="194">
-                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Click"/>
+                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Cancel"/>
             </Grid>
         </StackPanel>
     </StackPanel>

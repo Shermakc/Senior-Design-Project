@@ -11,34 +11,54 @@ namespace MediStoreManager
     {
         public Supplies()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new Supply
-                {
-                    ID = "Supply " + i,
-                    Type = "Supplies",
-                    Name = "Supply " + i.ToString(),
-                    Quantity = (1000 + i).ToString(),
-                    Size = "L",
-                    Brand = "Random",
-                    Price = "$3.45",
-                    RetailPrice = "$15.50",
-                });
-            }
+
         }
 
+        public void AddSupply(InventoryItem item, ObservableCollection<WorkOrder> workOrders, ObservableCollection<SupplyOrder> supplyOrders)
+        {
+            Add(new Supply
+            {
+                ID = item.ID,
+                Type = item.Type,
+                Name = item.Name,
+                Quantity = item.NumInStock,
+                Size = item.Size,
+                Brand = item.Brand,
+                Price = item.Cost,
+                RetailPrice = item.RetailPrice,
+                WorkOrders = new ObservableCollection<OrderSummary>(
+                    workOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Type = o.Type,
+                            Date = o.Date,
+                            Notes = o.Notes
+                        })),
+                SupplyOrders = new ObservableCollection<OrderSummary>(
+                    supplyOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Date = o.OrderDate
+                        }))
+            });
+        }
+        
         public void AddSupply(InventoryItem item)
         {
             Add(new Supply
             {
-                ID = item.ID.ToString(),
+                ID = item.ID,
                 Type = item.Type,
                 Name = item.Name,
-                Quantity = item.NumInStock.ToString(),
+                Quantity = item.NumInStock,
                 Size = item.Size,
                 Brand = item.Brand,
-                Price = item.Cost.ToString(),
-                RetailPrice = item.RetailPrice.ToString(),
+                Price = item.Cost,
+                RetailPrice = item.RetailPrice,
+                WorkOrders = new ObservableCollection<OrderSummary>(),
+                SupplyOrders = new ObservableCollection<OrderSummary>()
             });
         }
     }

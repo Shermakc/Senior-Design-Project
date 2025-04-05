@@ -12,34 +12,54 @@ namespace MediStoreManager
     {
         public Parts()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new Part
-                {
-                    ID = "Part " + i,
-                    Type = "Part",
-                    Name = "Part " + i.ToString(),
-                    Quantity = (100 + i).ToString(),
-                    Size = "L",
-                    Brand = "Random",
-                    Price = "$13.45",
-                    RetailPrice = "$25.50",
-                });
-            }
+
         }
 
+        public void AddPart(InventoryItem item, ObservableCollection<WorkOrder> workOrders, ObservableCollection<SupplyOrder> supplyOrders)
+        {
+            Add(new Part
+            {
+                ID = item.ID,
+                Type = item.Type,
+                Name = item.Name,
+                Quantity = item.NumInStock,
+                Size = item.Size,
+                Brand = item.Brand,
+                Price = item.Cost,
+                RetailPrice = item.RetailPrice,
+                WorkOrders = new ObservableCollection<OrderSummary>(
+                    workOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Type = o.Type,
+                            Date = o.Date,
+                            Notes = o.Notes
+                        })),
+                SupplyOrders = new ObservableCollection<OrderSummary>(
+                    supplyOrders
+                        .Select(o => new OrderSummary
+                        {
+                            ID = o.ID,
+                            Date = o.OrderDate
+                        }))
+            });
+        }
+        
         public void AddPart(InventoryItem item)
         {
             Add(new Part
             {
-                ID = item.ID.ToString(),
+                ID = item.ID,
                 Type = item.Type,
                 Name = item.Name,
-                Quantity = item.NumInStock.ToString(),
+                Quantity = item.NumInStock,
                 Size = item.Size,
                 Brand = item.Brand,
-                Price = item.Cost.ToString(),
-                RetailPrice = item.RetailPrice.ToString(),
+                Price = item.Cost,
+                RetailPrice = item.RetailPrice,
+                WorkOrders = new ObservableCollection<OrderSummary>(),
+                SupplyOrders= new ObservableCollection<OrderSummary>()
             });
         }
     }

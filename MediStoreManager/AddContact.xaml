@@ -1,0 +1,47 @@
+﻿<Window x:Class="MediStoreManager.AddContact"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MediStoreManager"
+        mc:Ignorable="d"
+        Title="Add Contact" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner">
+    <StackPanel Height="380" Width="400">
+        <Label FontWeight="Bold" HorizontalAlignment="Center">
+            Enter Contact Information
+        </Label>
+        <WrapPanel Height="320" Width="400">
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="First Name: " Margin="0,5,0,0" />
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="FirstNameTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Middle Name: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="MiddleNameTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Last Name: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="LastNameTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Home Phone #: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="HomePhoneTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Cell Phone #: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="CellPhoneTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Street Address: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="StreetAddressTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="City: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="CityTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="State: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="StateTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Zip Code: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ZipTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Insurance Provider: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="InsuranceTextBox"/>
+            <TextBlock Width="130" HorizontalAlignment="Left" TextAlignment="Right" Text="Relationship to Patient: " Margin="0,5,0,0"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="RelationshipTextBox"/>
+        </WrapPanel>
+        <StackPanel Width="400" Height="20" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Grid Width="194">
+                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Button_OK"/>
+            </Grid>
+            <Grid Width="194">
+                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Cancel"/>
+            </Grid>
+        </StackPanel>
+    </StackPanel>
+</Window>

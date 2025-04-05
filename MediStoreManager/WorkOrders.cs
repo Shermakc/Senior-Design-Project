@@ -11,32 +11,22 @@ namespace MediStoreManager
     {
         public WorkOrders()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new WorkOrder
-                {
-                    ID = "Work Order " + i,
-                    Type = "Repair",
-                    PatientID = "Patient " + i.ToString(),
-                    Quantity = "10",
-                    InventoryID = "ABC",
-                    Date = "2/15/2025",
-                    Notes = "..."
-                });
-            }
+
         }
 
-        public void AddWorkOrder(CustomerOrder order)
+        public void AddWorkOrder(CustomerOrder order, Person person, ObservableCollection<InventoryEntry> invEntries)
         {
             Add(new WorkOrder
             {
-                ID = order.ID.ToString(),
+                ID = order.ID,
                 Type = order.Type,
-                PatientID = order.PersonID.ToString(),
+                PatientID = order.PersonID,
                 Quantity = order.Quantity.ToString(),
                 InventoryID = order.InventoryID.ToString(),
-                Date = order.Date.ToString(),
-                Notes = order.Notes
+                Date = order.Date,
+                Notes = order.Notes,
+                InventoryEntries = invEntries,
+                DisplayName = person.FirstName + " " + person.LastName + " - " + order.Date.Month.ToString() + "/" + order.Date.Day.ToString() + "/" + order.Date.Year.ToString()
             });
         }
     }

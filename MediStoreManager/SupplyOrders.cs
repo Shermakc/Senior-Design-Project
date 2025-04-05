@@ -11,30 +11,22 @@ namespace MediStoreManager
     {
         public SupplyOrders()
         {
-            for (int i = 0; i < 10; ++i)
-            {
-                Add(new SupplyOrder
-                {
-                    ID = "Supply Order " + (i + 10).ToString(),
-                    Supplier = "Supplier " + i,
-                    InventoryID = "abc",
-                    Quantity = "25",
-                    ShippingMethod = "Ground",
-                    OrderDate = "1/03/2025"
-                });
-            }
+
         }
 
-        public void AddSupplyOrder(Order order)
+        public void AddSupplyOrder(Order order, ObservableCollection<InventoryEntry> invEntries)
         {
             Add(new SupplyOrder
             {
-                ID = order.ID.ToString(),
+                ID = order.ID,
                 Supplier = order.SupplierName,
                 InventoryID = order.InventoryID.ToString(),
                 Quantity = order.Quantity.ToString(),
                 ShippingMethod = order.ShippingMethod,
-                OrderDate = order.OrderDateTime.ToString()
+                OrderDate = order.OrderDateTime,
+                ReceivedDate = order.ReceivedDate,
+                InventoryEntries = invEntries,
+                DisplayName = order.SupplierName + " - " + order.OrderDateTime.Month.ToString() + "/" + order.OrderDateTime.Day.ToString() + "/" + order.OrderDateTime.Year.ToString()
             });
         }
     }

@@ -11,33 +11,45 @@ namespace MediStoreManager
     {
         public Suppliers()
         {
-            for (int i = 0; i < 10; ++i)
+           
+        }
+
+        public void AddSupplier(Supplier supplier, Address address, ObservableCollection<SupplyOrder> supplyOrders)
+        {
+            if (supplyOrders != null)
             {
                 Add(new SupplierL
                 {
-                    ID = "Supplier " + i,
-                    Name = "Big Medical Company",
-                    PhoneNumber = "1-888-888-8888",
-                    StreetAddress = "555 Gaddis Blvd",
-                    City = "Dayton",
-                    ZipCode = "45403",
-                    State = "Ohio"
+                    Name = supplier.Name,
+                    PhoneNumber = supplier.PhoneNumber.ToString(),
+                    PartnerID = supplier.PartnerID,
+                    StreetAddress = address.AddressNumber + " " + address.StreetName,
+                    City = address.City,
+                    ZipCode = address.ZipCode.ToString(),
+                    State = address.State,
+                    SupplyOrders = new ObservableCollection<OrderSummary>(
+                        supplyOrders
+                            .Select(o => new OrderSummary
+                            {
+                                ID = o.ID,
+                                Date = o.OrderDate
+                            }))
+                });
+            } 
+            else
+            {
+                Add(new SupplierL
+                {
+                    Name = supplier.Name,
+                    PhoneNumber = supplier.PhoneNumber.ToString(),
+                    PartnerID = supplier.PartnerID,
+                    StreetAddress = address.AddressNumber + " " + address.StreetName,
+                    City = address.City,
+                    ZipCode = address.ZipCode.ToString(),
+                    State = address.State,
+                    SupplyOrders = new ObservableCollection<OrderSummary>()
                 });
             }
-        }
-
-        public void AddSupplier(Supplier supplier, Address address)
-        {
-            Add(new SupplierL
-            {
-                ID = 99.ToString(),
-                Name = supplier.Name,
-                PhoneNumber = supplier.PhoneNumber.ToString(),
-                StreetAddress = address.AddressNumber + address.StreetName,
-                City = address.City,
-                ZipCode = address.ZipCode.ToString(),
-                State = address.State
-            });
         }
     }
 }

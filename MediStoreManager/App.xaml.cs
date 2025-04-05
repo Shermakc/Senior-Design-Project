@@ -9,6 +9,14 @@ namespace MediStoreManager
     /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            // Show the login window
+            var loginWindow = new LoginWindow();
+            loginWindow.Show();
+        }
     }
 
 }

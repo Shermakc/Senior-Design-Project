@@ -1605,23 +1605,24 @@ namespace MediStoreManager
         }
 
         private TabItem _previousTab = null;
-        private bool _userHasInteracted = false;
+        private bool _hasLoaded = false;
 
-        private void TabItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            _userHasInteracted = true;
+            PatientListBox.SelectedIndex = -1;
+            _hasLoaded = true;
         }
 
         private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
-            if (!_userHasInteracted || !(MainTabControl.SelectedItem is TabItem selectedTab))
+            if (!(MainTabControl.SelectedItem is TabItem selectedTab) || selectedTab == _previousTab)
             {
                 return;
             }
 
-            if (selectedTab == _previousTab)
+            if (!_hasLoaded)
             {
+                _previousTab = selectedTab;
                 return;
             }
 

@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="MediStore Manager" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
+        Title="MediStore Manager" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
     <Window.Resources>
         <local:WorkTabVisibilityConverter x:Key="WorkTabVisibilityConverter"/>
         <local:SupplyTabVisibilityConverter x:Key="SupplyTabVisibilityConverter"/>
@@ -19,7 +20,7 @@
     </Window.Resources>
     <Grid Height="796" Width="1550">
         <TabControl FontSize="16" Name="MainTabControl" SelectionChanged="MainTabControl_SelectionChanged">
-            <TabItem Header="Patients" Name="PatientTab" PreviewMouseDown="TabItem_PreviewMouseDown">
+            <TabItem Header="Patients" Name="PatientTab">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:Patients x:Key="patient"/>
@@ -171,7 +172,7 @@
                     </Grid>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Inventory" Name="InventoryTab" PreviewMouseDown="TabItem_PreviewMouseDown">
+            <TabItem Header="Inventory" Name="InventoryTab">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:Supplies x:Key="supply"/>
@@ -501,7 +502,7 @@
                     </Grid>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Suppliers" Name="SupplierTab" PreviewMouseDown="TabItem_PreviewMouseDown">
+            <TabItem Header="Suppliers" Name="SupplierTab">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:Suppliers x:Key="supplierL"/>
@@ -589,7 +590,7 @@
                     </Grid>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Order Tickets" Name="OrderTicketTab" PreviewMouseDown="TabItem_PreviewMouseDown">
+            <TabItem Header="Order Tickets" Name="OrderTicketTab">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:SupplyOrders x:Key="supply"/>

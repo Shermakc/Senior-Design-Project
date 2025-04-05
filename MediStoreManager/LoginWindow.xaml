@@ -10,7 +10,7 @@
         <StackPanel>
             <TextBlock Text="Username:" Margin="20,20,20,0"/>
             <TextBox x:Name="UsernameTextBox" Margin="20,0,20,0"/>
-            <TextBlock Text="Password:" Margin="20,20,20,0"/>
+            <TextBlock Text="Password (Case Sensitive):" Margin="20,20,20,0"/>
             <PasswordBox x:Name="PasswordBox" Margin="20,0,20,0"/>
             <Button Content="Login" Click="LoginButton_Click" Margin="20,20,20,0"/>
             <TextBlock x:Name="ErrorTextBlock" Foreground="Red" Margin="20,0,20,0"/>

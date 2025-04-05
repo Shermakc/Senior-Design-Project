@@ -34,7 +34,7 @@ namespace MediStoreManager
             using (MySqlConnection conn = new MySqlConnection(DatabaseFunctions.connString))
             {
                 conn.Open();
-                string query = "SELECT Position FROM user WHERE Username = @username AND Password = @password";
+                string query = "SELECT Position FROM user WHERE Username = @username AND BINARY Password = @password";
                 using (MySqlCommand cmd = new MySqlCommand(query, conn))
                 {
                     cmd.Parameters.AddWithValue("@username", username);

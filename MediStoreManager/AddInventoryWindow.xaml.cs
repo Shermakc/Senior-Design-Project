@@ -39,6 +39,8 @@ namespace MediStoreManager
         public uint ID { get; private set; }
         public bool IsRental;
         public bool isAdmin { get; private set; }
+        private ObservableCollection<OrderSummary> supplyOrders { get; set; }
+        private ObservableCollection<OrderSummary> workOrders { get; set; }
 
         public AddInventoryWindow()
         {
@@ -77,6 +79,24 @@ namespace MediStoreManager
                 {
                     NoRadioButton.IsChecked = true;
                 }
+
+                if (equipment.SupplyOrders != null)
+                {
+                    supplyOrders = new ObservableCollection<OrderSummary>(equipment.SupplyOrders);
+                }
+                else
+                {
+                    supplyOrders = new ObservableCollection<OrderSummary>();
+                }
+
+                if (equipment.WorkOrders != null)
+                {
+                    workOrders = new ObservableCollection<OrderSummary>(equipment.WorkOrders);
+                }
+                else
+                {
+                    workOrders = new ObservableCollection<OrderSummary>();
+                }
             }
             else if (part != null)
             {
@@ -89,6 +109,23 @@ namespace MediStoreManager
                 RetailPriceTextBox.Text = part.RetailPrice.ToString();
                 ID = part.ID;
                 NotApplicableRadioButton.IsChecked = true;
+                if (part.SupplyOrders != null)
+                {
+                    supplyOrders = new ObservableCollection<OrderSummary>(part.SupplyOrders);
+                }
+                else
+                {
+                    supplyOrders = new ObservableCollection<OrderSummary>();
+                }
+
+                if (part.WorkOrders != null)
+                {
+                    workOrders = new ObservableCollection<OrderSummary>(part.WorkOrders);
+                }
+                else
+                {
+                    workOrders = new ObservableCollection<OrderSummary>();
+                }
             }
             else if (supply != null)
             {
@@ -101,6 +138,23 @@ namespace MediStoreManager
                 RetailPriceTextBox.Text = supply.RetailPrice.ToString();
                 ID = supply.ID;
                 NotApplicableRadioButton.IsChecked = true;
+                if (supply.SupplyOrders != null)
+                {
+                    supplyOrders = new ObservableCollection<OrderSummary>(supply.SupplyOrders);
+                }
+                else
+                {
+                    supplyOrders = new ObservableCollection<OrderSummary>();
+                }
+
+                if (supply.WorkOrders != null)
+                {
+                    workOrders = new ObservableCollection<OrderSummary>(supply.WorkOrders);
+                }
+                else
+                {
+                    workOrders = new ObservableCollection<OrderSummary>();
+                }
             }
             DataContext = this;
         }
@@ -177,7 +231,9 @@ namespace MediStoreManager
                         RetailPrice = RetailPrice,
                         RentalPrice = RentalPrice,
                         SerialNumber = SerialNumber,
-                        IsRental = IsRental
+                        IsRental = IsRental,
+                        SupplyOrders = supplyOrders,
+                        WorkOrders = workOrders
                     };
                 }
                 else if (Type.Equals("supply"))
@@ -192,6 +248,8 @@ namespace MediStoreManager
                         Quantity = Quantity,
                         Price = Price,
                         RetailPrice = RetailPrice,
+                        SupplyOrders = supplyOrders,
+                        WorkOrders = workOrders
                     };
                 }
                 else if (Type.Equals("part"))
@@ -206,6 +264,8 @@ namespace MediStoreManager
                         Quantity = Quantity,
                         Price = Price,
                         RetailPrice = RetailPrice,
+                        SupplyOrders = supplyOrders,
+                        WorkOrders = workOrders
                     };
                 }
             }

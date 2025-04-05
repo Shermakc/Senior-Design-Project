@@ -38,6 +38,7 @@ namespace MediStoreManager
         public uint ID { get; private set; }
         public string DisplayName { get; private set; }
         public bool isAdmin { get; private set; }
+        private ObservableCollection<OrderSummary> workOrders { get; set; }
 
         public AddPatientWindow()
         {
@@ -73,11 +74,22 @@ namespace MediStoreManager
             ZipTextBox.Text = patient.ZipCode;
             StateTextBox.Text = patient.State;
             InsuranceTextBox.Text = patient.Insurance;
-            _contacts = new ObservableCollection<Patient>(patient.Contacts);
+            if (patient.Contacts != null)
+            {
+                _contacts = new ObservableCollection<Patient>(patient.Contacts);
+            }
             ID = patient.ID;
             DisplayName = patient.DisplayName;
             ContactItemsControl.ItemsSource = _contacts;
             DataContext = this;
+            if (patient.WorkOrders != null)
+            {
+                workOrders = new ObservableCollection<OrderSummary>(patient.WorkOrders);
+            }
+            else
+            {
+                workOrders = new ObservableCollection<OrderSummary>();
+            }
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -114,7 +126,8 @@ namespace MediStoreManager
                     State = State,
                     Insurance = InsuranceProvider,
                     Contacts = new ObservableCollection<Patient>(FinalContacts),
-                    DisplayName = DisplayName
+                    DisplayName = LastName + ", " + FirstName,
+                    WorkOrders = workOrders
                 };
             }
             DeletePatient = false;

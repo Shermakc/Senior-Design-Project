@@ -100,8 +100,11 @@ namespace MediStoreManager
             SelectedSupplier = suppliers.FirstOrDefault(s => s.Name == supplyOrder.Supplier);
             _suppressTextChanged = true;
 
-            // Update the textbox explicitly
-            SupplierSearchBox.Text = $"{SelectedSupplier.Name}";
+            if (SelectedSupplier != null)
+            {
+                // Update the textbox explicitly
+                SupplierSearchBox.Text = $"{SelectedSupplier.Name}";
+            }
 
             // Clear filter (show full list again)
             _filteredSuppliers.Clear();
@@ -109,7 +112,10 @@ namespace MediStoreManager
                 _filteredSuppliers.Add(supplier);
 
             _suppressTextChanged = false;
-            InventoryEntries = new ObservableCollection<InventoryEntry>(supplyOrder.InventoryEntries);
+            if (supplyOrder.InventoryEntries != null)
+            {
+                InventoryEntries = new ObservableCollection<InventoryEntry>(supplyOrder.InventoryEntries);
+            }
             ShippingMethodTextBox.Text = supplyOrder.ShippingMethod;
             OrderDateDatePicker.SelectedDate = supplyOrder.OrderDate;
             ReceivedDateDatePicker.SelectedDate = supplyOrder.ReceivedDate;

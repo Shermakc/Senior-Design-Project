@@ -326,8 +326,8 @@ namespace MediStoreManager
                         DatabaseFunctions.DeletePersonEntry(con, PatientList[index].ID);
                         con.Close();
 
-                        PatientList.RemoveAt(index);
                         persons.Remove(persons.Where(p => p.ID == PatientList[index].ID).FirstOrDefault());
+                        PatientList.RemoveAt(index);
                     }
                 }
                 else
@@ -475,8 +475,8 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteInventoryItemEntry(con, EquipmentList[index].ID);
                         con.Close();
 
-                        EquipmentList.RemoveAt(index);
                         inventoryItems.Remove(inventoryItems.Where(i => i.ID == EquipmentList[index].ID).FirstOrDefault());
+                        EquipmentList.RemoveAt(index);
                     }
                 }
                 else
@@ -546,8 +546,8 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteInventoryItemEntry(con, SupplyList[index].ID);
                         con.Close();
 
-                        SupplyList.RemoveAt(index);
                         inventoryItems.Remove(inventoryItems.Where(i => i.ID == SupplyList[index].ID).FirstOrDefault());
+                        SupplyList.RemoveAt(index);
                     }
                 }
                 else
@@ -614,8 +614,8 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteInventoryItemEntry(con, PartList[index].ID);
                         con.Close();
 
-                        PartList.RemoveAt(index);
                         inventoryItems.Remove(inventoryItems.Where(i => i.ID == PartList[index].ID).FirstOrDefault());
+                        PartList.RemoveAt(index);
                     }
                 }
                 else
@@ -718,8 +718,8 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteSupplierEntry(con, SupplierList[index].Name);
                         con.Close();
 
-                        SupplierList.RemoveAt(index);
                         suppliers.Remove(suppliers.Where(s => s.Name == SupplierList[index].Name).FirstOrDefault());
+                        SupplierList.RemoveAt(index);
                     }
                 }
                 else
@@ -870,8 +870,8 @@ namespace MediStoreManager
                             con.Close();
                         }
 
-                        WorkOrdersList.RemoveAt(index);
                         List<CustomerOrder> ordersToRemove = customerOrders.Where(co => co.ID == WorkOrdersList[index].ID).ToList();
+                        WorkOrdersList.RemoveAt(index);
                         foreach (CustomerOrder order in ordersToRemove)
                             customerOrders.Remove(order);
                     }
@@ -1059,10 +1059,10 @@ namespace MediStoreManager
                             con.Close();
                         }
 
-                        SupplyOrdersList.RemoveAt(index);
                         List<Order> ordersToRemove = orders.Where(i => i.ID == SupplyOrdersList[index].ID).ToList();
                         foreach (Order order in ordersToRemove)
                             orders.Remove(order);
+                        SupplyOrdersList.RemoveAt(index);
                     }
                 }
                 else
@@ -1237,6 +1237,7 @@ namespace MediStoreManager
         private void PopulatePatientList()
         {
             Patients allPersonsList = new Patients();
+            PatientList.Clear();
             foreach (Person person in persons)
             {
                 if (!person.Deleted)
@@ -1264,6 +1265,7 @@ namespace MediStoreManager
 
         private void PopulateSupplierList()
         {
+            SupplierList.Clear();
             foreach (Supplier supplier in suppliers)
             {
                 if (!supplier.Deleted)
@@ -1276,6 +1278,7 @@ namespace MediStoreManager
 
         private void PopulateEquipmentList()
         {
+            EquipmentList.Clear();
             List<InventoryItem> equipmentItems = inventoryItems.Where(i => i.Type == "equipment").ToList();
             foreach (InventoryItem item in equipmentItems)
             {
@@ -1295,6 +1298,7 @@ namespace MediStoreManager
 
         private void PopulateSupplyList()
         {
+            SupplyList.Clear();
             List<InventoryItem> supplyItems = inventoryItems.Where(i => i.Type == "supply").ToList();
             foreach (InventoryItem item in supplyItems)
             {
@@ -1313,6 +1317,7 @@ namespace MediStoreManager
 
         private void PopulatePartList()
         {
+            PartList.Clear();
             List<InventoryItem> partItems = inventoryItems.Where(i => i.Type == "part").ToList();
             foreach (InventoryItem item in partItems)
             {
@@ -1331,6 +1336,7 @@ namespace MediStoreManager
 
         private void PopulateSupplyOrderList()
         {
+            SupplyOrdersList.Clear();
             foreach (Order order in orders)
             {
                 ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
@@ -1361,6 +1367,7 @@ namespace MediStoreManager
 
         private void PopulateWorkOrderList()
         {
+            WorkOrdersList.Clear();
             foreach (CustomerOrder order in customerOrders)
             {
                 ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
@@ -1463,16 +1470,6 @@ namespace MediStoreManager
 
             return (addressNum, streetName);
         }
-
-        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (PatientTab.IsSelected)
-            {
-                string test = "test";
-            }
-
-        }
-
         private void PatientSearchBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             _patientViewSource.View.Refresh();
@@ -1604,6 +1601,50 @@ namespace MediStoreManager
                     int pIndex = PartList.IndexOf(part);
                     PartList[pIndex].Quantity = quantity;
                     break;
+            }
+        }
+
+        private TabItem _previousTab = null;
+        private bool _userHasInteracted = false;
+
+        private void TabItem_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            _userHasInteracted = true;
+        }
+
+        private void MainTabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+            if (!_userHasInteracted || !(MainTabControl.SelectedItem is TabItem selectedTab))
+            {
+                return;
+            }
+
+            if (selectedTab == _previousTab)
+            {
+                return;
+            }
+
+            _previousTab = selectedTab;
+
+            if (selectedTab == PatientTab)
+            {
+                PopulatePatientList();
+            }
+            else if (selectedTab == InventoryTab)
+            {
+                PopulateEquipmentList();
+                PopulateSupplyList();
+                PopulatePartList();
+            }
+            else if (selectedTab == SupplierTab)
+            {
+                PopulateSupplierList();
+            }
+            else if (selectedTab == OrderTicketTab)
+            {
+                PopulateWorkOrderList();
+                PopulateSupplyOrderList();
             }
         }
     }

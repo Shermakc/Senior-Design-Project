@@ -112,8 +112,11 @@ namespace MediStoreManager
             SelectedPatient = patients.FirstOrDefault(p => p.ID == workOrder.PatientID);
             _suppressTextChanged = true;
 
-            // Update the textbox explicitly
-            PatientSearchBox.Text = $"{SelectedPatient.DisplayName} [{SelectedPatient.ID}]";
+            if (SelectedPatient != null)
+            {
+                // Update the textbox explicitly
+                PatientSearchBox.Text = $"{SelectedPatient.DisplayName} [{SelectedPatient.ID}]";
+            }
 
             // Clear filter (show full list again)
             _filteredPatients.Clear();
@@ -123,7 +126,10 @@ namespace MediStoreManager
             _suppressTextChanged = false;
             OrderDateDatePicker.SelectedDate = workOrder.Date;
             DateOfPaymentDatePicker.SelectedDate = workOrder.PaymentDate;
-            InventoryEntries = new ObservableCollection<InventoryEntry>(workOrder.InventoryEntries);
+            if (workOrder.InventoryEntries != null)
+            {
+                InventoryEntries = new ObservableCollection<InventoryEntry>(workOrder.InventoryEntries);
+            }
             NotesTextBox.Text = workOrder.Notes;
             InventoryItemsControl.ItemsSource = InventoryEntries;
             DataContext = this;

@@ -57,7 +57,9 @@ namespace MediStoreManager
                 Size = item.Size,
                 Brand = item.Brand,
                 Price = item.Cost,
-                RetailPrice = item.RetailPrice                
+                RetailPrice = item.RetailPrice,
+                WorkOrders = new ObservableCollection<OrderSummary>(),
+                SupplyOrders= new ObservableCollection<OrderSummary>()
             });
         }
     }

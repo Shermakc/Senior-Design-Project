@@ -62,7 +62,9 @@ namespace MediStoreManager
                 RetailPrice = item.RetailPrice,
                 IsRental = item.IsRental,
                 RentalPrice = item.RentalPrice,
-                SerialNumber = item.SerialNumber               
+                SerialNumber = item.SerialNumber,
+                WorkOrders = new ObservableCollection<OrderSummary>(),
+                SupplyOrders = new ObservableCollection<OrderSummary>()
             });
         }
     }

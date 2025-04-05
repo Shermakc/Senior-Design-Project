@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -31,6 +32,7 @@ namespace MediStoreManager
         public bool IsEditMode { get; private set; }
         public bool DeleteSupplier { get; private set; }
         public bool isAdmin { get; private set; }
+        private ObservableCollection<OrderSummary> supplyOrders { get; set; }
 
         public AddSupplierWindow()
         {
@@ -58,6 +60,14 @@ namespace MediStoreManager
             StateTextBox.Text = supplier.State;
             PartnerIDTextBox.Text = supplier.PartnerID.ToString();
             DataContext = this;
+            if (supplier.SupplyOrders != null)
+            {
+                supplyOrders = new ObservableCollection<OrderSummary>(supplier.SupplyOrders);
+            }
+            else
+            {
+                supplyOrders = new ObservableCollection<OrderSummary>();
+            }
         }
 
         private void Button_Cancel(object sender, RoutedEventArgs e)
@@ -89,7 +99,8 @@ namespace MediStoreManager
                     City = City,
                     ZipCode = ZipCode,
                     State = State,
-                    PartnerID = PartnerID
+                    PartnerID = PartnerID,
+                    SupplyOrders = supplyOrders
                 };
             }
             DeleteSupplier = false;

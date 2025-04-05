@@ -16,23 +16,40 @@ namespace MediStoreManager
 
         public void AddSupplier(Supplier supplier, Address address, ObservableCollection<SupplyOrder> supplyOrders)
         {
-            Add(new SupplierL
+            if (supplyOrders != null)
             {
-                Name = supplier.Name,
-                PhoneNumber = supplier.PhoneNumber.ToString(),
-                PartnerID = supplier.PartnerID,
-                StreetAddress = address.AddressNumber + " " + address.StreetName,
-                City = address.City,
-                ZipCode = address.ZipCode.ToString(),
-                State = address.State,
-                SupplyOrders = new ObservableCollection<OrderSummary>(
-                    supplyOrders
-                        .Select(o => new OrderSummary
-                        {
-                            ID = o.ID,
-                            Date = o.OrderDate
-                        }))
-            });
+                Add(new SupplierL
+                {
+                    Name = supplier.Name,
+                    PhoneNumber = supplier.PhoneNumber.ToString(),
+                    PartnerID = supplier.PartnerID,
+                    StreetAddress = address.AddressNumber + " " + address.StreetName,
+                    City = address.City,
+                    ZipCode = address.ZipCode.ToString(),
+                    State = address.State,
+                    SupplyOrders = new ObservableCollection<OrderSummary>(
+                        supplyOrders
+                            .Select(o => new OrderSummary
+                            {
+                                ID = o.ID,
+                                Date = o.OrderDate
+                            }))
+                });
+            } 
+            else
+            {
+                Add(new SupplierL
+                {
+                    Name = supplier.Name,
+                    PhoneNumber = supplier.PhoneNumber.ToString(),
+                    PartnerID = supplier.PartnerID,
+                    StreetAddress = address.AddressNumber + " " + address.StreetName,
+                    City = address.City,
+                    ZipCode = address.ZipCode.ToString(),
+                    State = address.State,
+                    SupplyOrders = new ObservableCollection<OrderSummary>()
+                });
+            }
         }
     }
 }

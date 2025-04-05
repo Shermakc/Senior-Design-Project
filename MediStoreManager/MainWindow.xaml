@@ -19,7 +19,7 @@
     </Window.Resources>
     <Grid Height="796" Width="1550">
         <TabControl FontSize="16" Name="MainTabControl" SelectionChanged="MainTabControl_SelectionChanged">
-            <TabItem Header="Patients" Name="PatientTab">
+            <TabItem Header="Patients" Name="PatientTab" PreviewMouseDown="TabItem_PreviewMouseDown">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:Patients x:Key="patient"/>
@@ -171,7 +171,7 @@
                     </Grid>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Inventory" Name="InventoryTab">
+            <TabItem Header="Inventory" Name="InventoryTab" PreviewMouseDown="TabItem_PreviewMouseDown">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:Supplies x:Key="supply"/>
@@ -501,7 +501,7 @@
                     </Grid>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Suppliers" Name="SupplierTab">
+            <TabItem Header="Suppliers" Name="SupplierTab" PreviewMouseDown="TabItem_PreviewMouseDown">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:Suppliers x:Key="supplierL"/>
@@ -589,7 +589,7 @@
                     </Grid>
                 </Canvas>
             </TabItem>
-            <TabItem Header="Order Tickets" Name="OrderTicketTab">
+            <TabItem Header="Order Tickets" Name="OrderTicketTab" PreviewMouseDown="TabItem_PreviewMouseDown">
                 <Canvas Background="LightGray">
                     <Canvas.Resources>
                         <local:SupplyOrders x:Key="supply"/>

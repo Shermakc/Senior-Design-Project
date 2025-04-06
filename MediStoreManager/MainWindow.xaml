@@ -319,6 +319,8 @@
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
                                                                                 <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                                 <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Supplier: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding SupplierName}" Width="272" Margin="10,20"/>
                                                                             </WrapPanel>
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                                                 <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
@@ -378,6 +380,8 @@
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
                                                                                 <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                                 <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Supplier: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding SupplierName}" Width="272" Margin="10,20"/>
                                                                             </WrapPanel>
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                                                 <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
@@ -437,6 +441,8 @@
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Left">
                                                                                 <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                                 <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Supplier: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding SupplierName}" Width="272" Margin="10,20"/>
                                                                             </WrapPanel>
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                                                 <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>

@@ -40,7 +40,8 @@ namespace MediStoreManager
                         .Select(o => new OrderSummary
                         {
                             ID = o.ID,
-                            Date = o.OrderDate
+                            Date = o.OrderDate,
+                            SupplierName = o.Supplier
                         }))
             });
         }

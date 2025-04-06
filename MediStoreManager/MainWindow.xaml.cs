@@ -296,7 +296,13 @@ namespace MediStoreManager
                 con.Close();
 
                 // Add patient to user interface
-                PatientList.AddPatient(newPerson, newAddress, null);
+                if (contacts != null)
+                {
+                    PatientList.AddPatient(newPerson, newAddress, null);
+                } else
+                {
+                    PatientList.AddPatient(newPerson, newAddress, null, contacts);
+                }
                 addresses.Add(newAddress);
                 persons.Add(newPerson);
             }
@@ -354,8 +360,8 @@ namespace MediStoreManager
                             FirstName = editPatientWindow.FirstName,
                             LastName = editPatientWindow.LastName,
                             MiddleName = editPatientWindow.MiddleName,
-                            HomePhone = Convert.ToDecimal(editPatientWindow.HomePhone),
-                            CellPhone = Convert.ToDecimal(editPatientWindow.CellPhone),
+                            HomePhone = Convert.ToInt64(editPatientWindow.HomePhone),
+                            CellPhone = Convert.ToInt64(editPatientWindow.CellPhone),
                             AddressID = addressID,
                             InsuranceProvider = editPatientWindow.InsuranceProvider,
                             IsPatient = originalPerson.IsPatient,
@@ -384,8 +390,8 @@ namespace MediStoreManager
                                         FirstName = contact.FirstName,
                                         LastName = contact.LastName,
                                         MiddleName = contact.MiddleName,
-                                        HomePhone = Convert.ToDecimal(contact.HomePhone),
-                                        CellPhone = Convert.ToDecimal(contact.CellPhone),
+                                        HomePhone = Convert.ToInt64(contact.HomePhone),
+                                        CellPhone = Convert.ToInt64(contact.CellPhone),
                                         AddressID = contactAddID,
                                         InsuranceProvider = contact.Insurance,
                                         IsPatient = false,
@@ -778,7 +784,7 @@ namespace MediStoreManager
                 foreach (InventoryEntry inventoryEntry in inventoryEntries)
                 {
                     CustomerOrder newCustOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1, inventoryEntry.MainItem.ID, type, patientID,
-                    inventoryEntry.MainItem.QuantitySelected, orderDate, haveReceivedPayment, dateOfPayment, inventoryEntry.RelatedItem.ID, notes);
+                    inventoryEntry.MainItem.QuantitySelected, orderDate, haveReceivedPayment, dateOfPayment, inventoryEntry.RelatedItem, notes);
 
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                     DatabaseFunctions.CreateCustomerOrderEntry(con, newCustOrder);
@@ -788,7 +794,7 @@ namespace MediStoreManager
                     customerOrders.Add(newCustOrder);
                 }
 
-                if (type == "delivery" || type == "pickup")
+                if (type == "Delivery" || type == "Pickup")
                 {                  
                     foreach (InventoryEntry inventoryEntry in inventoryEntries)
                     {
@@ -904,7 +910,7 @@ namespace MediStoreManager
                                 editWorkOrderWindow.OrderDate,
                                 editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
                                 editWorkOrderWindow.DateOfPayment,
-                                inventoryEntry.RelatedItem.ID,
+                                inventoryEntry.RelatedItem,
                                 editWorkOrderWindow.Notes);
 
                             con = DatabaseFunctions.OpenMySQLConnection();
@@ -925,7 +931,7 @@ namespace MediStoreManager
                                 editWorkOrderWindow.OrderDate,
                                 editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
                                 editWorkOrderWindow.DateOfPayment,
-                                inventoryEntry.RelatedItem.ID,
+                                inventoryEntry.RelatedItem,
                                 editWorkOrderWindow.Notes);
 
                             con = DatabaseFunctions.OpenMySQLConnection();

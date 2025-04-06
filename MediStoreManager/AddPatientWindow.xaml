@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
+        xmlns:behaviors="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
         Title="Add Patient" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
@@ -25,9 +26,9 @@
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Last Name: " Margin="0,5,0,5"/>
                 <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="LastNameTextBox"/>
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Home Phone #: " Margin="0,5,0,5"/>
-                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="HomePhoneTextBox"/>
+                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="HomePhoneTextBox" behaviors:NumericTextBoxBehavior.EnableNumericValidation="True"/>
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Cell Phone #: " Margin="0,5,0,5"/>
-                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="CellPhoneTextBox"/>
+                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="CellPhoneTextBox" behaviors:NumericTextBoxBehavior.EnableNumericValidation="True"/>
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Street Address: " Margin="0,5,0,5"/>
                 <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="StreetAddressTextBox"/>
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="City: " Margin="0,5,0,5"/>
@@ -35,7 +36,7 @@
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="State: " Margin="0,5,0,5"/>
                 <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="StateTextBox"/>
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Zip Code: " Margin="0,5,0,5"/>
-                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ZipTextBox"/>
+                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="ZipTextBox" behaviors:NumericTextBoxBehavior.EnableNumericValidation="True"/>
                 <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Insurance Provider: " Margin="0,5,0,5"/>
                 <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="InsuranceTextBox"/>
                 <StackPanel Width="380" Margin="0,5,0,5">

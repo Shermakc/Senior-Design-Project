@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace MediStoreManager
         public CustomerOrder() { }
 
         public CustomerOrder(uint id, uint inventoryID, string type, uint personID, int quantity, DateTime date,
-            bool haveReceivedPayment, DateTime paymentDate, uint relatedItemID, string notes)
+            bool haveReceivedPayment, DateTime paymentDate, InventoryListItem relatedItem, string notes)
         {
             ID = id;
             InventoryID = Convert.ToUInt16(inventoryID);
@@ -50,7 +51,13 @@ namespace MediStoreManager
             Date = date;
             HaveReceivedPayment = haveReceivedPayment;
             PaymentDate = paymentDate;
-            RelatedInventoryItemID = relatedItemID;
+            if (relatedItem != null)
+            {
+                RelatedInventoryItemID = relatedItem.ID;
+            } else
+            {
+                RelatedInventoryItemID = 0;
+            }
             Notes = notes;
         }
 

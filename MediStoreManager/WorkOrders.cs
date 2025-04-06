@@ -24,6 +24,7 @@ namespace MediStoreManager
                 Quantity = order.Quantity.ToString(),
                 InventoryID = order.InventoryID.ToString(),
                 Date = order.Date,
+                PaymentDate = order.PaymentDate,
                 Notes = order.Notes,
                 InventoryEntries = invEntries,
                 DisplayName = person.FirstName + " " + person.LastName + " - " + order.Date.Month.ToString() + "/" + order.Date.Day.ToString() + "/" + order.Date.Year.ToString()

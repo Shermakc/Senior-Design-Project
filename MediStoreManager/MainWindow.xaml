@@ -325,6 +325,8 @@
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                                                 <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                                 <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Quantity Ordered: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Quantity}" Width="272" Margin="10,20"/>
                                                                             </WrapPanel>
                                                                         </StackPanel>
                                                                     </Border>
@@ -386,6 +388,8 @@
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                                                 <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                                 <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Quantity Ordered: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Quantity}" Width="272" Margin="10,20"/>
                                                                             </WrapPanel>
                                                                         </StackPanel>
                                                                     </Border>
@@ -447,6 +451,8 @@
                                                                             <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                                                 <TextBlock Text="Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                                 <TextBlock Text="{Binding Date, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
+                                                                                <TextBlock Text="Quantity Ordered: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
+                                                                                <TextBlock Text="{Binding Quantity}" Width="272" Margin="10,20"/>
                                                                             </WrapPanel>
                                                                         </StackPanel>
                                                                     </Border>

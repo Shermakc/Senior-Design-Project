@@ -44,7 +44,8 @@ namespace MediStoreManager
                         {
                             ID = o.ID,
                             Date = o.OrderDate,
-                            SupplierName = o.Supplier
+                            SupplierName = o.Supplier,
+                            Quantity = o.Quantity
                         }))
             });
         }

@@ -331,7 +331,7 @@ namespace MediStoreManager
             {
                 if (editPatientWindow.DeletePatient == true)
                 {
-                    int index = PatientListBox.SelectedIndex;
+                    int index = PatientList.IndexOf(selectedEntry);
                     if (index >= 0)
                     {
                         
@@ -344,7 +344,7 @@ namespace MediStoreManager
                 }
                 else
                 {
-                    int index = PatientListBox.SelectedIndex;
+                    int index = PatientList.IndexOf(selectedEntry);
                     if (index >= 0 && editPatientWindow.Patient != null)
                     {                        
                         Person originalPerson = persons.Where(p => p.ID == editPatientWindow.Patient.ID).FirstOrDefault();
@@ -469,7 +469,7 @@ namespace MediStoreManager
             {
                 if (editInventoryWindow.DeleteItem == true)
                 {
-                    int index = EquipmentListBox.SelectedIndex;
+                    int index = EquipmentList.IndexOf(selectedEntry);
                     if (index >= 0)
                     {
                         MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
@@ -482,7 +482,7 @@ namespace MediStoreManager
                 }
                 else
                 {
-                    int index = EquipmentListBox.SelectedIndex;
+                    int index = EquipmentList.IndexOf(selectedEntry);
                     if (index >= 0 && editInventoryWindow.Equipment != null)
                     {
                         EquipmentList[index] = editInventoryWindow.Equipment;
@@ -540,7 +540,7 @@ namespace MediStoreManager
             {
                 if (editInventoryWindow.DeleteItem == true)
                 {
-                    int index = SuppliesListBox.SelectedIndex;
+                    int index = SupplyList.IndexOf(selectedEntry);
                     if (index >= 0)
                     {
                         MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
@@ -553,7 +553,7 @@ namespace MediStoreManager
                 }
                 else
                 {
-                    int index = SuppliesListBox.SelectedIndex;
+                    int index = SupplyList.IndexOf(selectedEntry);
                     if (index >= 0 && editInventoryWindow.Supply != null)
                     {
                         SupplyList[index] = editInventoryWindow.Supply;
@@ -608,7 +608,7 @@ namespace MediStoreManager
             {
                 if (editInventoryWindow.DeleteItem == true)
                 {
-                    int index = PartsListBox.SelectedIndex;
+                    int index = PartList.IndexOf(selectedEntry);
                     if (index >= 0)
                     {
                         MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
@@ -621,7 +621,7 @@ namespace MediStoreManager
                 }
                 else
                 {
-                    int index = PartsListBox.SelectedIndex;
+                    int index = PartList.IndexOf(selectedEntry);
                     if (index >= 0 && editInventoryWindow.Part != null)
                     {
                         PartList[index] = editInventoryWindow.Part;
@@ -712,7 +712,7 @@ namespace MediStoreManager
             {
                 if (editSupplierWindow.DeleteSupplier == true)
                 {
-                    int index = SupplierListBox.SelectedIndex;
+                    int index = SupplierList.IndexOf(selectedEntry);
                     if (index >= 0)
                     {
                         MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
@@ -725,7 +725,7 @@ namespace MediStoreManager
                 }
                 else
                 {
-                    int index = SupplierListBox.SelectedIndex;
+                    int index = SupplierList.IndexOf(selectedEntry);
                     if (index >= 0 && editSupplierWindow.Supplier != null)
                     {
                         Supplier originalSupplier = suppliers.Where(s => s.Name == editSupplierWindow.BusinessName).FirstOrDefault();
@@ -869,7 +869,7 @@ namespace MediStoreManager
             {
                 if (editWorkOrderWindow.DeleteOrder == true)
                 {
-                    int index = WorkListBox.SelectedIndex;
+                    int index = WorkOrdersList.IndexOf(selectedEntry);
                     if (index >= 0)
                     {
                         foreach (InventoryEntry invEntry in WorkOrdersList[index].InventoryEntries)
@@ -887,7 +887,7 @@ namespace MediStoreManager
                 }
                 else
                 {
-                    int index = WorkListBox.SelectedIndex;
+                    int index = WorkOrdersList.IndexOf(selectedEntry);
                     if (index >= 0 && editWorkOrderWindow.WorkOrder != null)
                     {
                         Person orderPerson = persons.Where(p => p.ID == editWorkOrderWindow.WorkOrder.PatientID).FirstOrDefault();
@@ -1063,7 +1063,7 @@ namespace MediStoreManager
             {
                 if (editSupplyOrderWindow.DeleteOrder == true)
                 {
-                    int index = SupplyListBox.SelectedIndex;
+                    int index = SupplyOrdersList.IndexOf(selectedEntry);
                     if (index >= 0)
                     {
                         foreach (InventoryEntry invEntry in SupplyOrdersList[index].InventoryEntries)
@@ -1081,7 +1081,7 @@ namespace MediStoreManager
                 }
                 else
                 {
-                    int index = SupplyListBox.SelectedIndex;
+                    int index = SupplyOrdersList.IndexOf(selectedEntry);
                     if (index >= 0 && editSupplyOrderWindow.SupplyOrder != null)
                     {
                         SupplyOrdersList[index] = editSupplyOrderWindow.SupplyOrder;

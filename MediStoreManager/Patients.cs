@@ -87,6 +87,7 @@ namespace MediStoreManager
                     Insurance = person.InsuranceProvider,
                     ContactID = person.ContactID,
                     DisplayName = person.LastName + ", " + person.FirstName,
+                    Contacts = new ObservableCollection<Patient>(),
                     WorkOrders = new ObservableCollection<OrderSummary>(
                         workOrders
                             .Select(o => new OrderSummary
@@ -115,6 +116,7 @@ namespace MediStoreManager
                     Insurance = person.InsuranceProvider,
                     ContactID = person.ContactID,
                     DisplayName = person.LastName + ", " + person.FirstName,
+                    Contacts = new ObservableCollection<Patient>(),
                     WorkOrders = new ObservableCollection<OrderSummary>()
                 });
             }

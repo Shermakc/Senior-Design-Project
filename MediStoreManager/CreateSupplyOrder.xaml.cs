@@ -146,6 +146,7 @@ namespace MediStoreManager
                     ReceivedDate = ReceivedDate,
                     InventoryEntries = FinalInventoryEntries
                 };
+
             }
             DeleteOrder = false;
             this.DialogResult = true;
@@ -222,7 +223,7 @@ namespace MediStoreManager
                         Type = selectedItem.Type,
                         QuantitySelected = selectedItem.QuantitySelected // User-selected quantity
                     },
-                    RelatedItem = null
+                    RelatedItem = new InventoryListItem()
                 });
             }
         }

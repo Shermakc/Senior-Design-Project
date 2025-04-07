@@ -22,5 +22,14 @@ namespace MediStoreManager
 
 
         public override string ToString() => $"{Name} [{ID}] - {Type}]";
+
+        public InventoryListItem()
+        {
+            ID = 0;
+            Name = "";
+            Type = "";
+            QuantitySelected = 0;
+            AllowedQuantity = 0;
+        }
     }
 }

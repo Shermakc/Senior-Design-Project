@@ -304,7 +304,7 @@ namespace MediStoreManager
                 }
 
                 // Add patient to user interface
-                if (contacts != null)
+                if (!contacts.Any())
                 {
                     PatientList.AddPatient(newPerson, newAddress, null);
                 } else
@@ -774,20 +774,28 @@ namespace MediStoreManager
                 DateTime dateOfPayment = createWorkOrder.DateOfPayment;
                 bool haveReceivedPayment = dateOfPayment != DateTime.MinValue;
                 string notes = createWorkOrder.Notes;
+                uint currentID = customerOrders.Max(o => o.ID) + 1;
+                CustomerOrder newCustOrder = new CustomerOrder();
 
                 // Create a row in work order table for each item in the work order
                 foreach (InventoryEntry inventoryEntry in inventoryEntries)
                 {
-                    CustomerOrder newCustOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1, inventoryEntry.MainItem.ID, type, patientID,
+                    newCustOrder = new CustomerOrder(currentID, inventoryEntry.MainItem.ID, type, patientID,
                     inventoryEntry.MainItem.QuantitySelected, orderDate, haveReceivedPayment, dateOfPayment, inventoryEntry.RelatedItem, notes);
+
+                    if (inventoryEntry.RelatedItem == null)
+                    {
+                        inventoryEntry.RelatedItem = new InventoryListItem();
+                    }
 
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                     DatabaseFunctions.CreateCustomerOrderEntry(con, newCustOrder);
                     con.Close();
 
-                    WorkOrdersList.AddWorkOrder(newCustOrder, persons.FirstOrDefault(p => p.ID == newCustOrder.PersonID), inventoryEntries);
                     customerOrders.Add(newCustOrder);
                 }
+
+                WorkOrdersList.AddWorkOrder(newCustOrder, persons.FirstOrDefault(p => p.ID == newCustOrder.PersonID), inventoryEntries);
 
                 if (type == "Delivery" || type == "Pickup")
                 {                  
@@ -894,6 +902,11 @@ namespace MediStoreManager
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                     foreach (InventoryEntry inventoryEntry in editWorkOrderWindow.FinalInventoryEntries)
                     {
+                        if (inventoryEntry.RelatedItem == null)
+                        {
+                            inventoryEntry.RelatedItem = new InventoryListItem();
+                        }
+
                         if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
                         {
                             // Edit existing order item
@@ -1357,6 +1370,7 @@ namespace MediStoreManager
                             Type = item.Type,
                             QuantitySelected = continuedOrder.Quantity
                         };
+                        entry.RelatedItem = new InventoryListItem();
                         invEntries.Add(entry);
                     }
 
@@ -1394,6 +1408,9 @@ namespace MediStoreManager
                                 Name = relatedItem.Name,
                                 Type = relatedItem.Type,
                             };
+                        } else
+                        {
+                            entry.RelatedItem = new InventoryListItem();
                         }
                         invEntries.Add(entry);
                     }

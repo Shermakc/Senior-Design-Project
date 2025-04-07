@@ -560,7 +560,7 @@ namespace MediStoreManager
 
         public static void DeleteOrderEntry(MySqlConnection con, uint id, uint inventoryID)
         {
-            string sql = "update order set Deleted = 1 where ID = " + id + " and InventoryID = " + inventoryID + ";";
+            string sql = "update `medistore manager`.order set Deleted = 1 where ID = " + id + " and InventoryID = " + inventoryID + ";";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }

@@ -10,3 +10,8 @@ MediStoreManager/[Bb]in/
 /UnitTests/obj/
 /UnitTests/bin/
 
+/UnitTests/obj/Debug/net8.0-windows/UnitTests.AssemblyInfo.cs
+/UnitTests/obj/Debug/net8.0-windows/UnitTests.AssemblyInfoInputs.cache
+/UnitTests/obj/Debug/net8.0-windows/UnitTests.assets.cache
+/UnitTests/obj/Debug/net8.0-windows/UnitTests.csproj.AssemblyReference.cache
+/UnitTests/obj/Debug/net8.0-windows/UnitTests.GeneratedMSBuildEditorConfig.editorconfig

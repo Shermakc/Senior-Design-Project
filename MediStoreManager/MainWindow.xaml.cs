@@ -677,21 +677,15 @@ namespace MediStoreManager
 
                 (string, string) supplierAddress = SplitAddress(streetAddress);
 
-                Address newAddress = new Address(addresses.Max(a => a.ID) + 1, supplierAddress.Item2, supplierAddress.Item1,
-                    city, state, zipCode);
+                Address newAddress = CreateAddressEntry(addSupplierWindow);
 
                 Supplier newSupplier = new Supplier(businessName, businessPhone, partnerID, newAddress.ID);
 
                 MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                DatabaseFunctions.CreateAddressEntry(con, newAddress);
-                con.Close();
-
-                con = DatabaseFunctions.OpenMySQLConnection();
                 DatabaseFunctions.CreateSupplierEntry(con, newSupplier);
                 con.Close();
 
                 SupplierList.AddSupplier(newSupplier, newAddress, null);
-                addresses.Add(newAddress);
                 suppliers.Add(newSupplier);
             }
         }
@@ -736,7 +730,7 @@ namespace MediStoreManager
                             || editSupplierWindow.State != SupplierList[index].State
                             || editSupplierWindow.ZipCode != SupplierList[index].ZipCode)
                         {
-                            addressID = CreateAddressEntry(editSupplierWindow);                           
+                            addressID = CreateAddressEntry(editSupplierWindow).ID;                           
                         }
 
                         Supplier editSupplier = new Supplier()
@@ -1466,27 +1460,43 @@ namespace MediStoreManager
 
                     addresses.Add(blankAddress);
                 }
-                return addresses.Where(a => a.ID == 0).FirstOrDefault(); 
+                return addresses.Where(a => a.ID == 0).FirstOrDefault();
             }
         }
 
-        private uint CreateAddressEntry(AddSupplierWindow addSupplierWindow)
+        private Address CreateAddressEntry(AddSupplierWindow addSupplierWindow)
         {
-            (string, string) address = SplitAddress(addSupplierWindow.StreetAddress);
+            if (!(addSupplierWindow.StreetAddress == string.Empty))
+            {
+                (string, string) address = SplitAddress(addSupplierWindow.StreetAddress);
 
-            Address newAddress = new Address(addresses.Max(a => a.ID) + 1,
-                address.Item2,
-                address.Item1,
-                addSupplierWindow.City,
-                addSupplierWindow.State,
-                addSupplierWindow.ZipCode);
+                Address newAddress = new Address(addresses.Max(a => a.ID) + 1,
+                    address.Item2,
+                    address.Item1,
+                    addSupplierWindow.City,
+                    addSupplierWindow.State,
+                    addSupplierWindow.ZipCode);
 
-            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-            DatabaseFunctions.CreateAddressEntry(con, newAddress);
-            con.Close();
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateAddressEntry(con, newAddress);
+                con.Close();
 
-            addresses.Add(newAddress);
-            return newAddress.ID;
+                addresses.Add(newAddress);
+                return newAddress;
+            }
+            else
+            {
+                if (!addresses.Any(a => a.ID == 0))
+                {
+                    Address blankAddress = new Address(0);
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.CreateAddressEntry(con, blankAddress);
+                    con.Close();
+
+                    addresses.Add(blankAddress);
+                }
+                return addresses.Where(a => a.ID == 0).FirstOrDefault();
+            }
         }
         #endregion
 

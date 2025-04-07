@@ -428,7 +428,7 @@ namespace MediStoreManager
 
         public static void DeleteSupplierEntry(MySqlConnection con, string name)
         {
-            string sql = "update supplier set Deleted = 1 where Name = " + name + ";";
+            string sql = "update supplier set Deleted = 1 where Name = '" + name + "';";
             MySqlCommand cmd = new MySqlCommand(sql, con);
             cmd.ExecuteNonQuery();
         }

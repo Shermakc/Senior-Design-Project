@@ -75,13 +75,6 @@ BEGIN
         -- Randomly set NumInStock to 1 or 0
         SET num_in_stock = FLOOR(RAND() * 2);
 
-        -- Set PersonID based on NumInStock
-        IF num_in_stock = 0 THEN
-            SET person_id = FLOOR(RAND() * 1000);
-        ELSE
-            SET person_id = NULL;
-        END IF;
-
         -- Randomly set IsRental (90% chance of 0, 10% chance of 1)
         IF RAND() < 0.9 THEN
             SET is_rental = FALSE;

@@ -1,6 +1,3 @@
-ALTER TABLE `medistore manager`.`inventory_item` 
-ADD COLUMN `SerialNumber` VARCHAR(45) NULL AFTER `PersonID`;
-
 UPDATE inventory_item
 SET SerialNumber = 
     CONCAT(

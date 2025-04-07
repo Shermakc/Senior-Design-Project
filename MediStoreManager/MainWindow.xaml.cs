@@ -338,7 +338,9 @@ namespace MediStoreManager
                         DatabaseFunctions.DeletePersonEntry(con, PatientList[index].ID);
                         con.Close();
 
-                        persons.Remove(persons.Where(p => p.ID == PatientList[index].ID).FirstOrDefault());
+                        Person deletedPerson = persons.Where(p => p.ID == PatientList[index].ID).FirstOrDefault();
+                        int deletedIndex = persons.IndexOf(deletedPerson);
+                        persons[deletedIndex].Deleted = true;
                         PatientList.RemoveAt(index);
                     }
                 }
@@ -476,7 +478,9 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteInventoryItemEntry(con, EquipmentList[index].ID);
                         con.Close();
 
-                        inventoryItems.Remove(inventoryItems.Where(i => i.ID == EquipmentList[index].ID).FirstOrDefault());
+                        InventoryItem deletedItem = inventoryItems.Where(i => i.ID == EquipmentList[index].ID).FirstOrDefault();
+                        int deletedIndex = inventoryItems.IndexOf(deletedItem);
+                        inventoryItems[deletedIndex].Deleted = true;
                         EquipmentList.RemoveAt(index);
                     }
                 }
@@ -547,7 +551,9 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteInventoryItemEntry(con, SupplyList[index].ID);
                         con.Close();
 
-                        inventoryItems.Remove(inventoryItems.Where(i => i.ID == SupplyList[index].ID).FirstOrDefault());
+                        InventoryItem deletedItem = inventoryItems.Where(i => i.ID == SupplyList[index].ID).FirstOrDefault();
+                        int deletedIndex = inventoryItems.IndexOf(deletedItem);
+                        inventoryItems[deletedIndex].Deleted = true;
                         SupplyList.RemoveAt(index);
                     }
                 }
@@ -615,7 +621,9 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteInventoryItemEntry(con, PartList[index].ID);
                         con.Close();
 
-                        inventoryItems.Remove(inventoryItems.Where(i => i.ID == PartList[index].ID).FirstOrDefault());
+                        InventoryItem deletedItem = inventoryItems.Where(i => i.ID == PartList[index].ID).FirstOrDefault();
+                        int deletedIndex = inventoryItems.IndexOf(deletedItem);
+                        inventoryItems[deletedIndex].Deleted = true;
                         PartList.RemoveAt(index);
                     }
                 }
@@ -713,7 +721,9 @@ namespace MediStoreManager
                         DatabaseFunctions.DeleteSupplierEntry(con, SupplierList[index].Name);
                         con.Close();
 
-                        suppliers.Remove(suppliers.Where(s => s.Name == SupplierList[index].Name).FirstOrDefault());
+                        Supplier deletedSupplier = suppliers.Where(s => s.Name == SupplierList[index].Name).FirstOrDefault();
+                        int deletedIndex = suppliers.IndexOf(deletedSupplier);
+                        suppliers[deletedIndex].Deleted = true;
                         SupplierList.RemoveAt(index);
                     }
                 }
@@ -875,8 +885,12 @@ namespace MediStoreManager
 
                         List<CustomerOrder> ordersToRemove = customerOrders.Where(co => co.ID == WorkOrdersList[index].ID).ToList();
                         WorkOrdersList.RemoveAt(index);
+                        int removeIndex;
                         foreach (CustomerOrder order in ordersToRemove)
-                            customerOrders.Remove(order);
+                        {
+                            removeIndex = customerOrders.IndexOf(order);
+                            customerOrders[removeIndex].Deleted = true;
+                        }
                     }
                 }
                 else
@@ -1068,9 +1082,13 @@ namespace MediStoreManager
                         }
 
                         List<Order> ordersToRemove = orders.Where(i => i.ID == SupplyOrdersList[index].ID).ToList();
-                        foreach (Order order in ordersToRemove)
-                            orders.Remove(order);
                         SupplyOrdersList.RemoveAt(index);
+                        int removeIndex;
+                        foreach (Order order in ordersToRemove)
+                        {
+                            removeIndex = orders.IndexOf(order);
+                            orders[removeIndex].Deleted = true;
+                        }
                     }
                 }
                 else

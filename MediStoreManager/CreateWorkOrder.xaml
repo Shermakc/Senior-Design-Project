@@ -5,36 +5,130 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="Work Order" Height="340" Width="400"
-        WindowStartupLocation="CenterOwner">
-    <StackPanel>
+        Title="Work Order" SizeToContent="WidthAndHeight"
+        WindowStartupLocation="CenterOwner" >
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:NullToVisibilityConverter x:Key="NullToVisibilityConverter"/>
+    </Window.Resources>
+    <StackPanel Height="420" Width="400">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
-            Create Work Order
+            Work Order
         </Label>
-        <WrapPanel Height="240" Width="400">
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Order Type: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Patient: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Inventory: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Quantity: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Date: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Date of Payment: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Related Inventory: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Notes: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-        </WrapPanel>
+        <Button Content="Delete Work Order" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}"
+                IsEnabled ="{Binding isAdmin}" Click="DeleteWorkOrderButton_Click"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto" Height="345">
+            <WrapPanel Width="380">
+                <WrapPanel.Resources>
+                    <local:WorkOrderTypes x:Key="WorkOrderTypes"/>
+                </WrapPanel.Resources>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Order Type: " Margin="0,10,0,0"/>
+                <ComboBox Width="260" HorizontalAlignment="Right" Margin="0,10,0,5" ItemsSource="{StaticResource WorkOrderTypes}" IsEditable="True" IsReadOnly="True" Name="TypeComboBox"/>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Patient: " Margin="0,5,0,0"/>
+                <StackPanel Width="260" HorizontalAlignment="Right" Margin="0,5,0,5">
+                    <TextBox Name="PatientSearchBox"
+                             Width="260"
+                             HorizontalAlignment="Right"
+                             TextChanged="PatientSearchBox_TextChanged"/>
+
+                    <ListBox Name="PatientResultsListBox"
+                             Width="260"
+                             Height="150"
+                             HorizontalAlignment="Right"
+                             SelectionChanged="PatientResultsListBox_SelectionChanged">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding DisplayName}" />
+                                    <TextBlock Text=" [" Foreground="Gray"/>
+                                    <TextBlock Text="{Binding ID}" Foreground="Gray"/>
+                                    <TextBlock Text="]" Foreground="Gray"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </StackPanel>
+
+                <!--ComboBox Width="260" 
+                          HorizontalAlignment="Right"
+                          Margin="0,5,0,5" 
+                          Name="PatientComboBox"
+                          IsEditable="True"
+                          IsTextSearchEnabled="False"
+                          StaysOpenOnEdit="True" 
+                          Loaded="PatientComboBox_Loaded"
+                          IsReadOnly="False" 
+                          TextSearch.TextPath="DisplayName"
+                          VirtualizingStackPanel.IsVirtualizing="True"
+                          VirtualizingStackPanel.VirtualizationMode="Recycling"
+                          ScrollViewer.CanContentScroll="True"
+                          MaxDropDownHeight="300">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding DisplayName}" />
+                                <TextBlock Text=" [" Foreground="Gray"/>
+                                <TextBlock Text="{Binding ID}" Foreground="Gray"/>
+                                <TextBlock Text="]" Foreground="Gray"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox-->
+                <StackPanel Width="380" Margin="0,5,0,5">
+
+                    <Grid Width="380">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="110"/>
+                            <ColumnDefinition Width="260"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock Text="Inventory Items: " TextAlignment="Right" VerticalAlignment="Center" Grid.Column="0"/>
+                        <Button Content="Add New Inventory Item" Width="260" Click="AddNewInventory_Click" Grid.Column="1" HorizontalAlignment="Right"/>
+                    </Grid>
+
+                    <ItemsControl Name="InventoryItemsControl" Width="260" Margin="110,0,10,0">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Margin="0,5,0,0">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding MainItem.Name}" Width="150" FontWeight="Bold"/>
+                                        <TextBlock Text="Qty:" Width="30" FontWeight="SemiBold"/>
+                                        <TextBlock Text="{Binding MainItem.QuantitySelected}" Width="40"/>
+                                        <Button Content="X" Width="30" Click="RemoveInventoryItem_Click"/>
+                                    </StackPanel>
+
+                                    <TextBlock Text="Related Inventory:" FontWeight="SemiBold" Margin="5,0,0,2"/>
+
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Text="{Binding RelatedItem.Name}" Width="200" Foreground="Gray"
+                                                   Visibility="{Binding RelatedItem, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                        <Button Content="X" Width="30" Click="RemoveRelatedInventory_Click"
+                                                Visibility="{Binding RelatedItem, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                    </StackPanel>
+
+                                    <Button Content="Add Related Inventory" Width="260" Click="AddRelatedInventory_Click" Tag="{Binding}" Margin="0,5,0,5"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+
+                </StackPanel>
+                <!--TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Inventory: " Margin="0,5,0,0"/-->
+                <!--TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="InventoryTextBox"/-->
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Order Date: " Margin="0,5,0,5" VerticalAlignment="Center"/>
+                <DatePicker Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="OrderDateDatePicker"/>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Date of Payment: " Margin="0,5,0,5" VerticalAlignment="Center"/>
+                <DatePicker Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="DateOfPaymentDatePicker"/>
+                <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Notes: " Margin="0,5,0,0"/>
+                <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="NotesTextBox"/>
+            </WrapPanel>
+        </ScrollViewer>
         <StackPanel Width="400" Height="20" Orientation="Horizontal" HorizontalAlignment="Center">
             <Grid Width="194">
-                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Button_OK"/>
             </Grid>
             <Grid Width="194">
-                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Click"/>
+                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Cancel"/>
             </Grid>
         </StackPanel>
     </StackPanel>

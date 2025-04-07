@@ -4,4 +4,9 @@ MediStoreManager/[Bb]in/
 
 # Visual Studio 2022 cache/options directory
 .vs/
-MediStoreManager/.vs/
+/MediStoreManager/.vs/
+/MediStoreManager/obj/
+/MediStoreManager/bin/
+/UnitTests/obj/
+/UnitTests/bin/
+

@@ -1,40 +1,57 @@
 ﻿<Window x:Class="MediStoreManager.AddInventoryWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:behaviors="clr-namespace:MediStoreManager"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MediStoreManager"
         mc:Ignorable="d"
-        Title="Add Inventory" Height="340" Width="400"
+        Title="Add Inventory" SizeToContent="WidthAndHeight"
         WindowStartupLocation="CenterOwner">
-    <StackPanel>
+    <Window.Resources>
+        <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <StackPanel Height="375" Width="380">
         <Label FontWeight="Bold" HorizontalAlignment="Center">
             Enter Inventory Information
         </Label>
-        <WrapPanel Height="240" Width="400">
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Name: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Type: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Size: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Brand: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Quantity: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Price: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
-            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Retail Price: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+        <Button Content="Delete Inventory Item" Width="200" Visibility="{Binding IsEditMode, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                IsEnabled ="{Binding isAdmin}" Click="DeleteInventoryButton_Click"/>
+        <WrapPanel Height="300" Width="380">
+            <WrapPanel.Resources>
+                <local:InventoryTypes x:Key="InventoryTypes"/>
+            </WrapPanel.Resources>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Name: " Margin="0,10,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,10,0,5" Name="InventoryNameTextBox"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Type: " Margin="0,5,0,5"/>
+            <ComboBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" ItemsSource="{StaticResource InventoryTypes}" IsEditable="True" IsReadOnly="True" Name="TypeComboBox"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Serial Number: " Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="SerialNumberTextBox"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Size: " Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="SizeTextBox"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Brand: " Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="BrandTextBox"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Quantity: " Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="QuantityTextBox"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Price: " Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="PriceTextBox" behaviors:PriceTextBoxBehavior.EnablePriceValidation="True"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Retail Price: " Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="RetailPriceTextBox" behaviors:PriceTextBoxBehavior.EnablePriceValidation="True"/>
+            <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Rental Item(?): " Margin="0,5,0,5"/>
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                <RadioButton Content="Yes" GroupName="Agreement" Name="YesRadioButton" Margin="0,7,10,0"/>
+                <RadioButton Content="No" GroupName="Agreement" Name="NoRadioButton" Margin="0,7,10,0"/>
+                <RadioButton Content="Not Applicable" GroupName="Agreement" Name="NotApplicableRadioButton" Margin="0,7,10,0"/>
+            </StackPanel>
             <TextBlock Width="110" HorizontalAlignment="Left" TextAlignment="Right" Text="Rental Price: " Margin="0,5,0,0"/>
-            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5"/>
+            <TextBox Width="260" HorizontalAlignment="Right" Margin="0,5,0,5" Name="RentalPriceTextBox" behaviors:PriceTextBoxBehavior.EnablePriceValidation="True"/>
         </WrapPanel>
         <StackPanel Width="400" Height="20" Orientation="Horizontal" HorizontalAlignment="Center">
             <Grid Width="194">
-                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0"/>
+                <Button Content="OK" Width="100" HorizontalAlignment="Right" Margin="0,0,15,0" Click="Button_OK"/>
             </Grid>
             <Grid Width="194">
-                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Click"/>
+                <Button Content="Cancel" Width="100" HorizontalAlignment="Left" Margin="15,0,0,0" Click="Button_Cancel"/>
             </Grid>
         </StackPanel>
     </StackPanel>

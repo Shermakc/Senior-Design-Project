@@ -130,6 +130,25 @@ namespace MediStoreManager
                     WorkOrders = workOrders
                 };
             }
+            else
+            {
+                Patient = new Patient
+                {
+                    FirstName = FirstName,
+                    MiddleName = MiddleName,
+                    LastName = LastName,
+                    HomePhone = HomePhone,
+                    CellPhone = CellPhone,
+                    StreetAddress = StreetAddress,
+                    City = City,
+                    ZipCode = ZipCode,
+                    State = State,
+                    Insurance = InsuranceProvider,
+                    Contacts = new ObservableCollection<Patient>(FinalContacts),
+                    DisplayName = LastName + ", " + FirstName,
+                    WorkOrders = workOrders
+                };
+            }
             DeletePatient = false;
             this.DialogResult = true;
         }

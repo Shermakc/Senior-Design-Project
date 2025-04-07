@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
@@ -17,6 +18,8 @@ namespace MediStoreManager
     {
         public Address() { }
 
+        public Address(uint id) { ID = id; }
+
         public Address(uint id, string streetName, string addressNum, string city, string state, string zipCode)
         {
             ID = id;
@@ -25,7 +28,7 @@ namespace MediStoreManager
             City = city;
             State = state;
             if (zipCode != string.Empty) { ZipCode = Convert.ToUInt32(zipCode); }
-        }
+          }
 
         public uint ID;
         public string StreetName;
@@ -173,7 +176,7 @@ namespace MediStoreManager
         }
 
         public Person(uint id, string firstName, string lastName, string middleName, string homePhone, string cellPhone,
-            uint addressID, string insurance, bool isPatient, string contactID, string contactRelation)
+            uint addressID, string insurance, bool isPatient, uint contactID, string contactRelation)
         {
             ID = id;
             FirstName = firstName;
@@ -184,7 +187,7 @@ namespace MediStoreManager
             AddressID = addressID;
             InsuranceProvider = insurance;
             IsPatient = isPatient;
-            if (contactID != string.Empty) { ContactID = Convert.ToUInt16(contactID); }
+            ContactID = contactID;
             ContactRelationship = contactRelation;
         }
 

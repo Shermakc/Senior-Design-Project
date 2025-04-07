@@ -141,7 +141,7 @@ namespace MediStoreManager {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/MediStoreManager;V1.0.0.0;component/addcontact.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/MediStoreManager;component/addcontact.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\AddContact.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

@@ -3,20 +3,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Shell;
 using MySql.Data.MySqlClient;
 using MediStoreManager;
 using System.Collections.ObjectModel;
-using Org.BouncyCastle.Utilities;
-using Mysqlx.Crud;
-using Org.BouncyCastle.Asn1.X509;
-using Google.Protobuf.WellKnownTypes;
 
 namespace MediStoreManager
 {
@@ -278,22 +267,41 @@ namespace MediStoreManager
                 ObservableCollection<Patient> contacts = addPatientWindow.FinalContacts;
 
                 // Create new database class items with info from popup
-                (string, string) patientAddress = SplitAddress(streetAddress);
-
-                Address newAddress = new Address(addresses.Max(a => a.ID) + 1, patientAddress.Item2, patientAddress.Item1,
-                    city, state, zipCode);
-
+                Address newAddress = CreateAddressEntry(addPatientWindow.Patient);
+                
                 Person newPerson = new Person(persons.Max(p => p.ID) + 1, firstName, lastName, middleName, homePhone, cellPhone,
                     newAddress.ID, insurance, isPatient);
 
-                // Insert new items into the database
+                // Insert new person into the database
                 MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                DatabaseFunctions.CreateAddressEntry(con, newAddress);
-                con.Close();
-
-                con = DatabaseFunctions.OpenMySQLConnection();
                 DatabaseFunctions.CreatePersonEntry(con, newPerson);
                 con.Close();
+
+                persons.Add(newPerson);
+
+                // Add person entries for new contacts   
+                if (contacts.Any())
+                {
+                    foreach (Patient contact in contacts)
+                    {
+                        // Add new person for contact if they don't already exist
+                        if (!persons.Any(p => p.ID == contact.ID))
+                        {
+                            // Create address entry for the contact
+                            Address contactAddress = CreateAddressEntry(contact);
+                            // Create person entry for the contact
+                            Person contactPerson = new Person(persons.Max(p => p.ID) + 1, contact.FirstName, contact.LastName,
+                                contact.MiddleName, contact.HomePhone, contact.CellPhone, contactAddress.ID, contact.Insurance,
+                                false, newPerson.ID, contact.RelationshipToPatient);
+
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.CreatePersonEntry(con, contactPerson);
+                            con.Close();
+
+                            persons.Add(contactPerson);
+                        }
+                    }
+                }
 
                 // Add patient to user interface
                 if (contacts != null)
@@ -302,9 +310,7 @@ namespace MediStoreManager
                 } else
                 {
                     PatientList.AddPatient(newPerson, newAddress, null, contacts);
-                }
-                addresses.Add(newAddress);
-                persons.Add(newPerson);
+                }               
             }
         }
 
@@ -350,7 +356,7 @@ namespace MediStoreManager
                             || PatientList[index].State != editPatientWindow.Patient.State
                             || PatientList[index].ZipCode != editPatientWindow.Patient.ZipCode)
                         {
-                            addressID = CreateAddressEntry(editPatientWindow.Patient);
+                            addressID = CreateAddressEntry(editPatientWindow.Patient).ID;
                         }
 
                         // Create a person to use in the update function
@@ -379,25 +385,14 @@ namespace MediStoreManager
                             foreach (Patient contact in editPatientWindow.Patient.Contacts)
                             {
                                 // Add new person for contact if they don't already exist
-                                if (!PatientList.Any(p => p.ID == contact.ID))
+                                if (!persons.Any(p => p.ID == contact.ID))
                                 {
                                     // Create address entry for the contact
-                                    uint contactAddID = CreateAddressEntry(contact);
+                                    Address contactAddress = CreateAddressEntry(contact);
                                     // Create person entry for the contact
-                                    Person contactPerson = new Person()
-                                    {
-                                        ID = contact.ID,
-                                        FirstName = contact.FirstName,
-                                        LastName = contact.LastName,
-                                        MiddleName = contact.MiddleName,
-                                        HomePhone = Convert.ToInt64(contact.HomePhone),
-                                        CellPhone = Convert.ToInt64(contact.CellPhone),
-                                        AddressID = contactAddID,
-                                        InsuranceProvider = contact.Insurance,
-                                        IsPatient = false,
-                                        ContactID = editPerson.ID,
-                                        ContactRelationship = contact.RelationshipToPatient
-                                    };
+                                    Person contactPerson = new Person(persons.Max(p => p.ID) + 1, contact.FirstName, contact.LastName,
+                                        contact.MiddleName, contact.HomePhone, contact.CellPhone, contactAddress.ID, contact.Insurance,
+                                        false, editPerson.ID, contact.RelationshipToPatient);                                   
 
                                     con = DatabaseFunctions.OpenMySQLConnection();
                                     DatabaseFunctions.CreatePersonEntry(con, contactPerson);
@@ -1423,23 +1418,39 @@ namespace MediStoreManager
             }
         }
 
-        private uint CreateAddressEntry(Patient patient)
+        private Address CreateAddressEntry(Patient patient)
         {
-            (string, string) address = SplitAddress(patient.StreetAddress);
+            if (!(patient.StreetAddress == string.Empty))
+            {
+                (string, string) address = SplitAddress(patient.StreetAddress);
 
-            Address newAddress = new Address(addresses.Max(a => a.ID) + 1,
-                address.Item2,
-                address.Item1,
-                patient.City,
-                patient.State,
-                patient.ZipCode);
+                Address newAddress = new Address(addresses.Max(a => a.ID) + 1,
+                    address.Item2,
+                    address.Item1,
+                    patient.City,
+                    patient.State,
+                    patient.ZipCode);
 
-            MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-            DatabaseFunctions.CreateAddressEntry(con, newAddress);
-            con.Close();
+                MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                DatabaseFunctions.CreateAddressEntry(con, newAddress);
+                con.Close();
 
-            addresses.Add(newAddress);
-            return newAddress.ID;
+                addresses.Add(newAddress);
+                return newAddress;
+            }
+            else
+            {
+                if (!addresses.Any(a => a.ID == 0))
+                {
+                    Address blankAddress = new Address(0);
+                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                    DatabaseFunctions.CreateAddressEntry(con, blankAddress);
+                    con.Close();
+
+                    addresses.Add(blankAddress);
+                }
+                return addresses.Where(a => a.ID == 0).FirstOrDefault(); 
+            }
         }
 
         private uint CreateAddressEntry(AddSupplierWindow addSupplierWindow)

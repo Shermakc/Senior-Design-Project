@@ -181,8 +181,8 @@ namespace MediStoreManager
 
             try
             {
-                RetrievePersons();
                 RetrieveAddresses();
+                RetrievePersons();
                 RetrieveSuppliers();
                 RetrieveInventoryItems();
                 RetrieveOrders();

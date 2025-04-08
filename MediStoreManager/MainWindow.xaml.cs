@@ -1106,7 +1106,7 @@ namespace MediStoreManager
                 DateTime orderDate = createSupplyOrder.OrderDate;
                 DateTime receivedDate = createSupplyOrder.ReceivedDate;
                 bool hasBeenReceived = receivedDate != DateTime.MinValue;
-                uint currentID = customerOrders.Max(o => o.ID) + 1;
+                uint currentID = orders.Max(o => o.ID) + 1;
                 Order newOrder = new Order();
 
                 // Create a row in the order table for each item in the supply order

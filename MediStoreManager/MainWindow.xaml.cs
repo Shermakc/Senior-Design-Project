@@ -971,7 +971,7 @@ namespace MediStoreManager
                             else
                             {
                                 // Create new order item
-                                CustomerOrder newOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1,
+                                CustomerOrder newOrder = new CustomerOrder(originalOrder.FirstOrDefault().ID,
                                     inventoryEntry.MainItem.ID,
                                     editWorkOrderWindow.Type,
                                     editWorkOrderWindow.PatientID,
@@ -1235,7 +1235,7 @@ namespace MediStoreManager
                             else
                             {
                                 // Create new order item
-                                Order newOrder = new Order(orders.Max(o => o.ID) + 1,
+                                Order newOrder = new Order(originalOrder.FirstOrDefault().ID,
                                     inventoryEntry.MainItem.ID,
                                     inventoryEntry.MainItem.QuantitySelected,
                                     editSupplyOrderWindow.Supplier,

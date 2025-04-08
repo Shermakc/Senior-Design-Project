@@ -1054,19 +1054,20 @@ namespace MediStoreManager
                 string shippingMethod = createSupplyOrder.ShippingMethod;
                 DateTime orderDate = createSupplyOrder.OrderDate;
                 DateTime receivedDate = createSupplyOrder.ReceivedDate;
-                bool hasBeenReceived = receivedDate != DateTime.MinValue;              
+                bool hasBeenReceived = receivedDate != DateTime.MinValue;
+                uint currentID = customerOrders.Max(o => o.ID) + 1;
+                Order newOrder = new Order();
 
                 // Create a row in the order table for each item in the supply order
                 foreach (InventoryEntry inventoryEntry in inventoryEntries)
                 {
-                    Order newOrder = new Order(orders.Max(o => o.ID) + 1, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.QuantitySelected,
+                    newOrder = new Order(currentID, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.QuantitySelected,
                         supplier, shippingMethod, orderDate, hasBeenReceived, receivedDate);
 
                     MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
                     DatabaseFunctions.CreateOrderEntry(con, newOrder);
                     con.Close();
 
-                    SupplyOrdersList.AddSupplyOrder(newOrder, inventoryEntries);
                     orders.Add(newOrder);
 
                     if (hasBeenReceived)
@@ -1082,7 +1083,8 @@ namespace MediStoreManager
 
                         inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
                     }
-                }              
+                }
+                SupplyOrdersList.AddSupplyOrder(newOrder, inventoryEntries);
             }
         }
 

@@ -405,9 +405,19 @@ namespace MediStoreManager
                             }
                         }
 
+                        // Look for removed contacts and set their ContactID to 0
+                        List<Patient> removedContacts = PatientList[index].Contacts
+                            .Where(c => !editPatientWindow.Patient.Contacts.Any(pc => pc.ID == c.ID)).ToList();
+                        foreach (Patient removedContact in removedContacts)
+                        {
+                            int contactIndex = persons.IndexOf(persons.Where(p => p.ID == removedContact.ID).FirstOrDefault());
+                            persons[contactIndex].ContactID = 0;
+                        }
+
+                        // Update patient in lists
                         PatientList[index] = editPatientWindow.Patient;
                         int pIndex = persons.IndexOf(originalPerson);
-                        persons[pIndex] = editPerson;                     
+                        persons[pIndex] = editPerson;                      
                     }
                 }
             }
@@ -801,7 +811,7 @@ namespace MediStoreManager
 
                 WorkOrdersList.AddWorkOrder(newCustOrder, persons.FirstOrDefault(p => p.ID == newCustOrder.PersonID), inventoryEntries);
 
-                if (type == "Delivery" || type == "Pickup")
+                if (type == "Delivery" || type == "Pickup" || type == "Repair")
                 {                  
                     foreach (InventoryEntry inventoryEntry in inventoryEntries)
                     {
@@ -821,17 +831,18 @@ namespace MediStoreManager
                         // reduce number in stock of inventory item
                         con = DatabaseFunctions.OpenMySQLConnection();
                         // get num in stock from original database item
-                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+                        int newStock = inventoryItems[invIndex].NumInStock - inventoryEntry.MainItem.QuantitySelected;
+                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, newStock);
                         con.Close();
 
                         // update NumInStock in inventory lists
-                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, newStock);
 
-                        inventoryItems[invIndex].NumInStock = inventoryEntry.MainItem.AllowedQuantity;                        
+                        inventoryItems[invIndex].NumInStock = newStock;                        
                     }
                 }
 
-                if (type == "rental pickup")
+                if (type == "Rental Pickup")
                 {
                     
                     foreach (InventoryEntry inventoryEntry in inventoryEntries.Where(ie => ie.MainItem.Type == "equipment"))
@@ -847,7 +858,7 @@ namespace MediStoreManager
                         con.Close();
 
                         // update inventory lists
-                        UpdateQuantityInItemList("equipment", inventoryEntry.MainItem.ID, 1);
+                        UpdateQuantityInItemList("Equipment", inventoryEntry.MainItem.ID, 1);
 
                         int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
                         inventoryItems[invIndex].NumInStock = 1;

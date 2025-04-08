@@ -63,15 +63,15 @@ namespace MediStoreManager
 
             // Convert Equipment and Supplies into InventoryListItems
             AllInventoryItems = new ObservableCollection<InventoryListItem>(
-                equipment.Where(e => e.Quantity > 0).Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", AllowedQuantity = e.Quantity, QuantitySelected = 0 })
+                equipment.Where(e => e.Quantity > 0).Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "equipment", AllowedQuantity = e.Quantity, QuantitySelected = 0 })
                 .Concat(
-                supplies.Where(s => s.Quantity > 0).Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "Supply", AllowedQuantity = s.Quantity, QuantitySelected = 0 }))
+                supplies.Where(s => s.Quantity > 0).Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "supply", AllowedQuantity = s.Quantity, QuantitySelected = 0 }))
                 .Concat(
-                parts.Where(p => p.Quantity > 0).Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "Part", AllowedQuantity = p.Quantity, QuantitySelected = 0 }))
+                parts.Where(p => p.Quantity > 0).Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "part", AllowedQuantity = p.Quantity, QuantitySelected = 0 }))
             );
 
             AllRelatedInventory = new ObservableCollection<InventoryListItem>(
-                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", AllowedQuantity = 100, QuantitySelected = 0 })
+                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "equipment", AllowedQuantity = 100, QuantitySelected = 0 })
             );
 
             // Bind the ItemsControl to the InventoryEntries collection

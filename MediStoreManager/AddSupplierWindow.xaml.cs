@@ -88,7 +88,7 @@ namespace MediStoreManager
                 MessageBox.Show($"Please enter a valid Partner ID", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
-            PartnerID = int.TryParse(PartnerIDTextBox.Text, out int pID) ? pID : -1;
+            PartnerID = int.TryParse(PartnerIDTextBox.Text, out int pID) ? pID : 0;
             if (IsEditMode == true)
             {
                 Supplier = new SupplierL

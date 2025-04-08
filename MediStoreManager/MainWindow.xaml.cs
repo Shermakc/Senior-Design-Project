@@ -1258,6 +1258,22 @@ namespace MediStoreManager
             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
             addresses = DatabaseFunctions.GetAddressList(con);
             con.Close();
+
+            if (!addresses.Any(a => a.ID == 0))
+            {
+                con = DatabaseFunctions.OpenMySQLConnection();
+                Address blankAddress = new Address()
+                {
+                    ID = 0,
+                    StreetName = string.Empty,
+                    AddressNumber = 0,
+                    City = string.Empty,
+                    State = string.Empty,
+                    ZipCode = 0
+                };
+                DatabaseFunctions.CreateAddressEntry(con, blankAddress);
+                con.Close();
+            }
         }
 
         private void RetrievePersons()
@@ -1266,6 +1282,20 @@ namespace MediStoreManager
             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
             persons = DatabaseFunctions.GetPersonList(con);
             con.Close();
+
+            if (!persons.Any(p => p.ID == 0))
+            {
+                con = DatabaseFunctions.OpenMySQLConnection();
+                Person blankPerson = new Person()
+                {
+                    ID = 0,
+                    FirstName = string.Empty,
+                    LastName = string.Empty,
+                    IsPatient = false
+                };
+                DatabaseFunctions.CreatePersonEntry(con, blankPerson);
+                con.Close();
+            }
         }
 
         private void RetrieveUsers()

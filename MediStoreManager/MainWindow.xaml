@@ -673,16 +673,12 @@
                                                 <WrapPanel Margin="0,0,0,0" Width="461" HorizontalAlignment="Left">
                                                     <TextBlock Text="Order ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
-                                                    <TextBlock Text="Quantity: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding Quantity}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Shipping Method: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ShippingMethod}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Received Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ReceivedDate, Converter={StaticResource DateTimeToStringConverter}}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
                                                 <WrapPanel Margin="0,0,0,0" Width="461" HorizontalAlignment="Right">
-                                                    <TextBlock Text="Inventory ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding InventoryID}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Supplier: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding Supplier}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Order Date: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
@@ -691,7 +687,7 @@
                                             </StackPanel>
                                             <TextBlock Text="Inventory Items:" FontWeight="Bold" Margin="10,10,0,5"/>
                                             <Border BorderBrush="DarkGray" BorderThickness="1" Margin="10,5,10,10">
-                                                <ScrollViewer Height="269" Width="892" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
+                                                <ScrollViewer Height="330" Width="892" VerticalScrollBarVisibility="Auto" HorizontalAlignment="Left">
                                                     <ItemsControl ItemsSource="{Binding InventoryEntries}">
                                                         <ItemsControl.ItemTemplate>
                                                             <DataTemplate>

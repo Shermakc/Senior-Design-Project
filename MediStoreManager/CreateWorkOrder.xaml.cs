@@ -124,8 +124,8 @@ namespace MediStoreManager
                 _filteredPatients.Add(patient);
 
             _suppressTextChanged = false;
-            OrderDateDatePicker.SelectedDate = workOrder.Date;
-            DateOfPaymentDatePicker.SelectedDate = workOrder.PaymentDate;
+            if (workOrder.Date != DateTime.MinValue) { OrderDateDatePicker.SelectedDate = workOrder.Date; }
+            if (workOrder.PaymentDate != DateTime.MinValue) { DateOfPaymentDatePicker.SelectedDate = workOrder.PaymentDate; }
             if (workOrder.InventoryEntries != null)
             {
                 InventoryEntries = new ObservableCollection<InventoryEntry>(workOrder.InventoryEntries);
@@ -248,7 +248,7 @@ namespace MediStoreManager
                         Type = selectedItem.Type,
                         QuantitySelected = selectedItem.QuantitySelected // User-selected quantity
                     },
-                    RelatedItem = null
+                    RelatedItem = new InventoryListItem()
                 });
             }
         }
@@ -297,7 +297,7 @@ namespace MediStoreManager
         {
             if (sender is Button button && button.DataContext is InventoryEntry inventoryEntry)
             {
-                inventoryEntry.RelatedItem = null;
+                inventoryEntry.RelatedItem = new InventoryListItem();
 
                 InventoryItemsControl.Items.Refresh();
             }
@@ -314,7 +314,11 @@ namespace MediStoreManager
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value == null ? Visibility.Collapsed : Visibility.Visible;
+            if (value is uint id && id == 0)
+            {
+                return Visibility.Collapsed;
+            }
+            return Visibility.Visible;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

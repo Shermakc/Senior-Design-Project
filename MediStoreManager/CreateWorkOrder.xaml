@@ -101,9 +101,9 @@
 
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="{Binding RelatedItem.Name}" Width="200" Foreground="Gray"
-                                                   Visibility="{Binding RelatedItem, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                                   Visibility="{Binding RelatedItem.ID, Converter={StaticResource NullToVisibilityConverter}}"/>
                                         <Button Content="X" Width="30" Click="RemoveRelatedInventory_Click"
-                                                Visibility="{Binding RelatedItem, Converter={StaticResource NullToVisibilityConverter}}"/>
+                                                Visibility="{Binding RelatedItem.ID, Converter={StaticResource NullToVisibilityConverter}}"/>
                                     </StackPanel>
 
                                     <Button Content="Add Related Inventory" Width="260" Click="AddRelatedInventory_Click" Tag="{Binding}" Margin="0,5,0,5"/>

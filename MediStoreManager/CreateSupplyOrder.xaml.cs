@@ -59,11 +59,11 @@ namespace MediStoreManager
 
             // Convert Equipment and Supplies into InventoryListItems
             AllInventoryItems = new ObservableCollection<InventoryListItem>(
-                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", QuantitySelected = 0 })
+                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "equipment", QuantitySelected = 0 })
                 .Concat(
-                supplies.Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "Supply", QuantitySelected = 0 }))
+                supplies.Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "supply", QuantitySelected = 0 }))
                 .Concat(
-                parts.Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "Part", QuantitySelected = 0 }))
+                parts.Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "part", QuantitySelected = 0 }))
             );
 
             // Bind the ItemsControl to the InventoryEntries collection
@@ -86,11 +86,11 @@ namespace MediStoreManager
 
             // Convert Equipment and Supplies into InventoryListItems
             AllInventoryItems = new ObservableCollection<InventoryListItem>(
-                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "Equipment", QuantitySelected = 0 })
+                equipment.Select(e => new InventoryListItem { ID = e.ID, Name = e.Name, Type = "equipment", QuantitySelected = 0 })
                 .Concat(
-                supplies.Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "Supply", QuantitySelected = 0 }))
+                supplies.Select(s => new InventoryListItem { ID = s.ID, Name = s.Name, Type = "supply", QuantitySelected = 0 }))
                 .Concat(
-                parts.Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "Part", QuantitySelected = 0 }))
+                parts.Select(p => new InventoryListItem { ID = p.ID, Name = p.Name, Type = "part", QuantitySelected = 0 }))
             );
 
             // Bind the ItemsControl to the InventoryEntries collection

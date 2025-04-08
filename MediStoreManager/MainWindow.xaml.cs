@@ -913,116 +913,132 @@ namespace MediStoreManager
                     int index = WorkOrdersList.IndexOf(selectedEntry);
                     if (index >= 0 && editWorkOrderWindow.WorkOrder != null)
                     {
+                        List<CustomerOrder> originalOrder = customerOrders.Where(co => co.ID == editWorkOrderWindow.ID).ToList();
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        foreach (InventoryEntry inventoryEntry in editWorkOrderWindow.FinalInventoryEntries)
+                        {
+                            if (inventoryEntry.RelatedItem == null)
+                            {
+                                inventoryEntry.RelatedItem = new InventoryListItem();
+                            }
+
+                            if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
+                            {
+                                // Edit existing order item
+                                CustomerOrder editOrder = new CustomerOrder(editWorkOrderWindow.ID,
+                                    inventoryEntry.MainItem.ID,
+                                    editWorkOrderWindow.Type,
+                                    editWorkOrderWindow.PatientID,
+                                    inventoryEntry.MainItem.QuantitySelected,
+                                    editWorkOrderWindow.OrderDate,
+                                    editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
+                                    editWorkOrderWindow.DateOfPayment,
+                                    inventoryEntry.RelatedItem,
+                                    editWorkOrderWindow.Notes);
+
+                                con = DatabaseFunctions.OpenMySQLConnection();
+                                DatabaseFunctions.UpdateCustomerOrderEntry(con, editOrder);
+                                con.Close();
+
+                                int oIndex = customerOrders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                                customerOrders[oIndex] = editOrder;
+                            }
+                            else
+                            {
+                                // Create new order item
+                                CustomerOrder newOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1,
+                                    inventoryEntry.MainItem.ID,
+                                    editWorkOrderWindow.Type,
+                                    editWorkOrderWindow.PatientID,
+                                    inventoryEntry.MainItem.QuantitySelected,
+                                    editWorkOrderWindow.OrderDate,
+                                    editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
+                                    editWorkOrderWindow.DateOfPayment,
+                                    inventoryEntry.RelatedItem,
+                                    editWorkOrderWindow.Notes);
+
+                                con = DatabaseFunctions.OpenMySQLConnection();
+                                DatabaseFunctions.CreateCustomerOrderEntry(con, newOrder);
+                                con.Close();
+
+                                customerOrders.Add(newOrder);
+                            }
+
+                            // Edit inventory item ID and NumInStock
+                            con = DatabaseFunctions.OpenMySQLConnection();
+
+                            int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                            if (inventoryEntry.MainItem.Type == "equipment")
+                            {
+                                // assign patient ID to equipment                           
+                                DatabaseFunctions.UpdateInventoryItemPersonID(con, inventoryEntry.MainItem.ID, editWorkOrderWindow.PatientID);
+                                con.Close();
+
+                                // update patient ID in inventory list
+                                inventoryItems[invIndex].PersonID = editWorkOrderWindow.PatientID;
+                            }
+
+                            // update number in stock of inventory item
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            // get num in stock from original database item
+                            DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+                            con.Close();
+
+                            // update NumInStock in inventory lists
+                            UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
+
+                            inventoryItems[invIndex].NumInStock = inventoryEntry.MainItem.AllowedQuantity;
+                        }
+
+                        // Check for removed work order items
+                        List<InventoryEntry> removedEntries = WorkOrdersList[index].InventoryEntries
+                            .Where(e => !editWorkOrderWindow.WorkOrder.InventoryEntries.Any(ie => ie.MainItem.ID == e.MainItem.ID)).ToList();
+                        foreach (InventoryEntry entry in removedEntries)
+                        {
+
+                            int orderItemIndex = customerOrders.IndexOf(originalOrder.Where(o => o.InventoryID == entry.MainItem.ID).FirstOrDefault());
+                            // Delete items from order
+                            customerOrders[orderItemIndex].Deleted = true;
+
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.DeleteCustomerOrderEntry(con, customerOrders[orderItemIndex].ID, entry.MainItem.ID);
+                            con.Close();
+                        }
+
+                        // update PatientID and NumInStock for items removed from order
+                        foreach (CustomerOrder orderItem in originalOrder
+                            .Where(o => !editWorkOrderWindow.FinalInventoryEntries
+                            .Any(ie => ie.MainItem.ID == o.InventoryID)).ToList())
+                        {
+                            InventoryItem item = inventoryItems.Where(i => i.ID == orderItem.InventoryID).FirstOrDefault();
+                            int invIndex = inventoryItems.IndexOf(item);
+
+                            if (item.Type == "equipment")
+                            {
+                                con = DatabaseFunctions.OpenMySQLConnection();
+                                DatabaseFunctions.UpdateInventoryItemPersonID(con, item.ID, 0);
+                                con.Close();
+
+                                inventoryItems[invIndex].PersonID = 0;
+                            }
+
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.UpdateInventoryQuantity(con, item.ID, item.NumInStock + orderItem.Quantity);
+                            con.Close();
+
+                            UpdateQuantityInItemList(item.Type, item.ID, item.NumInStock + orderItem.Quantity);
+
+                            inventoryItems[invIndex].NumInStock = item.NumInStock + orderItem.Quantity;
+                        }
+
+                        // update work order for the UI
                         Person orderPerson = persons.Where(p => p.ID == editWorkOrderWindow.WorkOrder.PatientID).FirstOrDefault();
                         WorkOrdersList[index] = editWorkOrderWindow.WorkOrder;
                         WorkOrdersList[index].DisplayName = orderPerson.FirstName + " " +
                             orderPerson.LastName + " - " + editWorkOrderWindow.WorkOrder.Date.Month.ToString() +
                             "/" + editWorkOrderWindow.WorkOrder.Date.Day.ToString() +
                             "/" + editWorkOrderWindow.WorkOrder.Date.Year.ToString();
-                    }
-
-                    List<CustomerOrder> originalOrder = customerOrders.Where(co => co.ID == editWorkOrderWindow.ID).ToList();
-                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                    foreach (InventoryEntry inventoryEntry in editWorkOrderWindow.FinalInventoryEntries)
-                    {
-                        if (inventoryEntry.RelatedItem == null)
-                        {
-                            inventoryEntry.RelatedItem = new InventoryListItem();
-                        }
-
-                        if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
-                        {
-                            // Edit existing order item
-                            CustomerOrder editOrder = new CustomerOrder(editWorkOrderWindow.ID,
-                                inventoryEntry.MainItem.ID,
-                                editWorkOrderWindow.Type,
-                                editWorkOrderWindow.PatientID,
-                                inventoryEntry.MainItem.QuantitySelected,
-                                editWorkOrderWindow.OrderDate,
-                                editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
-                                editWorkOrderWindow.DateOfPayment,
-                                inventoryEntry.RelatedItem,
-                                editWorkOrderWindow.Notes);
-
-                            con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.UpdateCustomerOrderEntry(con, editOrder);
-                            con.Close();
-
-                            int oIndex = customerOrders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
-                            customerOrders[oIndex] = editOrder;                           
-                        }
-                        else
-                        {
-                            // Create new order item
-                            CustomerOrder newOrder = new CustomerOrder(customerOrders.Max(o => o.ID) + 1,
-                                inventoryEntry.MainItem.ID,
-                                editWorkOrderWindow.Type,
-                                editWorkOrderWindow.PatientID,
-                                inventoryEntry.MainItem.QuantitySelected,
-                                editWorkOrderWindow.OrderDate,
-                                editWorkOrderWindow.DateOfPayment != DateTime.MinValue,
-                                editWorkOrderWindow.DateOfPayment,
-                                inventoryEntry.RelatedItem,
-                                editWorkOrderWindow.Notes);
-
-                            con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.CreateCustomerOrderEntry(con, newOrder);
-                            con.Close();
-
-                            customerOrders.Add(newOrder);
-                        }
-
-                        // Edit inventory item ID and NumInStock
-                        con = DatabaseFunctions.OpenMySQLConnection();
-
-                        int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
-                        if (inventoryEntry.MainItem.Type == "equipment")
-                        {
-                            // assign patient ID to equipment                           
-                            DatabaseFunctions.UpdateInventoryItemPersonID(con, inventoryEntry.MainItem.ID, editWorkOrderWindow.PatientID);
-                            con.Close();
-
-                            // update patient ID in inventory list
-                            inventoryItems[invIndex].PersonID = editWorkOrderWindow.PatientID;                          
-                        }
-
-                        // update number in stock of inventory item
-                        con = DatabaseFunctions.OpenMySQLConnection();
-                        // get num in stock from original database item
-                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
-                        con.Close();
-
-                        // update NumInStock in inventory lists
-                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, inventoryEntry.MainItem.AllowedQuantity);
-                       
-                        inventoryItems[invIndex].NumInStock = inventoryEntry.MainItem.AllowedQuantity;                        
-                    }
-
-                    // update PatientID and NumInStock for items removed from order
-                    foreach (CustomerOrder orderItem in originalOrder
-                        .Where(o => !editWorkOrderWindow.FinalInventoryEntries
-                        .Any(ie => ie.MainItem.ID == o.InventoryID)).ToList())
-                    {
-                        InventoryItem item = inventoryItems.Where(i => i.ID == orderItem.InventoryID).FirstOrDefault();
-                        int invIndex = inventoryItems.IndexOf(item);
-
-                        if (item.Type == "equipment")
-                        {
-                            con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.UpdateInventoryItemPersonID(con, item.ID, 0);
-                            con.Close();
-
-                            inventoryItems[invIndex].PersonID = 0;
-                        }
-
-                        con = DatabaseFunctions.OpenMySQLConnection();
-                        DatabaseFunctions.UpdateInventoryQuantity(con, item.ID, item.NumInStock + orderItem.Quantity);
-                        con.Close();
-
-                        UpdateQuantityInItemList(item.Type, item.ID, item.NumInStock + orderItem.Quantity);
-
-                        inventoryItems[invIndex].NumInStock = item.NumInStock + orderItem.Quantity;
-                    }
+                    }                    
                 }
             }
         }
@@ -1429,7 +1445,7 @@ namespace MediStoreManager
                 ObservableCollection<InventoryEntry> invEntries = new ObservableCollection<InventoryEntry>();
                 if (!order.Deleted && !WorkOrdersList.Any(wo => wo.ID == order.ID))
                 {
-                    foreach (CustomerOrder continuedOrder in customerOrders.Where(i => i.ID == order.ID))
+                    foreach (CustomerOrder continuedOrder in customerOrders.Where(co => co.ID == order.ID && !co.Deleted))
                     {
                         InventoryItem mainItem = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
                         InventoryEntry entry = new InventoryEntry();

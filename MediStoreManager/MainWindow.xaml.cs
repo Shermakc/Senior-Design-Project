@@ -181,8 +181,8 @@ namespace MediStoreManager
 
             try
             {
-                RetrievePersons();
                 RetrieveAddresses();
+                RetrievePersons();
                 RetrieveSuppliers();
                 RetrieveInventoryItems();
                 RetrieveOrders();
@@ -695,7 +695,7 @@ namespace MediStoreManager
                 string city = addSupplierWindow.City;
                 string state = addSupplierWindow.State;
                 string zipCode = addSupplierWindow.ZipCode;
-                string partnerID = string.Empty;
+                int partnerID = addSupplierWindow.PartnerID;
 
                 (string, string) supplierAddress = SplitAddress(streetAddress);
 
@@ -759,7 +759,7 @@ namespace MediStoreManager
 
                         Supplier editSupplier = new Supplier()
                         {
-                            Name = editSupplierWindow.Name,
+                            Name = editSupplierWindow.BusinessName,
                             PhoneNumber = Convert.ToDecimal(editSupplierWindow.PhoneNumber),
                             PartnerID = editSupplierWindow.PartnerID,
                             AddressID = originalSupplier.AddressID
@@ -1359,6 +1359,22 @@ namespace MediStoreManager
             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
             addresses = DatabaseFunctions.GetAddressList(con);
             con.Close();
+
+            if (!addresses.Any(a => a.ID == 0))
+            {
+                con = DatabaseFunctions.OpenMySQLConnection();
+                Address blankAddress = new Address()
+                {
+                    ID = 0,
+                    StreetName = string.Empty,
+                    AddressNumber = 0,
+                    City = string.Empty,
+                    State = string.Empty,
+                    ZipCode = 0
+                };
+                DatabaseFunctions.CreateAddressEntry(con, blankAddress);
+                con.Close();
+            }
         }
 
         private void RetrievePersons()
@@ -1367,6 +1383,20 @@ namespace MediStoreManager
             MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
             persons = DatabaseFunctions.GetPersonList(con);
             con.Close();
+
+            if (!persons.Any(p => p.ID == 0))
+            {
+                con = DatabaseFunctions.OpenMySQLConnection();
+                Person blankPerson = new Person()
+                {
+                    ID = 0,
+                    FirstName = string.Empty,
+                    LastName = string.Empty,
+                    IsPatient = false
+                };
+                DatabaseFunctions.CreatePersonEntry(con, blankPerson);
+                con.Close();
+            }
         }
 
         private void RetrieveUsers()

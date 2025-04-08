@@ -862,7 +862,7 @@ namespace MediStoreManager
                         con.Close();
 
                         // update inventory lists
-                        UpdateQuantityInItemList("Equipment", inventoryEntry.MainItem.ID, 1);
+                        UpdateQuantityInItemList("equipment", inventoryEntry.MainItem.ID, 1);
 
                         int invIndex = inventoryItems.IndexOf(inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault());
                         inventoryItems[invIndex].NumInStock = 1;

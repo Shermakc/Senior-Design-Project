@@ -285,7 +285,7 @@ namespace MediStoreManager
                     foreach (Patient contact in contacts)
                     {
                         // Add new person for contact if they don't already exist
-                        if (!persons.Any(p => p.ID == contact.ID))
+                        if (!persons.Any(p => p.ID == contact.ID) || contact.ID == 0)
                         {
                             // Create address entry for the contact
                             Address contactAddress = CreateAddressEntry(contact);
@@ -387,7 +387,7 @@ namespace MediStoreManager
                             foreach (Patient contact in editPatientWindow.Patient.Contacts)
                             {
                                 // Add new person for contact if they don't already exist
-                                if (!persons.Any(p => p.ID == contact.ID))
+                                if (!persons.Any(p => p.ID == contact.ID) || contact.ID == 0)
                                 {
                                     // Create address entry for the contact
                                     Address contactAddress = CreateAddressEntry(contact);

@@ -1058,7 +1058,7 @@ namespace MediStoreManager
                         DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
                         con.Close();
 
-                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.AllowedQuantity);
+                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
 
                         inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
                     }

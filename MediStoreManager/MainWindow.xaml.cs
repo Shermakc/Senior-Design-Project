@@ -1127,19 +1127,20 @@ namespace MediStoreManager
                         int invIndex = inventoryItems.IndexOf(orderInventoryItem);
 
                         con = DatabaseFunctions.OpenMySQLConnection();
-                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
+                        int newStock = orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected;
+                        DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, newStock);
                         con.Close();
 
-                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
+                        UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, newStock);
 
-                        inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
+                        inventoryItems[invIndex].NumInStock = newStock;
 
                         if (inventoryEntry.MainItem.Type == "equipment")
                         {
                             Equipment currentItem = EquipmentList.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
                             if (currentItem != null)
                             {
-                                currentItem.Quantity += inventoryEntry.MainItem.QuantitySelected;
+                                currentItem.Quantity = newStock;
                             }
                         }
                         else if (inventoryEntry.MainItem.Type == "supply")
@@ -1147,7 +1148,7 @@ namespace MediStoreManager
                             Supply currentItem = SupplyList.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
                             if (currentItem != null)
                             {
-                                currentItem.Quantity += inventoryEntry.MainItem.QuantitySelected;
+                                currentItem.Quantity = newStock;
                             }
                         }
                         else if (inventoryEntry.MainItem.Type == "part")
@@ -1155,7 +1156,7 @@ namespace MediStoreManager
                             Part currentItem = PartList.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
                             if (currentItem != null)
                             {
-                                currentItem.Quantity += inventoryEntry.MainItem.QuantitySelected;
+                                currentItem.Quantity = newStock;
                             }
                         }
                     }
@@ -1256,19 +1257,20 @@ namespace MediStoreManager
                                 int invIndex = inventoryItems.IndexOf(orderInventoryItem);
 
                                 con = DatabaseFunctions.OpenMySQLConnection();
-                                DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
+                                int newStock = orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected;
+                                DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, newStock);
                                 con.Close();
 
-                                UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
+                                UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, newStock);
 
-                                inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
+                                inventoryItems[invIndex].NumInStock = newStock;
 
                                 if (inventoryEntry.MainItem.Type == "equipment")
                                 {
                                     Equipment currentItem = EquipmentList.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
                                     if (currentItem != null)
                                     {
-                                        currentItem.Quantity += inventoryEntry.MainItem.QuantitySelected;
+                                        currentItem.Quantity = newStock;
                                     }
                                 }
                                 else if (inventoryEntry.MainItem.Type == "supply")
@@ -1276,7 +1278,7 @@ namespace MediStoreManager
                                     Supply currentItem = SupplyList.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
                                     if (currentItem != null)
                                     {
-                                        currentItem.Quantity += inventoryEntry.MainItem.QuantitySelected;
+                                        currentItem.Quantity = newStock;
                                     }
                                 }
                                 else if (inventoryEntry.MainItem.Type == "part")
@@ -1284,7 +1286,7 @@ namespace MediStoreManager
                                     Part currentItem = PartList.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
                                     if (currentItem != null)
                                     {
-                                        currentItem.Quantity += inventoryEntry.MainItem.QuantitySelected;
+                                        currentItem.Quantity = newStock;
                                     }
                                 }
                             }

@@ -212,11 +212,11 @@ namespace MediStoreManager
 
         }
 
-        public Supplier(string name, string phoneNumber, string partnerID, uint addressID)
+        public Supplier(string name, string phoneNumber, int partnerID, uint addressID)
         {
             Name = name;
             if (phoneNumber != string.Empty) { PhoneNumber = Convert.ToInt64(phoneNumber); }
-            if (partnerID != string.Empty) { PartnerID = Convert.ToInt32(partnerID); }
+            PartnerID = partnerID;
             AddressID = addressID;
         }
         public string Name;

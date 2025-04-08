@@ -695,7 +695,7 @@ namespace MediStoreManager
                 string city = addSupplierWindow.City;
                 string state = addSupplierWindow.State;
                 string zipCode = addSupplierWindow.ZipCode;
-                string partnerID = string.Empty;
+                int partnerID = addSupplierWindow.PartnerID;
 
                 (string, string) supplierAddress = SplitAddress(streetAddress);
 
@@ -759,7 +759,7 @@ namespace MediStoreManager
 
                         Supplier editSupplier = new Supplier()
                         {
-                            Name = editSupplierWindow.Name,
+                            Name = editSupplierWindow.BusinessName,
                             PhoneNumber = Convert.ToDecimal(editSupplierWindow.PhoneNumber),
                             PartnerID = editSupplierWindow.PartnerID,
                             AddressID = originalSupplier.AddressID

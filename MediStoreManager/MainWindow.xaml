@@ -17,6 +17,7 @@
         <local:RelatedInventoryVisibilityConverter x:Key="RelatedInventoryVisibilityConverter"/>
         <local:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
         <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <local:ZeroToEmptyStringConverter x:Key="ZeroToEmptyStringConverter" />
     </Window.Resources>
     <Grid Height="796" Width="1550">
         <TabControl FontSize="16" Name="MainTabControl" SelectionChanged="MainTabControl_SelectionChanged">
@@ -53,9 +54,9 @@
                                                     <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Home Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding HomePhone}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="{Binding HomePhone, Converter={StaticResource ZeroToEmptyStringConverter}}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Cell Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding CellPhone}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="{Binding CellPhone, Converter={StaticResource ZeroToEmptyStringConverter}}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding ZipCode}" Width="272" Margin="10,20"/>
                                                 </WrapPanel>
@@ -135,9 +136,9 @@
                                                                             <TextBlock Text="ID: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                             <TextBlock Text="{Binding ID}" Width="272" Margin="10,20"/>
                                                                             <TextBlock Text="Home Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                                            <TextBlock Text="{Binding HomePhone}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="{Binding HomePhone, Converter={StaticResource ZeroToEmptyStringConverter}}" Width="272" Margin="10,20"/>
                                                                             <TextBlock Text="Cell Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                                            <TextBlock Text="{Binding CellPhone}" Width="272" Margin="10,20"/>
+                                                                            <TextBlock Text="{Binding CellPhone, Converter={StaticResource ZeroToEmptyStringConverter}}" Width="272" Margin="10,20"/>
                                                                             <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                                             <TextBlock Text="{Binding ZipCode}" Width="272" Margin="10,20"/>
                                                                             <TextBlock Text="Relationship: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
@@ -540,7 +541,7 @@
                                                 </WrapPanel>
                                                 <WrapPanel Margin="0,0,0,0" Width="463" HorizontalAlignment="Right">
                                                     <TextBlock Text="Business Phone #: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
-                                                    <TextBlock Text="{Binding PhoneNumber}" Width="272" Margin="10,20"/>
+                                                    <TextBlock Text="{Binding PhoneNumber, Converter={StaticResource ZeroToEmptyStringConverter}}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="City: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>
                                                     <TextBlock Text="{Binding City}" Width="272" Margin="10,20"/>
                                                     <TextBlock Text="Zip Code: " FontWeight="Bold" HorizontalAlignment="Left" Margin="10,20" Width="142"/>

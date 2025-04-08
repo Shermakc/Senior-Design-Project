@@ -117,8 +117,8 @@ namespace MediStoreManager
                 InventoryEntries = new ObservableCollection<InventoryEntry>(supplyOrder.InventoryEntries);
             }
             ShippingMethodTextBox.Text = supplyOrder.ShippingMethod;
-            OrderDateDatePicker.SelectedDate = supplyOrder.OrderDate;
-            ReceivedDateDatePicker.SelectedDate = supplyOrder.ReceivedDate;
+            if (supplyOrder.OrderDate != DateTime.MinValue) { OrderDateDatePicker.SelectedDate = supplyOrder.OrderDate; }
+            if (supplyOrder.ReceivedDate != DateTime.MinValue) { ReceivedDateDatePicker.SelectedDate = supplyOrder.ReceivedDate; }
             InventoryItemsControl.ItemsSource = InventoryEntries;
             DataContext = this;
         }

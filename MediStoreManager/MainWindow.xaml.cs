@@ -412,6 +412,10 @@ namespace MediStoreManager
                         {
                             int contactIndex = persons.IndexOf(persons.Where(p => p.ID == removedContact.ID).FirstOrDefault());
                             persons[contactIndex].ContactID = 0;
+
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.UpdatePersonEntry(con, persons[contactIndex]);
+                            con.Close();
                         }
 
                         // Update patient in lists

@@ -405,7 +405,7 @@ namespace MediStoreManager
                             }
                         }
 
-                        // Look for removed contacts and set their ContactID to 0
+                        // Check for removed contacts and set their ContactID to 0
                         List<Patient> removedContacts = PatientList[index].Contacts
                             .Where(c => !editPatientWindow.Patient.Contacts.Any(pc => pc.ID == c.ID)).ToList();
                         foreach (Patient removedContact in removedContacts)
@@ -1111,73 +1111,88 @@ namespace MediStoreManager
                     int index = SupplyOrdersList.IndexOf(selectedEntry);
                     if (index >= 0 && editSupplyOrderWindow.SupplyOrder != null)
                     {
+                        MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
+                        List<Order> originalOrder = orders.Where(o => o.ID == editSupplyOrderWindow.ID).ToList();
+                        bool newlyReceived = false;
+                        foreach (InventoryEntry inventoryEntry in editSupplyOrderWindow.FinalInventoryEntries)
+                        {
+                            if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
+                            {
+                                // Edit existing order item
+                                Order editOrder = new Order(editSupplyOrderWindow.ID,
+                                    inventoryEntry.MainItem.ID,
+                                    inventoryEntry.MainItem.QuantitySelected,
+                                    editSupplyOrderWindow.Supplier,
+                                    editSupplyOrderWindow.ShippingMethod,
+                                    editSupplyOrderWindow.OrderDate,
+                                    editSupplyOrderWindow.ReceivedDate != DateTime.MinValue,
+                                    editSupplyOrderWindow.ReceivedDate);
+
+                                con = DatabaseFunctions.OpenMySQLConnection();
+                                DatabaseFunctions.UpdateOrderEntry(con, editOrder);
+                                con.Close();
+
+                                int oIndex = orders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
+                                orders[oIndex] = editOrder;
+
+                                newlyReceived = !originalOrder.FirstOrDefault().HasBeenReceived && editOrder.HasBeenReceived;
+                            }
+                            else
+                            {
+                                // Create new order item
+                                Order newOrder = new Order(orders.Max(o => o.ID) + 1,
+                                    inventoryEntry.MainItem.ID,
+                                    inventoryEntry.MainItem.QuantitySelected,
+                                    editSupplyOrderWindow.Supplier,
+                                    editSupplyOrderWindow.ShippingMethod,
+                                    editSupplyOrderWindow.OrderDate,
+                                    editSupplyOrderWindow.ReceivedDate != DateTime.MinValue,
+                                    editSupplyOrderWindow.ReceivedDate);
+
+                                con = DatabaseFunctions.OpenMySQLConnection();
+                                DatabaseFunctions.CreateOrderEntry(con, newOrder);
+                                con.Close();
+
+                                orders.Add(newOrder);
+                            }
+
+                            if (newlyReceived)
+                            {
+                                InventoryItem orderInventoryItem = inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
+                                int invIndex = inventoryItems.IndexOf(orderInventoryItem);
+
+                                con = DatabaseFunctions.OpenMySQLConnection();
+                                DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
+                                con.Close();
+
+                                UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.AllowedQuantity);
+
+                                inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
+                            }
+                        }
+
+                        // Check for removed supply order items
+                        List<InventoryEntry> removedEntries = SupplyOrdersList[index].InventoryEntries
+                            .Where(e => !editSupplyOrderWindow.SupplyOrder.InventoryEntries.Any(ie => ie.MainItem.ID == e.MainItem.ID)).ToList();
+                        foreach (InventoryEntry entry in removedEntries)
+                        {
+
+                            int orderItemIndex = orders.IndexOf(originalOrder.Where(o => o.InventoryID == entry.MainItem.ID).FirstOrDefault());
+                            orders[orderItemIndex].Deleted = true;
+
+                            con = DatabaseFunctions.OpenMySQLConnection();
+                            DatabaseFunctions.DeleteOrderEntry(con, orders[orderItemIndex].ID, entry.MainItem.ID);
+                            con.Close();
+                        }
+
+                        // Update order for the UI
                         SupplyOrdersList[index] = editSupplyOrderWindow.SupplyOrder;
                         SupplyOrdersList[index].DisplayName =
                             editSupplyOrderWindow.SupplyOrder.Supplier + " - " +
                             editSupplyOrderWindow.SupplyOrder.OrderDate.Month.ToString() +
                             "/" + editSupplyOrderWindow.SupplyOrder.OrderDate.Day.ToString() +
                             "/" + editSupplyOrderWindow.SupplyOrder.OrderDate.Year.ToString();
-                    }
-
-                    MySqlConnection con = DatabaseFunctions.OpenMySQLConnection();
-                    List<Order> originalOrder = orders.Where(o => o.ID == editSupplyOrderWindow.ID).ToList();
-                    bool newlyReceived = false;
-                    foreach (InventoryEntry inventoryEntry in editSupplyOrderWindow.FinalInventoryEntries)
-                    {
-                        if (originalOrder.Any(o => o.InventoryID == inventoryEntry.MainItem.ID))
-                        {
-                            // Edit existing order item
-                            Order editOrder = new Order(editSupplyOrderWindow.ID,
-                                inventoryEntry.MainItem.ID,
-                                inventoryEntry.MainItem.QuantitySelected,
-                                editSupplyOrderWindow.Supplier,
-                                editSupplyOrderWindow.ShippingMethod,
-                                editSupplyOrderWindow.OrderDate,
-                                editSupplyOrderWindow.ReceivedDate != DateTime.MinValue,
-                                editSupplyOrderWindow.ReceivedDate);
-
-                            con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.UpdateOrderEntry(con, editOrder);
-                            con.Close();
-
-                            int oIndex = orders.IndexOf(originalOrder.Where(o => o.InventoryID == inventoryEntry.MainItem.ID).FirstOrDefault());
-                            orders[oIndex] = editOrder;
-
-                            newlyReceived = !originalOrder.FirstOrDefault().HasBeenReceived && editOrder.HasBeenReceived;
-                        }
-                        else
-                        {
-                            // Create new order item
-                            Order newOrder = new Order(orders.Max(o => o.ID) + 1, 
-                                inventoryEntry.MainItem.ID, 
-                                inventoryEntry.MainItem.QuantitySelected,
-                                editSupplyOrderWindow.Supplier, 
-                                editSupplyOrderWindow.ShippingMethod, 
-                                editSupplyOrderWindow.OrderDate,
-                                editSupplyOrderWindow.ReceivedDate != DateTime.MinValue, 
-                                editSupplyOrderWindow.ReceivedDate);
-
-                            con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.CreateOrderEntry(con, newOrder);
-                            con.Close();
-
-                            orders.Add(newOrder);
-                        }
-
-                        if (newlyReceived)
-                        {
-                            InventoryItem orderInventoryItem = inventoryItems.Where(i => i.ID == inventoryEntry.MainItem.ID).FirstOrDefault();
-                            int invIndex = inventoryItems.IndexOf(orderInventoryItem);
-
-                            con = DatabaseFunctions.OpenMySQLConnection();
-                            DatabaseFunctions.UpdateInventoryQuantity(con, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock + inventoryEntry.MainItem.QuantitySelected);
-                            con.Close();
-
-                            UpdateQuantityInItemList(inventoryEntry.MainItem.Type, inventoryEntry.MainItem.ID, orderInventoryItem.NumInStock +  inventoryEntry.MainItem.AllowedQuantity);
-
-                            inventoryItems[invIndex].NumInStock += inventoryEntry.MainItem.QuantitySelected;
-                        }                 
-                    }
+                    }                   
                 }
             }
         }
@@ -1385,8 +1400,7 @@ namespace MediStoreManager
                 if (!order.Deleted && !SupplyOrdersList.Any(o => o.ID == order.ID))
                 {
                     // Create collection of inventoryItem for the supply order
-                    List<Order> orders2 = new List<Order>(orders.Where(i => i.ID == order.ID));
-                    foreach (Order continuedOrder in orders.Where(i => i.ID == order.ID))
+                    foreach (Order continuedOrder in orders.Where(o => o.ID == order.ID && !o.Deleted))
                     {
                         InventoryItem item = inventoryItems.Where(i => i.ID == continuedOrder.InventoryID).FirstOrDefault();
                         InventoryEntry entry = new InventoryEntry();

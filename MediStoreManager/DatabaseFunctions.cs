@@ -10,7 +10,7 @@ namespace MediStoreManager
 {
     public class DatabaseFunctions
     {
-        public static string connString = "server=localhost;uid=root;pwd=Enough@99;database=medistore manager"; // Don't leave this as plain text
+        public static string connString = "server=localhost;uid=root;pwd=password;database=medistore manager"; // Database connection info here
 
         public static MySqlConnection OpenMySQLConnection()
         {

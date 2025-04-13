@@ -11,7 +11,7 @@ A decent amount of time spent working on the project this semester was also spen
 
 ## Justification Links
 - SQL scripts created for setting up the database: [SQL Scripts](SQL-Scripts/)
-- UI design specification: [UI Design]()
+- UI design specification: [UI Specification](User-Interface-Specification.pdf)
 - Documentation on application usage: [User Guide](User-Guide.md)
 - Test plan and results document: [Test Plan](Assignments/Test-Plan.pdf)
 

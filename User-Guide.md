@@ -81,9 +81,6 @@ Clicking the button labeled "Edit Supplier Information" will bring up a pop up a
 **Q: Where is a patient's emergency contact information?**<br />
 **A:** The emergency contact information for a patient is held within the "Additional" tab for that patient.
 
-**Q: Where can I find the details for a patient's insurance?**<br />
-**A:** This information can be found in the "Additional" tab for that patient.
-
 **Q: How can I track the history of repairs that a piece of equipment has undergone?**<br />
 **A:** In the "History" tab for the equipment, you will see all previous rentals and repairs for that equipment.
 

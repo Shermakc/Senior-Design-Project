@@ -15,13 +15,13 @@
 
 ## 1. Installation <a name="installation"></a>
 ### 1.1 Database Creation <a name="database-creation"></a>
-This application will require you to have an active MySQL database to store the created records. This can be aquired from the MySQL website. On their site, go to the downloads section and scroll down to "MySQL Community (GPL) Downloads". In the community downloads, download the MySQL Installer for Windows. When usingt he installer, make sure to install both a MwSQL server as well as MySQL Workbench. The workbench will make managing the database possible outside of the application. During installation, you will be asked to create accounts and roles for the server. Set the root password to "password". The user information can be whatever you like. For easiest use, make sure to check the box that says "Start the MySQL Server at System Startup".<br />
+This application will require you to have an active MySQL database to store the created records. This can be aquired from the MySQL website. On their site, go to the downloads section and scroll down to "MySQL Community (GPL) Downloads". In the community downloads, download the MySQL Installer for Windows. When using the installer, make sure to install both a MySQL server as well as MySQL Workbench. The workbench will make managing the database possible outside of the application and is required for setup. During installation, you will be asked to create accounts and roles for the server. Set the root password to "password". The user information can be whatever you like. For easiest use, make sure to check the box that says "Start the MySQL Server at System Startup".<br />
 
 ### 1.2 Database Initialization <a name="database-initialization"></a>
-
-<br />
+The database will require a bit of additional setup after installation. To do this, open the newly installed MySQL Workbench. Click on the "+" symbol to the right of "MySQL Connections". In the popup, set the name to whatever you like and set the password to "password" like you did before. Click OK to finish creating the connection and then double clikc on the new connection. This will connect you to the database and allow you to make changes. Download the file "Create Medistore Manager Schema and Tables.sql" from the repository and open it in MySQL Workbench. Then click the lightning bolt to run the script. You will also need to downloand the file "Create New User.sql" from the repository. Open this file and change the first name, last name, username, and password outlined in quotation marks to what you want for your account. Then click the lightning bolt to run the script.
 
 ### 1.2 App Installation <a name="app-installation"></a>
+To install the application, download the file "Medistore-Manager.zip" fromt he repository. Unzip the contents somewhere you'll remember on your computer. This completes the installation and you can now run the application from the MedistoreManager.exe file.
 <br />
 
 ## 2. Usage <a name="usage"></a>

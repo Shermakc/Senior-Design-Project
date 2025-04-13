@@ -26,7 +26,12 @@ To install the application, download the file "Medistore-Manager.zip" fromt he r
 
 ## 2. Usage <a name="usage"></a>
 ### 2.1 Login and Security <a name="login-and-security"></a>
-
+The first window that will open upon launching the application is the login window. This will prompt you for your username and password. <br />
+![AltText](Assignments/Images/Login.jpg?raw=true "Login") <br />
+<br />
+If you enter invalid information, you will not be allowed to login and the window will update to show an invalid credential error. <br />
+![AltText](Assignments/Images/LoginFailure.jpg?raw=true "LoginFailure") <br />
+<br />
 ### 2.2 Patient Information <a name="patient-information"></a>
 Clicking on the Patients tab will display a list of all the customers the application has in its database. The list shows each patient's first and last name. The search bar at the top of the list will allow you to find patients by typing any portion of their name. The list will then be filtered to show only patients with names matching the entry in the search bar. <br />
 ![AltText](Assignments/Images/PatientsTab.jpg?raw=true "PatientsTab") <br />
@@ -37,13 +42,16 @@ At the bottom of the list is a button labeled "Add New Patient".<br />
 Clicking this button will bring up a popup allowing you to enter all the information required to add a patient to the application. Once you are finished entering the patient's information, click the "OK" button to add the new patient.<br />
 ![AltText](Assignments/Images/AddPatient.jpg?raw=true "AddPatient") <br />
 <br />
-Clicking on a patient in the list will display their full information in the large window on the right. At the top of this window are the tabs "Info" (which is selected by default), "History", and "Additional". The History tab will display previously created work orders made for the patient. The additional tab is a section to store an other patient information that may be noteworthy. <br />
+Clicking on a patient in the list will display their full information in the large window on the right. At the top of this window are the tabs "Info" (which is selected by default), "History", and "Additional". The History tab will display previously created work orders made for the patient. The additional tab displays the patient's emergency contacts. <br />
 ![AltText](Assignments/Images/PatientInfo.jpg?raw=true "PatientInfo") <br />
+![AltText](Assignments/Images/PatientHistory.jpg?raw=true "PatientHistory") <br />
+![AltText](Assignments/Images/PatientAdditional.jpg?raw=true "PatientAdditional") <br />
 <br />
+
 Below this section there are two buttons: "Edit Patient Information" and "Create Work Order". <br />
 ![AltText](Assignments/Images/EditPatientButton.jpg?raw=true "EditPatientButton") <br />
 <br />
-If the user has permission to edit patient information, clicking the button "Edit Patient Info" will bring up a pop up allowing you to make changes to the patient's displayed info. Once you are satisfied with your changes, click "OK" to save them. The "Create Work Order" button will be discussed in further detail in the section **Work and Order Tickets**. <br />
+Clicking the button "Edit Patient Info" will bring up a pop up allowing you to make changes to the patient's displayed info. There is a delete button on this pop up to allow you to delete the patient entirely. If you do not have permission, this button will be grayed out. Once you are satisfied with your changes, click "OK" to save them. The "Create Work Order" button will be discussed in further detail in the section **Work and Order Tickets**. <br />
 
 
 ### 2.3 Inventory Information <a name="inventory-information"></a>
@@ -56,8 +64,9 @@ At the bottom of the list is a button labeled "Add New Inventory".<br />
 Clicking this button will bring up a popup allowing you to enter all the information required to add a new item to the inventory list. Once you are finished entering the item's information, click the "OK" button to add the new item.<br />
 ![AltText](Assignments/Images/AddInventory.jpg?raw=true "AddInventory") <br />
 <br />
-Clicking on a item in the list will display its full information in the large window on the right. <br />
+Clicking on a item in the list will display its full information in the large window on the right. The "History" tab will display all previous work and supply orders for the selected item. <br />
 ![AltText](Assignments/Images/InventoryInfo.jpg?raw=true "InventoryInfo") <br />
+![AltText](Assignments/Images/InventoryHistory.jpg?raw=true "InventoryHistory") <br />
 <br />
 Below the information section is a button labeled "Edit Part/Equipment Information". <br />
 ![AltText](Assignments/Images/EditInventoryButton.jpg?raw=true "EditInventoryButton") <br />
@@ -74,8 +83,9 @@ At the bottom of the list is a button labeled "Add New Supplier". <br />
 Clicking this button will bring up a popup allowing you to enter all the information required to add a new supplier to the list. Once you are finished entering the supplier's information, click the "OK" button to add the new supplier.<br />
 ![AltText](Assignments/Images/AddSupplier.jpg?raw=true "AddSupplier") <br />
 <br />
-Clicking on a supplier in the list will display their full information in the large window on the right. <br />
+Clicking on a supplier in the list will display their full information in the large window on the right. The "History" tab will display all previous supply orders for the selected supplier.<br />
 ![AltText](Assignments/Images/SupplierInfo.jpg?raw=true "SupplierInfo") <br />
+![AltText](Assignments/Images/SupplierHistory.jpg?raw=true "SupplierHistory") <br />
 <br />
 Below the information section are two buttons: "Edit Supplier Information" and "Create Supply Order".<br />
 ![AltText](Assignments/Images/EditSupplierButton.jpg?raw=true "EditSupplierButton") <br />
@@ -83,7 +93,18 @@ Below the information section are two buttons: "Edit Supplier Information" and "
 Clicking the button labeled "Edit Supplier Information" will bring up a pop up allowing you to make changes to the displayed information. Once you are satisfied with your changes, click "OK" to save them. The "Create Supply Order" button will be discssed in further detail in the next section.
 
 ### 2.5 Work and Order Tickets <a name="work-and-order-tickets"></a>
+#### Work Orders
+On the fourth tab, "Order Tickets", there will be two separate tabs. One for Work orders, and another for Supply orders. The Work order tab will provide a list of all work orders and the box on the right will display all relevant information for the work order.
+![AltText](Assignments/Images/WorkOrderTab.jpg?raw=true "WorkOrderTab") <br />
+<br />
+Selecting "Create Work Order" button from any tab that it appears will open the below pop up. Fill in all necessary information and select OK to create the work order.
 ![AltText](Assignments/Images/WorkOrder.jpg?raw=true "WorkOrder") <br />
+<br />
+#### Supply Orders
+The Supply order tab will provide a list of all supply orders and the box on the right will display all relevant information for the selected supply order.
+![AltText](Assignments/Images/SupplyOrderTab.jpg?raw=true "SupplyOrderTab") <br />
+<br />
+Selecting "Create Supply Order" button from any tab that it appears will open the below pop up. Fill in all necessary information and select OK to create the supply order.
 ![AltText](Assignments/Images/SupplyOrder.jpg?raw=true "SupplyOrder") <br />
 <br />
 
@@ -96,3 +117,6 @@ Clicking the button labeled "Edit Supplier Information" will bring up a pop up a
 
 **Q: I want to see our previous orders with a specific supplier, where can I find that?** <br />
 **A:** In the Suppliers tab, click on the specific supplier and select the "History" tab. This will display all previous orders with that supplier.
+
+**Q: Will work and supply orders update the quantity stored for inventory items, or will that have to be done manually?** <br />
+**A:** The quantity will update automatically for all inventory items from work and supply orders. Work orders will reduce the quantity by the proper amount upon creation, and supply orders will increase the quantity by the proper amount once it has been marked as received (Received Date has been filled).

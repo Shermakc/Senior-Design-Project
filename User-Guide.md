@@ -1,17 +1,27 @@
 # User Guide
 ## Table of Contents
 1. [Installation](#installation)
-2. [Usage](#usage)<br />
+  1.1 [Database Creation](#database-creation)
+  1.2 [Database Initialization](#database-initialization)
+  1.2 [App Installation](#app-installation)
+3. [Usage](#usage)<br />
   2.1 [Login and Security](#login-and-security)<br />
   2.2 [Patient Information](#patient-information)<br />
   2.3 [Inventory Information](#inventory-information)<br />
   2.4 [Supplier Information](#supplier-information)<br />
   2.5 [Work and Order Tickets](#work-and-order-tickets)
-3. [Frequently Asked Questions](#frequently-asked-questions)
+4. [Frequently Asked Questions](#frequently-asked-questions)
 <br />
 
 ## 1. Installation <a name="installation"></a>
+### 1.1 Database Creation <a name="database-creation"></a>
+This application will require you to have an active MySQL database to store the created records. This can be aquired from the MySQL website. On their site, go to the downloads section and scroll down to "MySQL Community (GPL) Downloads". In the community downloads, download the MySQL Installer for Windows. When usingt he installer, make sure to install both a MwSQL server as well as MySQL Workbench. The workbench will make managing the database possible outside of the application. During installation, you will be asked to create accounts and roles for the server. Set the root password to "password". The user information can be whatever you like. For easiest use, make sure to check the box that says "Start the MySQL Server at System Startup".<br />
 
+### 1.2 Database Initialization <a name="database-initialization"></a>
+
+<br />
+
+### 1.2 App Installation <a name="app-installation"></a>
 <br />
 
 ## 2. Usage <a name="usage"></a>

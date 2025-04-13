@@ -94,17 +94,17 @@ Clicking the button labeled "Edit Supplier Information" will bring up a pop up a
 
 ### 2.5 Work and Order Tickets <a name="work-and-order-tickets"></a>
 #### Work Orders
-On the fourth tab, "Order Tickets", there will be two separate tabs. One for Work orders, and another for Supply orders. The Work order tab will provide a list of all work orders and the box on the right will display all relevant information for the work order.
+On the fourth tab, "Order Tickets", there will be two separate tabs. One for Work orders, and another for Supply orders. The Work order tab will provide a list of all work orders and the box on the right will display all relevant information for the work order. <br />
 ![AltText](Assignments/Images/WorkOrderTab.jpg?raw=true "WorkOrderTab") <br />
 <br />
-Selecting "Create Work Order" button from any tab that it appears will open the below pop up. Fill in all necessary information and select OK to create the work order.
+Selecting "Create Work Order" button from any tab that it appears will open the below pop up. Fill in all necessary information and select OK to create the work order. <br />
 ![AltText](Assignments/Images/WorkOrder.jpg?raw=true "WorkOrder") <br />
 <br />
 #### Supply Orders
-The Supply order tab will provide a list of all supply orders and the box on the right will display all relevant information for the selected supply order.
+The Supply order tab will provide a list of all supply orders and the box on the right will display all relevant information for the selected supply order. <br />
 ![AltText](Assignments/Images/SupplyOrderTab.jpg?raw=true "SupplyOrderTab") <br />
 <br />
-Selecting "Create Supply Order" button from any tab that it appears will open the below pop up. Fill in all necessary information and select OK to create the supply order.
+Selecting "Create Supply Order" button from any tab that it appears will open the below pop up. Fill in all necessary information and select OK to create the supply order. <br />
 ![AltText](Assignments/Images/SupplyOrder.jpg?raw=true "SupplyOrder") <br />
 <br />
 

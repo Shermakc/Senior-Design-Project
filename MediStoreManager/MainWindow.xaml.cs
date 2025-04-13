@@ -287,10 +287,11 @@ namespace MediStoreManager
                         // Add new person for contact if they don't already exist
                         if (!persons.Any(p => p.ID == contact.ID) || contact.ID == 0)
                         {
+                            uint contactID = persons.Max(p => p.ID) + 1;
                             // Create address entry for the contact
                             Address contactAddress = CreateAddressEntry(contact);
                             // Create person entry for the contact
-                            Person contactPerson = new Person(persons.Max(p => p.ID) + 1, contact.FirstName, contact.LastName,
+                            Person contactPerson = new Person(contactID, contact.FirstName, contact.LastName,
                                 contact.MiddleName, contact.HomePhone, contact.CellPhone, contactAddress.ID, contact.Insurance,
                                 false, newPerson.ID, contact.RelationshipToPatient);
 
@@ -298,6 +299,7 @@ namespace MediStoreManager
                             DatabaseFunctions.CreatePersonEntry(con, contactPerson);
                             con.Close();
 
+                            contact.ID = contactID;
                             persons.Add(contactPerson);
                         }
                     }
@@ -389,10 +391,11 @@ namespace MediStoreManager
                                 // Add new person for contact if they don't already exist
                                 if (!persons.Any(p => p.ID == contact.ID) || contact.ID == 0)
                                 {
+                                    uint contactID = persons.Max(p => p.ID) + 1;
                                     // Create address entry for the contact
                                     Address contactAddress = CreateAddressEntry(contact);
                                     // Create person entry for the contact
-                                    Person contactPerson = new Person(persons.Max(p => p.ID) + 1, contact.FirstName, contact.LastName,
+                                    Person contactPerson = new Person(contactID, contact.FirstName, contact.LastName,
                                         contact.MiddleName, contact.HomePhone, contact.CellPhone, contactAddress.ID, contact.Insurance,
                                         false, editPerson.ID, contact.RelationshipToPatient);                                   
 
@@ -400,6 +403,7 @@ namespace MediStoreManager
                                     DatabaseFunctions.CreatePersonEntry(con, contactPerson);
                                     con.Close();
 
+                                    contact.ID = contactID;
                                     persons.Add(contactPerson);
                                 }
                             }
@@ -1457,7 +1461,7 @@ namespace MediStoreManager
                     }
                 }                                
             }
-
+            
             foreach (Patient patient in PatientList)
             {
                 patient.Contacts = new ObservableCollection<Patient>();

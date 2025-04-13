@@ -13,7 +13,7 @@ namespace MediStoreManager
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value is string str && str == "0")
+            if (value is string str && (str == "0" || str == "0 "))
             {
                 return string.Empty;
             }
